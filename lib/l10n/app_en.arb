@@ -208,5 +208,138 @@
         "type": "String"
       }
     }
+  },
+  "chipAll": "All",
+  "chipExpired": "Expired",
+  "chip30": "0–30 d",
+  "chip60": "31–60 d",
+  "chip90": "61–90 d",
+  "chipLater": "91+ d",
+  "expiryEmptyHint": "Batches close to expiry will show up here.",
+  "expiryNoMatches": "No batches match these filters",
+  "expiryClearFilters": "Clear filters",
+  "expirySearchHint": "Search name or batch number",
+  "expirySectionExpired": "Expired · remove from shelf",
+  "expiryValueNone": "—",
+  "expiryHandled": "Handled",
+  "filterTitle": "Filter and sort",
+  "filterSortBy": "Sort by",
+  "sortSoonest": "Soonest expiry",
+  "sortValue": "Highest value at risk",
+  "sortName": "Name",
+  "filterCategory": "Category",
+  "filterForm": "Form",
+  "filterAll": "All",
+  "filterHideHandled": "Hide handled batches",
+  "filterReset": "Reset",
+  "filterApply": "Apply",
+  "actionSold": "Sold or adjust quantity",
+  "actionDiscardAll": "Discard remaining stock",
+  "actionSnooze": "Snooze alerts",
+  "actionHandled": "Mark as handled",
+  "actionUnhandled": "Mark as not handled",
+  "actionOpenBatch": "Open batch",
+  "snoozeTitle": "Snooze alerts for this batch",
+  "snooze1d": "Tomorrow",
+  "snooze3d": "In 3 days",
+  "snooze1w": "In 1 week",
+  "snackHandled": "Marked as handled",
+  "snackUnhandled": "Marked as not handled",
+  "snackUndo": "Undo",
+  "tooltipFilter": "Filter and sort",
+  "tooltipSearch": "Search",
+  "tooltipSelect": "Select batches",
+  "selectCancel": "Cancel selection",
+  "discardSelected": "Discard selected",
+  "expiryValueAtRisk": "Value at risk: {amount}",
+  "@expiryValueAtRisk": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "expiryValuePartial": "{count, plural, =1{1 batch has no price} other{{count} batches have no price}}",
+  "@expiryValuePartial": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "expiryEmptyDays": "Nothing expires within {days} days.",
+  "@expiryEmptyDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "snoozeNext": "Until the next alert ({date})",
+  "@snoozeNext": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "snackSnoozed": "Alerts snoozed until {date}",
+  "@snackSnoozed": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "snackDiscarded": "{count, plural, =1{1 batch discarded} other{{count} batches discarded}}",
+  "@snackDiscarded": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "selectedCount": "{count} selected",
+  "@selectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bulkDiscardBody": "{count, plural, =1{Write off the remaining stock of 1 batch? This is recorded as a loss.} other{Write off the remaining stock of {count} batches? This is recorded as a loss.}}",
+  "@bulkDiscardBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "rowValue": "Value: {amount}",
+  "@rowValue": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "rowSnoozed": "Snoozed until {date}",
+  "@rowSnoozed": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "rowSection": "{label}, {count}",
+  "@rowSection": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

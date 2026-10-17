@@ -401,6 +401,26 @@ A scheduled notification's text is fixed at schedule time, but data may change b
 - Request authorization with `alert, badge, sound`; consider provisional authorization is *not* used (we want banners).
 - Badge: set to count of needs-action batches on each plan and on resume.
 
+#### Spike outcome (Sprint 2)
+
+See [alert-spike-report.md](alert-spike-report.md) and
+[qa-alert-matrix.md](qa-alert-matrix.md). Provisional, pending device runs:
+
+* **Plugin sufficient** — keep `flutter_local_notifications` behind the
+  `NotificationPlugin` interface; no native channel until a tripwire in the
+  report trips.
+* **Lead-time alerts use inexact delivery by default** (`preferExact: false`).
+  They are date-level, and this avoids the exact-alarm permission and Play
+  policy exposure. Exact scheduling remains available in the seam (used by the
+  Alert lab and the future *Send test alert* button), falling back to inexact
+  when the permission is missing.
+* **Android force-stop is expected to drop pending alerts** until the app is
+  next opened; the design's re-plan-on-launch plus the in-app dashboard cover
+  it.
+* Android config required: `POST_NOTIFICATIONS`, `SCHEDULE_EXACT_ALARM`,
+  `RECEIVE_BOOT_COMPLETED`, the plugin's two receivers, core-library
+  desugaring. iOS: `UNUserNotificationCenter` delegate set in `AppDelegate`.
+
 ### 6.9 Permission & health model
 `AlertHealth` aggregate (provider):
 `notificationsGranted` · `exactAlarmsGranted` · `batteryOptimized` (Android) · `lastReconcileAt` · `nextAlertAt` · `pendingCount`.

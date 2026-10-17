@@ -5,6 +5,8 @@ import 'package:pharmacy_expiry_tracker/app/app.dart';
 import 'package:pharmacy_expiry_tracker/app/providers.dart';
 import 'package:pharmacy_expiry_tracker/data/db/app_database.dart';
 
+import '../support/pump_app.dart';
+
 void main() {
   testWidgets('shows five tabs and navigates between them', (tester) async {
     final db = AppDatabase.forTesting();
@@ -15,7 +17,7 @@ void main() {
         child: const App(),
       ),
     );
-    await tester.pumpAndSettle();
+    await settle(tester);
 
     for (final label in ['Home', 'Stock', 'Expiry', 'Suppliers', 'More']) {
       expect(
@@ -30,11 +32,11 @@ void main() {
     expect(find.text('Your dashboard will appear here'), findsOneWidget);
 
     await tester.tap(find.text('Expiry'));
-    await tester.pumpAndSettle();
+    await settle(tester);
     expect(find.text('Nothing is near expiry'), findsOneWidget);
 
     await tester.tap(find.text('Suppliers'));
-    await tester.pumpAndSettle();
+    await settle(tester);
     expect(find.text('No suppliers yet'), findsOneWidget);
 
     // Dispose the tree, then flush the zero-duration timer Drift schedules

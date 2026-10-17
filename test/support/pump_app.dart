@@ -47,3 +47,9 @@ Future<void> settle(WidgetTester tester, {int steps = 8}) async {
     await tester.pump(const Duration(milliseconds: 100));
   }
 }
+
+/// Runs a database call in real time: Drift's stream and timer machinery does
+/// not advance inside the widget tester's fake clock while the test body is
+/// awaiting.
+Future<T> db<T>(WidgetTester t, Future<T> Function() f) async =>
+    (await t.runAsync(f)) as T;

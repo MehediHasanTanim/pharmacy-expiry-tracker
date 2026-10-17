@@ -494,4 +494,204 @@ class AppLocalizationsEn extends AppLocalizations {
   String batchBy(String number) {
     return 'Batch $number';
   }
+
+  @override
+  String get chipAll => 'All';
+
+  @override
+  String get chipExpired => 'Expired';
+
+  @override
+  String get chip30 => '0–30 d';
+
+  @override
+  String get chip60 => '31–60 d';
+
+  @override
+  String get chip90 => '61–90 d';
+
+  @override
+  String get chipLater => '91+ d';
+
+  @override
+  String get expiryEmptyHint => 'Batches close to expiry will show up here.';
+
+  @override
+  String get expiryNoMatches => 'No batches match these filters';
+
+  @override
+  String get expiryClearFilters => 'Clear filters';
+
+  @override
+  String get expirySearchHint => 'Search name or batch number';
+
+  @override
+  String get expirySectionExpired => 'Expired · remove from shelf';
+
+  @override
+  String get expiryValueNone => '—';
+
+  @override
+  String get expiryHandled => 'Handled';
+
+  @override
+  String get filterTitle => 'Filter and sort';
+
+  @override
+  String get filterSortBy => 'Sort by';
+
+  @override
+  String get sortSoonest => 'Soonest expiry';
+
+  @override
+  String get sortValue => 'Highest value at risk';
+
+  @override
+  String get sortName => 'Name';
+
+  @override
+  String get filterCategory => 'Category';
+
+  @override
+  String get filterForm => 'Form';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get filterHideHandled => 'Hide handled batches';
+
+  @override
+  String get filterReset => 'Reset';
+
+  @override
+  String get filterApply => 'Apply';
+
+  @override
+  String get actionSold => 'Sold or adjust quantity';
+
+  @override
+  String get actionDiscardAll => 'Discard remaining stock';
+
+  @override
+  String get actionSnooze => 'Snooze alerts';
+
+  @override
+  String get actionHandled => 'Mark as handled';
+
+  @override
+  String get actionUnhandled => 'Mark as not handled';
+
+  @override
+  String get actionOpenBatch => 'Open batch';
+
+  @override
+  String get snoozeTitle => 'Snooze alerts for this batch';
+
+  @override
+  String get snooze1d => 'Tomorrow';
+
+  @override
+  String get snooze3d => 'In 3 days';
+
+  @override
+  String get snooze1w => 'In 1 week';
+
+  @override
+  String get snackHandled => 'Marked as handled';
+
+  @override
+  String get snackUnhandled => 'Marked as not handled';
+
+  @override
+  String get snackUndo => 'Undo';
+
+  @override
+  String get tooltipFilter => 'Filter and sort';
+
+  @override
+  String get tooltipSearch => 'Search';
+
+  @override
+  String get tooltipSelect => 'Select batches';
+
+  @override
+  String get selectCancel => 'Cancel selection';
+
+  @override
+  String get discardSelected => 'Discard selected';
+
+  @override
+  String expiryValueAtRisk(String amount) {
+    return 'Value at risk: $amount';
+  }
+
+  @override
+  String expiryValuePartial(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count batches have no price',
+      one: '1 batch has no price',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String expiryEmptyDays(int days) {
+    return 'Nothing expires within $days days.';
+  }
+
+  @override
+  String snoozeNext(String date) {
+    return 'Until the next alert ($date)';
+  }
+
+  @override
+  String snackSnoozed(String date) {
+    return 'Alerts snoozed until $date';
+  }
+
+  @override
+  String snackDiscarded(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count batches discarded',
+      one: '1 batch discarded',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String selectedCount(int count) {
+    return '$count selected';
+  }
+
+  @override
+  String bulkDiscardBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          'Write off the remaining stock of $count batches? This is recorded as a loss.',
+      one: 'Write off the remaining stock of 1 batch? This is recorded as a loss.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String rowValue(String amount) {
+    return 'Value: $amount';
+  }
+
+  @override
+  String rowSnoozed(String date) {
+    return 'Snoozed until $date';
+  }
+
+  @override
+  String rowSection(String label, int count) {
+    return '$label, $count';
+  }
 }

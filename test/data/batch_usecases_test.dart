@@ -64,6 +64,18 @@ class FlakyBatchRepository implements BatchRepository {
     at: at,
   );
   @override
+  Future<void> setAlertState(
+    String id, {
+    required DateTime? snoozedUntil,
+    required DateTime? handledAt,
+    required DateTime at,
+  }) => _real.setAlertState(
+    id,
+    snoozedUntil: snoozedUntil,
+    handledAt: handledAt,
+    at: at,
+  );
+  @override
   Stream<List<StockAdjustment>> watchAdjustments(String id) =>
       _real.watchAdjustments(id);
 }

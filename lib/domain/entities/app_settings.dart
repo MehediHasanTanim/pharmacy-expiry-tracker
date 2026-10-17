@@ -24,6 +24,10 @@ class AppSettings {
     this.themeMode = 'system',
     this.appLockEnabled = false,
     this.hideDetailsOnLockScreen = false,
+    this.expirySort = 'soonest',
+    this.expiryCategory = '',
+    this.expiryForm = '',
+    this.expiryHideHandled = false,
   });
 
   /// Rebuilds settings from stored key/value rows; missing or malformed values
@@ -62,6 +66,11 @@ class AppSettings {
       hideDetailsOnLockScreen:
           _bool(m[SettingKey.hideDetailsOnLockScreen]) ??
           d.hideDetailsOnLockScreen,
+      expirySort: m[SettingKey.expirySort] ?? d.expirySort,
+      expiryCategory: m[SettingKey.expiryCategory] ?? d.expiryCategory,
+      expiryForm: m[SettingKey.expiryForm] ?? d.expiryForm,
+      expiryHideHandled:
+          _bool(m[SettingKey.expiryHideHandled]) ?? d.expiryHideHandled,
     );
   }
 
@@ -109,6 +118,13 @@ class AppSettings {
   final bool appLockEnabled;
   final bool hideDetailsOnLockScreen;
 
+  /// Last-used Expiry tab selections (EXP-4): `soonest` | `value` | `name`;
+  /// empty category/form mean "all".
+  final String expirySort;
+  final String expiryCategory;
+  final String expiryForm;
+  final bool expiryHideHandled;
+
   Map<String, String> toMap() => {
     SettingKey.pharmacyName: pharmacyName,
     SettingKey.nearExpiryWindowDays: '$nearExpiryWindowDays',
@@ -130,6 +146,10 @@ class AppSettings {
     SettingKey.themeMode: themeMode,
     SettingKey.appLockEnabled: '$appLockEnabled',
     SettingKey.hideDetailsOnLockScreen: '$hideDetailsOnLockScreen',
+    SettingKey.expirySort: expirySort,
+    SettingKey.expiryCategory: expiryCategory,
+    SettingKey.expiryForm: expiryForm,
+    SettingKey.expiryHideHandled: '$expiryHideHandled',
   };
 
   AppSettings copyWith({
@@ -153,6 +173,10 @@ class AppSettings {
     String? themeMode,
     bool? appLockEnabled,
     bool? hideDetailsOnLockScreen,
+    String? expirySort,
+    String? expiryCategory,
+    String? expiryForm,
+    bool? expiryHideHandled,
   }) {
     return AppSettings(
       pharmacyName: pharmacyName ?? this.pharmacyName,
@@ -176,6 +200,10 @@ class AppSettings {
       appLockEnabled: appLockEnabled ?? this.appLockEnabled,
       hideDetailsOnLockScreen:
           hideDetailsOnLockScreen ?? this.hideDetailsOnLockScreen,
+      expirySort: expirySort ?? this.expirySort,
+      expiryCategory: expiryCategory ?? this.expiryCategory,
+      expiryForm: expiryForm ?? this.expiryForm,
+      expiryHideHandled: expiryHideHandled ?? this.expiryHideHandled,
     );
   }
 
@@ -226,4 +254,8 @@ abstract final class SettingKey {
   static const themeMode = 'theme_mode';
   static const appLockEnabled = 'app_lock_enabled';
   static const hideDetailsOnLockScreen = 'hide_details_on_lock_screen';
+  static const expirySort = 'expiry_sort';
+  static const expiryCategory = 'expiry_category';
+  static const expiryForm = 'expiry_form';
+  static const expiryHideHandled = 'expiry_hide_handled';
 }

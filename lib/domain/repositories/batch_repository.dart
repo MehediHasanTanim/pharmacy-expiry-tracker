@@ -41,6 +41,14 @@ abstract interface class BatchRepository {
     required DateTime at,
   });
 
+  /// Sets the snooze/handled state exactly (null clears it).
+  Future<void> setAlertState(
+    String id, {
+    required DateTime? snoozedUntil,
+    required DateTime? handledAt,
+    required DateTime at,
+  });
+
   Future<void> insertAdjustment(StockAdjustment adjustment);
 
   /// Newest first.

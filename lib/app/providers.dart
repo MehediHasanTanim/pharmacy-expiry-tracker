@@ -2,17 +2,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
 import 'package:pharmacy_expiry_tracker/data/db/app_database.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/batch_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/expiry_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/medicine_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/search_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/settings_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/services/local_notification_plugin.dart';
 import 'package:pharmacy_expiry_tracker/domain/data_changes.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/app_settings.dart';
+import 'package:pharmacy_expiry_tracker/domain/notifications/notification_plugin.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/batch_repository.dart';
+import 'package:pharmacy_expiry_tracker/domain/repositories/expiry_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/medicine_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/search_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/settings_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/transaction_runner.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/batch_usecases.dart';
+import 'package:pharmacy_expiry_tracker/domain/usecases/expiry_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/medicine_usecases.dart';
 
 final databaseProvider = Provider<AppDatabase>((ref) {
@@ -110,4 +115,29 @@ final adjustStockProvider = Provider<AdjustStock>(
     clock: ref.watch(clockProvider),
     bus: ref.watch(dataChangeBusProvider),
   ),
+);
+
+final expiryRepositoryProvider = Provider<ExpiryRepository>(
+  (ref) => ExpiryRepositoryImpl(ref.watch(databaseProvider)),
+);
+
+final updateAlertStateProvider = Provider<UpdateAlertState>(
+  (ref) => UpdateAlertState(
+    batches: ref.watch(batchRepositoryProvider),
+    clock: ref.watch(clockProvider),
+    bus: ref.watch(dataChangeBusProvider),
+  ),
+);
+
+final discardBatchesProvider = Provider<DiscardBatches>(
+  (ref) => DiscardBatches(
+    batches: ref.watch(batchRepositoryProvider),
+    adjustStock: ref.watch(adjustStockProvider),
+    transaction: ref.watch(transactionRunnerProvider),
+  ),
+);
+
+/// The OS notification scheduler. Overridden with a fake in tests.
+final notificationPluginProvider = Provider<NotificationPlugin>(
+  (ref) => LocalNotificationPlugin(),
 );

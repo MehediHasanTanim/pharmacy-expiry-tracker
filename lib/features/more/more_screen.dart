@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pharmacy_expiry_tracker/app/providers.dart';
+import 'package:pharmacy_expiry_tracker/app/routes.dart';
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
 import 'package:pharmacy_expiry_tracker/data/dev/seed_data.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
@@ -31,6 +33,13 @@ class MoreScreen extends ConsumerWidget {
               title: Text(l10n.devSeed),
               subtitle: Text(l10n.devTools),
               onTap: () => _seed(context, ref),
+            ),
+            ListTile(
+              key: const Key('dev-alert-lab'),
+              leading: const Icon(Icons.notifications_active_outlined),
+              title: const Text('Alert lab'),
+              subtitle: const Text('Schedule real notifications on a device'),
+              onTap: () => context.push(Routes.alertLab),
             ),
           ],
         ],

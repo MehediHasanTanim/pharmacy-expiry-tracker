@@ -10,20 +10,30 @@ import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 
 /// Shows the "Adjust stock" bottom sheet for [batch]. Completes with true if
 /// an adjustment was applied.
-Future<bool?> showAdjustStockSheet(BuildContext context, Batch batch) {
+Future<bool?> showAdjustStockSheet(
+  BuildContext context,
+  Batch batch, {
+  AdjustmentReason initialReason = AdjustmentReason.sold,
+}) {
   return showModalBottomSheet<bool>(
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
     showDragHandle: true,
-    builder: (_) => AdjustStockSheet(batch: batch),
+    builder: (_) =>
+        AdjustStockSheet(batch: batch, initialReason: initialReason),
   );
 }
 
 class AdjustStockSheet extends ConsumerStatefulWidget {
-  const AdjustStockSheet({required this.batch, super.key});
+  const AdjustStockSheet({
+    required this.batch,
+    this.initialReason = AdjustmentReason.sold,
+    super.key,
+  });
 
   final Batch batch;
+  final AdjustmentReason initialReason;
 
   @override
   ConsumerState<AdjustStockSheet> createState() => _AdjustStockSheetState();
@@ -42,7 +52,7 @@ class _AdjustStockSheetState extends ConsumerState<AdjustStockSheet> {
 
   final _qty = TextEditingController(text: '1');
   final _note = TextEditingController();
-  AdjustmentReason _reason = AdjustmentReason.sold;
+  late AdjustmentReason _reason = widget.initialReason;
   // For corrections only: true adds stock, false removes it.
   bool _correctionAdds = false;
   bool _busy = false;

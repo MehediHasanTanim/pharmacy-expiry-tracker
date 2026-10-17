@@ -20,3 +20,5 @@ linter:
     sort_pub_dependencies: false
     # Riverpod provider types are inferred; spelling them out adds noise.
     specify_nonobvious_property_types: false
+    # Notifier methods (state = x) read better than setters.
+    use_setters_to_change_properties: false

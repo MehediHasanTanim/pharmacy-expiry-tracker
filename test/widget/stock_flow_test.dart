@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pharmacy_expiry_tracker/core/date/expiry_date.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/enums.dart';
@@ -58,7 +57,7 @@ void main() {
     await tapKey(t, 'medicine-save');
 
     expect(find.text('Amoxil 500 mg'), findsOneWidget);
-    final saved = await env.medicines.watchAll().first;
+    final saved = await db(t, () => env.medicines.watchAll().first);
     expect(saved.single.medicine.reorderLevel, 20);
     expect(saved.single.medicine.genericName, 'Amoxicillin');
     await disposeApp(t);
@@ -73,12 +72,12 @@ void main() {
     await enter(t, 'field-pack-size', '0');
     await tapKey(t, 'medicine-save');
     expect(find.text('Enter a whole number above 0'), findsOneWidget);
-    expect(await env.medicines.watchAll().first, isEmpty);
+    expect(await db(t, () => env.medicines.watchAll().first), isEmpty);
     await disposeApp(t);
   });
 
   testWidgets('saving a duplicate medicine asks first (MED-5)', (t) async {
-    await env.medicine();
+    await db(t, () => env.medicine());
     await useTallScreen(t);
     await pumpApp(t, env);
     await tapText(t, 'Stock');
@@ -94,18 +93,18 @@ void main() {
 
     await tapText(t, 'Cancel');
     expect(find.text('Possible duplicate'), findsNothing);
-    expect(await env.medicines.watchAll().first, hasLength(1));
+    expect(await db(t, () => env.medicines.watchAll().first), hasLength(1));
 
     await tapKey(t, 'medicine-save');
     await tapText(t, 'Save anyway');
-    expect(await env.medicines.watchAll().first, hasLength(2));
+    expect(await db(t, () => env.medicines.watchAll().first), hasLength(2));
     await disposeApp(t);
   });
 
   testWidgets('archiving hides a medicine; the filter shows it again', (
     t,
   ) async {
-    final id = await env.medicine();
+    final id = await db(t, () => env.medicine());
     await useTallScreen(t);
     await pumpApp(t, env);
     await tapText(t, 'Stock');
@@ -114,8 +113,12 @@ void main() {
     await tapKey(t, 'medicine-archive');
     await tapText(t, 'Archive');
 
+    // The form closes onto the (now archived) medicine; go back to the list.
+    expect(find.text('Archived'), findsWidgets);
+    await t.pageBack();
+    await settle(t);
     expect(find.text('Amoxil 500 mg'), findsNothing);
-    expect((await env.medicines.getById(id))!.isArchived, isTrue);
+    expect((await db(t, () => env.medicines.getById(id)))!.isArchived, isTrue);
 
     await tapKey(t, 'filter-archived');
     expect(find.text('Amoxil 500 mg'), findsOneWidget);
@@ -126,7 +129,7 @@ void main() {
   testWidgets(
     'sprint demo: receive two batches, adjust stock, search by batch number',
     (t) async {
-      await env.medicine();
+      await db(t, () => env.medicine());
       await useTallScreen(t);
       await pumpApp(t, env);
       await tapText(t, 'Stock');
@@ -163,7 +166,7 @@ void main() {
       final b2y = t.getTopLeft(find.text('Batch B2')).dy;
       expect(a1y, lessThan(b2y));
 
-      final batches = await env.db.select(env.db.batches).get();
+      final batches = await db(t, () => env.db.select(env.db.batches).get());
       expect(batches.map((b) => b.batchNumber).toSet(), {'A1', 'B2'});
       expect(
         batches.singleWhere((b) => b.batchNumber == 'A1').expiryPrecision,
@@ -191,9 +194,10 @@ void main() {
 
       expect(find.text('−3 · Sold / used'), findsOneWidget);
       expect(find.textContaining('counter sale'), findsOneWidget);
-      final a1 = (await env.db.select(env.db.batches).get()).singleWhere(
-        (b) => b.batchNumber == 'A1',
-      );
+      final a1 = (await db(
+        t,
+        () => env.db.select(env.db.batches).get(),
+      )).singleWhere((b) => b.batchNumber == 'A1');
       expect(a1.quantityOnHand, 7);
 
       // Search by batch number from the Stock tab (SCN-1).
@@ -213,8 +217,8 @@ void main() {
   testWidgets('duplicate batch number offers to add to the existing batch', (
     t,
   ) async {
-    final med = await env.medicine();
-    await env.addBatch(env.batchInput(med, number: 'A1'));
+    final med = await db(t, () => env.medicine());
+    await db(t, () => env.addBatch(env.batchInput(med, number: 'A1')));
     await useTallScreen(t);
     await pumpApp(t, env);
     await tapText(t, 'Stock');
@@ -231,7 +235,7 @@ void main() {
     expect(find.byKey(const Key('duplicate-separate')), findsNothing);
     await tapKey(t, 'duplicate-merge');
 
-    final batches = await env.db.select(env.db.batches).get();
+    final batches = await db(t, () => env.db.select(env.db.batches).get());
     expect(batches, hasLength(1));
     expect(batches.single.quantityOnHand, 15);
     await disposeApp(t);
@@ -240,8 +244,8 @@ void main() {
   testWidgets('same number but different expiry can be kept separate', (
     t,
   ) async {
-    final med = await env.medicine();
-    await env.addBatch(env.batchInput(med, number: 'A1'));
+    final med = await db(t, () => env.medicine());
+    await db(t, () => env.addBatch(env.batchInput(med, number: 'A1')));
     await useTallScreen(t);
     await pumpApp(t, env);
     await tapText(t, 'Stock');
@@ -253,12 +257,15 @@ void main() {
     await enter(t, 'field-quantity', '5');
     await tapKey(t, 'batch-save');
     await tapKey(t, 'duplicate-separate');
-    expect(await env.db.select(env.db.batches).get(), hasLength(2));
+    expect(
+      await db(t, () => env.db.select(env.db.batches).get()),
+      hasLength(2),
+    );
     await disposeApp(t);
   });
 
   testWidgets('batch form validates required fields', (t) async {
-    final med = await env.medicine();
+    final med = await db(t, () => env.medicine());
     await useTallScreen(t);
     await pumpApp(t, env);
     await tapText(t, 'Stock');
@@ -268,14 +275,14 @@ void main() {
     expect(find.text('Batch number is required'), findsOneWidget);
     expect(find.text('Enter the expiry date'), findsOneWidget);
     expect(find.text('Enter a quantity above 0'), findsOneWidget);
-    expect(await env.batches.watchByMedicine(med).first, isEmpty);
+    expect(await db(t, () => env.batches.watchByMedicine(med).first), isEmpty);
     await disposeApp(t);
   });
 
   testWidgets('received date is remembered between consecutive adds', (
     t,
   ) async {
-    await env.medicine();
+    await db(t, () => env.medicine());
     await useTallScreen(t);
     await pumpApp(t, env);
     await tapText(t, 'Stock');
@@ -299,8 +306,8 @@ void main() {
   testWidgets('adjust sheet: cannot exceed stock; write-offs ask to confirm', (
     t,
   ) async {
-    final med = await env.medicine();
-    final b = await env.addBatch(env.batchInput(med, quantity: 3));
+    final med = await db(t, () => env.medicine());
+    final b = await db(t, () => env.addBatch(env.batchInput(med, quantity: 3)));
     await useTallScreen(t);
     await pumpApp(t, env);
     await tapText(t, 'Stock');
@@ -321,17 +328,20 @@ void main() {
     await tapKey(t, 'adjust-apply');
     expect(find.text('Write off stock?'), findsOneWidget);
     // Nothing is written until confirmed.
-    expect((await env.batches.getById(b.batch.id))!.quantityOnHand, 3);
+    expect(
+      (await db(t, () => env.batches.getById(b.batch.id)))!.quantityOnHand,
+      3,
+    );
     await tapKey(t, 'adjust-confirm');
 
-    final after = (await env.batches.getById(b.batch.id))!;
+    final after = (await db(t, () => env.batches.getById(b.batch.id)))!;
     expect(after.quantityOnHand, 0);
     expect(after.status, BatchStatus.discarded);
     await disposeApp(t);
   });
 
   testWidgets('recent searches are offered and can be cleared', (t) async {
-    await env.medicine();
+    await db(t, () => env.medicine());
     await useTallScreen(t);
     await pumpApp(t, env);
     await tapText(t, 'Stock');
@@ -341,7 +351,7 @@ void main() {
     await enter(t, 'stock-search', 'amox');
     await t.testTextInput.receiveAction(TextInputAction.done);
     await settle(t);
-    expect(await env.recent.load(), ['amox']);
+    expect(await db(t, () => env.recent.load()), ['amox']);
 
     // Empty + focused field shows the history.
     await enter(t, 'stock-search', '');
@@ -355,16 +365,19 @@ void main() {
     await enter(t, 'stock-search', '');
     await settle(t);
     await tapKey(t, 'clear-recent');
-    expect(await env.recent.load(), isEmpty);
+    expect(await db(t, () => env.recent.load()), isEmpty);
     await disposeApp(t);
   });
 
   testWidgets('medicine tile shows stock total and nearest expiry chip', (
     t,
   ) async {
-    final med = await env.medicine();
-    await env.addBatch(
-      env.batchInput(med, expiry: ExpiryDate.day(2026, 11, 1), quantity: 6),
+    final med = await db(t, () => env.medicine());
+    await db(
+      t,
+      () => env.addBatch(
+        env.batchInput(med, expiry: ExpiryDate.day(2026, 11, 1), quantity: 6),
+      ),
     );
     await useTallScreen(t);
     await pumpApp(t, env);
@@ -375,8 +388,8 @@ void main() {
   });
 
   testWidgets('editing a batch keeps quantity locked', (t) async {
-    final med = await env.medicine();
-    final b = await env.addBatch(env.batchInput(med, quantity: 8));
+    final med = await db(t, () => env.medicine());
+    final b = await db(t, () => env.addBatch(env.batchInput(med, quantity: 8)));
     await useTallScreen(t);
     await pumpApp(t, env);
     await tapText(t, 'Stock');
@@ -392,7 +405,7 @@ void main() {
 
     await enter(t, 'field-batch-number', 'z9');
     await tapKey(t, 'batch-save');
-    final saved = (await env.batches.getById(b.batch.id))!;
+    final saved = (await db(t, () => env.batches.getById(b.batch.id)))!;
     expect(saved.batchNumber, 'Z9');
     expect(saved.quantityOnHand, 8);
     await disposeApp(t);

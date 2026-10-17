@@ -28,12 +28,18 @@ class SettingsRepositoryImpl implements SettingsRepository {
     });
   }
 
+  // Serialises read-modify-write updates so quick successive changes cannot
+  // overwrite each other.
+  Future<void> _queue = Future<void>.value();
+
   @override
   Future<AppSettings> update(AppSettings Function(AppSettings current) change) {
-    return _db.transaction(() async {
+    final run = _queue.then((_) async {
       final next = change(await load());
       await save(next);
       return next;
     });
+    _queue = run.then<void>((_) {}, onError: (_) {});
+    return run;
   }
 }

@@ -146,6 +146,28 @@ class BatchRepositoryImpl implements BatchRepository {
   }
 
   @override
+  Future<void> setAlertState(
+    String id, {
+    required DateTime? snoozedUntil,
+    required DateTime? handledAt,
+    required DateTime at,
+  }) async {
+    final updated =
+        await (_db.update(
+          _b,
+        )..where((b) => b.id.equals(id) & b.deletedAt.isNull())).write(
+          BatchesCompanion(
+            snoozedUntil: Value(
+              snoozedUntil == null ? null : dateToIso(snoozedUntil),
+            ),
+            handledAt: Value(handledAt?.millisecondsSinceEpoch),
+            updatedAt: Value(at.millisecondsSinceEpoch),
+          ),
+        );
+    if (updated == 0) throw NotFoundException('batch', id);
+  }
+
+  @override
   Future<void> insertAdjustment(StockAdjustment adjustment) =>
       _db.into(_db.stockAdjustments).insert(adjustmentCompanion(adjustment));
 

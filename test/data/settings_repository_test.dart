@@ -27,6 +27,9 @@ void main() {
     expect(s.backupReminderDays, 14);
     expect(s.themeMode, 'system');
     expect(s.appLockEnabled, isFalse);
+    expect(s.expirySort, 'soonest');
+    expect(s.expiryCategory, isEmpty);
+    expect(s.expiryHideHandled, isFalse);
   });
 
   test('save then load round trips every field', () async {
@@ -51,6 +54,10 @@ void main() {
       themeMode: 'dark',
       appLockEnabled: true,
       hideDetailsOnLockScreen: true,
+      expirySort: 'value',
+      expiryCategory: 'Antibiotics',
+      expiryForm: 'tablet',
+      expiryHideHandled: true,
     );
     await repo.save(custom);
     expect(await repo.load(), custom);

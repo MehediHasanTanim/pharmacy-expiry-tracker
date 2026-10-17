@@ -2,7 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-enum DataChangeKind { medicineChanged, batchAdded, batchEdited, stockAdjusted }
+enum DataChangeKind {
+  medicineChanged,
+  batchAdded,
+  batchEdited,
+  stockAdjusted,
+  alertStateChanged,
+}
 
 @immutable
 class DataChange {

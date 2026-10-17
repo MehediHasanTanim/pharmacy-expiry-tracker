@@ -975,6 +975,324 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Batch {number}'**
   String batchBy(String number);
+
+  /// No description provided for @chipAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get chipAll;
+
+  /// No description provided for @chipExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get chipExpired;
+
+  /// No description provided for @chip30.
+  ///
+  /// In en, this message translates to:
+  /// **'0–30 d'**
+  String get chip30;
+
+  /// No description provided for @chip60.
+  ///
+  /// In en, this message translates to:
+  /// **'31–60 d'**
+  String get chip60;
+
+  /// No description provided for @chip90.
+  ///
+  /// In en, this message translates to:
+  /// **'61–90 d'**
+  String get chip90;
+
+  /// No description provided for @chipLater.
+  ///
+  /// In en, this message translates to:
+  /// **'91+ d'**
+  String get chipLater;
+
+  /// No description provided for @expiryEmptyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Batches close to expiry will show up here.'**
+  String get expiryEmptyHint;
+
+  /// No description provided for @expiryNoMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'No batches match these filters'**
+  String get expiryNoMatches;
+
+  /// No description provided for @expiryClearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get expiryClearFilters;
+
+  /// No description provided for @expirySearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search name or batch number'**
+  String get expirySearchHint;
+
+  /// No description provided for @expirySectionExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired · remove from shelf'**
+  String get expirySectionExpired;
+
+  /// No description provided for @expiryValueNone.
+  ///
+  /// In en, this message translates to:
+  /// **'—'**
+  String get expiryValueNone;
+
+  /// No description provided for @expiryHandled.
+  ///
+  /// In en, this message translates to:
+  /// **'Handled'**
+  String get expiryHandled;
+
+  /// No description provided for @filterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter and sort'**
+  String get filterTitle;
+
+  /// No description provided for @filterSortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get filterSortBy;
+
+  /// No description provided for @sortSoonest.
+  ///
+  /// In en, this message translates to:
+  /// **'Soonest expiry'**
+  String get sortSoonest;
+
+  /// No description provided for @sortValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest value at risk'**
+  String get sortValue;
+
+  /// No description provided for @sortName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get sortName;
+
+  /// No description provided for @filterCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get filterCategory;
+
+  /// No description provided for @filterForm.
+  ///
+  /// In en, this message translates to:
+  /// **'Form'**
+  String get filterForm;
+
+  /// No description provided for @filterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get filterAll;
+
+  /// No description provided for @filterHideHandled.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide handled batches'**
+  String get filterHideHandled;
+
+  /// No description provided for @filterReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get filterReset;
+
+  /// No description provided for @filterApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get filterApply;
+
+  /// No description provided for @actionSold.
+  ///
+  /// In en, this message translates to:
+  /// **'Sold or adjust quantity'**
+  String get actionSold;
+
+  /// No description provided for @actionDiscardAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard remaining stock'**
+  String get actionDiscardAll;
+
+  /// No description provided for @actionSnooze.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze alerts'**
+  String get actionSnooze;
+
+  /// No description provided for @actionHandled.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as handled'**
+  String get actionHandled;
+
+  /// No description provided for @actionUnhandled.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as not handled'**
+  String get actionUnhandled;
+
+  /// No description provided for @actionOpenBatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Open batch'**
+  String get actionOpenBatch;
+
+  /// No description provided for @snoozeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze alerts for this batch'**
+  String get snoozeTitle;
+
+  /// No description provided for @snooze1d.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get snooze1d;
+
+  /// No description provided for @snooze3d.
+  ///
+  /// In en, this message translates to:
+  /// **'In 3 days'**
+  String get snooze3d;
+
+  /// No description provided for @snooze1w.
+  ///
+  /// In en, this message translates to:
+  /// **'In 1 week'**
+  String get snooze1w;
+
+  /// No description provided for @snackHandled.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked as handled'**
+  String get snackHandled;
+
+  /// No description provided for @snackUnhandled.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked as not handled'**
+  String get snackUnhandled;
+
+  /// No description provided for @snackUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get snackUndo;
+
+  /// No description provided for @tooltipFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter and sort'**
+  String get tooltipFilter;
+
+  /// No description provided for @tooltipSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get tooltipSearch;
+
+  /// No description provided for @tooltipSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Select batches'**
+  String get tooltipSelect;
+
+  /// No description provided for @selectCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel selection'**
+  String get selectCancel;
+
+  /// No description provided for @discardSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard selected'**
+  String get discardSelected;
+
+  /// No description provided for @expiryValueAtRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Value at risk: {amount}'**
+  String expiryValueAtRisk(String amount);
+
+  /// No description provided for @expiryValuePartial.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 batch has no price} other{{count} batches have no price}}'**
+  String expiryValuePartial(int count);
+
+  /// No description provided for @expiryEmptyDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing expires within {days} days.'**
+  String expiryEmptyDays(int days);
+
+  /// No description provided for @snoozeNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Until the next alert ({date})'**
+  String snoozeNext(String date);
+
+  /// No description provided for @snackSnoozed.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts snoozed until {date}'**
+  String snackSnoozed(String date);
+
+  /// No description provided for @snackDiscarded.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 batch discarded} other{{count} batches discarded}}'**
+  String snackDiscarded(int count);
+
+  /// No description provided for @selectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String selectedCount(int count);
+
+  /// No description provided for @bulkDiscardBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Write off the remaining stock of 1 batch? This is recorded as a loss.} other{Write off the remaining stock of {count} batches? This is recorded as a loss.}}'**
+  String bulkDiscardBody(int count);
+
+  /// No description provided for @rowValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Value: {amount}'**
+  String rowValue(String amount);
+
+  /// No description provided for @rowSnoozed.
+  ///
+  /// In en, this message translates to:
+  /// **'Snoozed until {date}'**
+  String rowSnoozed(String date);
+
+  /// No description provided for @rowSection.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}, {count}'**
+  String rowSection(String label, int count);
 }
 
 class _AppLocalizationsDelegate

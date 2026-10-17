@@ -49,8 +49,6 @@ class LastReceivedDate extends Notifier<DateTime?> {
   @override
   DateTime? build() => null;
 
-  // A method reads better than a setter at the call site.
-  // ignore: use_setters_to_change_properties
   void remember(DateTime date) => state = date;
 }
 
