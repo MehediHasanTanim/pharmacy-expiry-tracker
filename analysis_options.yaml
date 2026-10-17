@@ -1,0 +1,20 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - lib/l10n/app_localizations*.dart
+    - '**/*.g.dart'
+    - test/generated_migrations/**
+  errors:
+    # Drift-generated code and plain-English comments trip these.
+    public_member_api_docs: ignore
+
+linter:
+  rules:
+    public_member_api_docs: false
+    lines_longer_than_80_chars: false
+    unnecessary_type_name_in_constructor: false
+    sort_pub_dependencies: false

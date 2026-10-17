@@ -1,0 +1,19 @@
+{
+  "@@locale": "en",
+  "appTitle": "Expiry Tracker",
+  "tabHome": "Home",
+  "tabStock": "Stock",
+  "tabExpiry": "Expiry",
+  "tabSuppliers": "Suppliers",
+  "tabMore": "More",
+  "emptyHome": "Your dashboard will appear here",
+  "emptyStock": "No medicines yet",
+  "emptyExpiry": "Nothing is near expiry",
+  "emptySuppliers": "No suppliers yet",
+  "emptyMore": "Settings and reports will appear here",
+  "bucketExpired": "Expired",
+  "bucketD30": "30 days or less",
+  "bucketD60": "31 to 60 days",
+  "bucketD90": "61 to 90 days",
+  "bucketOk": "More than 90 days"
+}
