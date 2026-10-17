@@ -360,68 +360,6 @@ class Medicines extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class MedicineBarcodes extends Table with TableInfo {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  MedicineBarcodes(this.attachedDatabase, [this._alias]);
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
-    'id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints: 'NOT NULL',
-  );
-  late final GeneratedColumn<String> medicineId = GeneratedColumn<String>(
-    'medicine_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints: 'NOT NULL REFERENCES medicines(id)',
-  );
-  late final GeneratedColumn<String> value = GeneratedColumn<String>(
-    'value',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints: 'NOT NULL UNIQUE',
-  );
-  late final GeneratedColumn<String> symbology = GeneratedColumn<String>(
-    'symbology',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    $customConstraints: 'NULL',
-  );
-  @override
-  List<GeneratedColumn> get $columns => [id, medicineId, value, symbology];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'medicine_barcodes';
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
-    throw UnsupportedError('TableInfo.map in schema verification code');
-  }
-
-  @override
-  MedicineBarcodes createAlias(String alias) {
-    return MedicineBarcodes(attachedDatabase, alias);
-  }
-
-  @override
-  List<String> get customConstraints => const ['PRIMARY KEY(id)'];
-  @override
-  bool get dontWriteConstraints => true;
-}
-
 class SupplierInvoices extends Table with TableInfo {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -942,6 +880,82 @@ class StockAdjustments extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
+class SupplierReturnLines extends Table with TableInfo {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  SupplierReturnLines(this.attachedDatabase, [this._alias]);
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> returnId = GeneratedColumn<String>(
+    'return_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES supplier_returns(id)',
+  );
+  late final GeneratedColumn<String> batchId = GeneratedColumn<String>(
+    'batch_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES batches(id)',
+  );
+  late final GeneratedColumn<int> quantity = GeneratedColumn<int>(
+    'quantity',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<int> valueMinor = GeneratedColumn<int>(
+    'value_minor',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    returnId,
+    batchId,
+    quantity,
+    valueMinor,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'supplier_return_lines';
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Never map(Map<String, dynamic> data, {String? tablePrefix}) {
+    throw UnsupportedError('TableInfo.map in schema verification code');
+  }
+
+  @override
+  SupplierReturnLines createAlias(String alias) {
+    return SupplierReturnLines(attachedDatabase, alias);
+  }
+
+  @override
+  List<String> get customConstraints => const ['PRIMARY KEY(id)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
 class SupplierPayments extends Table with TableInfo {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -1166,11 +1180,11 @@ class SupplierCredits extends Table with TableInfo {
   bool get dontWriteConstraints => true;
 }
 
-class SupplierReturnLines extends Table with TableInfo {
+class MedicineBarcodes extends Table with TableInfo {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  SupplierReturnLines(this.attachedDatabase, [this._alias]);
+  MedicineBarcodes(this.attachedDatabase, [this._alias]);
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
     'id',
     aliasedName,
@@ -1179,51 +1193,37 @@ class SupplierReturnLines extends Table with TableInfo {
     requiredDuringInsert: true,
     $customConstraints: 'NOT NULL',
   );
-  late final GeneratedColumn<String> returnId = GeneratedColumn<String>(
-    'return_id',
+  late final GeneratedColumn<String> medicineId = GeneratedColumn<String>(
+    'medicine_id',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
-    $customConstraints: 'NOT NULL REFERENCES supplier_returns(id)',
+    $customConstraints: 'NOT NULL REFERENCES medicines(id)',
   );
-  late final GeneratedColumn<String> batchId = GeneratedColumn<String>(
-    'batch_id',
+  late final GeneratedColumn<String> value = GeneratedColumn<String>(
+    'value',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
-    $customConstraints: 'NOT NULL REFERENCES batches(id)',
+    $customConstraints: 'NOT NULL UNIQUE',
   );
-  late final GeneratedColumn<int> quantity = GeneratedColumn<int>(
-    'quantity',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-    $customConstraints: 'NOT NULL',
-  );
-  late final GeneratedColumn<int> valueMinor = GeneratedColumn<int>(
-    'value_minor',
+  late final GeneratedColumn<String> symbology = GeneratedColumn<String>(
+    'symbology',
     aliasedName,
     true,
-    type: DriftSqlType.int,
+    type: DriftSqlType.string,
     requiredDuringInsert: false,
     $customConstraints: 'NULL',
   );
   @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    returnId,
-    batchId,
-    quantity,
-    valueMinor,
-  ];
+  List<GeneratedColumn> get $columns => [id, medicineId, value, symbology];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'supplier_return_lines';
+  static const String $name = 'medicine_barcodes';
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
@@ -1232,8 +1232,8 @@ class SupplierReturnLines extends Table with TableInfo {
   }
 
   @override
-  SupplierReturnLines createAlias(String alias) {
-    return SupplierReturnLines(attachedDatabase, alias);
+  MedicineBarcodes createAlias(String alias) {
+    return MedicineBarcodes(attachedDatabase, alias);
   }
 
   @override
@@ -1641,30 +1641,16 @@ class DatabaseAtV1 extends GeneratedDatabase {
   DatabaseAtV1(QueryExecutor e) : super(e);
   late final Suppliers suppliers = Suppliers(this);
   late final Medicines medicines = Medicines(this);
-  late final MedicineBarcodes medicineBarcodes = MedicineBarcodes(this);
   late final SupplierInvoices supplierInvoices = SupplierInvoices(this);
   late final Batches batches = Batches(this);
-  late final SupplierReturns supplierReturns = SupplierReturns(this);
-  late final StockAdjustments stockAdjustments = StockAdjustments(this);
-  late final SupplierPayments supplierPayments = SupplierPayments(this);
-  late final SupplierCredits supplierCredits = SupplierCredits(this);
-  late final SupplierReturnLines supplierReturnLines = SupplierReturnLines(
-    this,
-  );
-  late final ReorderOrders reorderOrders = ReorderOrders(this);
-  late final ReorderReminderState reorderReminderState = ReorderReminderState(
-    this,
-  );
-  late final ScheduledAlerts scheduledAlerts = ScheduledAlerts(this);
-  late final AlertLog alertLog = AlertLog(this);
-  late final Settings settings = Settings(this);
-  late final Index idxMedSearch = Index(
-    'idx_med_search',
-    'CREATE INDEX idx_med_search ON medicines (search_text)',
-  );
   late final Index idxBatchExpiry = Index(
     'idx_batch_expiry',
-    'CREATE INDEX idx_batch_expiry ON batches (expiry_date)',
+    'CREATE INDEX idx_batch_expiry ON batches (expiry_date) WHERE quantity_on_hand > 0',
+  );
+  late final SupplierReturns supplierReturns = SupplierReturns(this);
+  late final StockAdjustments stockAdjustments = StockAdjustments(this);
+  late final SupplierReturnLines supplierReturnLines = SupplierReturnLines(
+    this,
   );
   late final Index idxBatchMed = Index(
     'idx_batch_med',
@@ -1674,10 +1660,24 @@ class DatabaseAtV1 extends GeneratedDatabase {
     'idx_batch_supplier',
     'CREATE INDEX idx_batch_supplier ON batches (supplier_id)',
   );
+  late final SupplierPayments supplierPayments = SupplierPayments(this);
+  late final SupplierCredits supplierCredits = SupplierCredits(this);
   late final Index idxInvDue = Index(
     'idx_inv_due',
     'CREATE INDEX idx_inv_due ON supplier_invoices (due_date)',
   );
+  late final MedicineBarcodes medicineBarcodes = MedicineBarcodes(this);
+  late final Index idxMedSearch = Index(
+    'idx_med_search',
+    'CREATE INDEX idx_med_search ON medicines (search_text)',
+  );
+  late final ReorderOrders reorderOrders = ReorderOrders(this);
+  late final ReorderReminderState reorderReminderState = ReorderReminderState(
+    this,
+  );
+  late final ScheduledAlerts scheduledAlerts = ScheduledAlerts(this);
+  late final AlertLog alertLog = AlertLog(this);
+  late final Settings settings = Settings(this);
   late final Index idxAlertFire = Index(
     'idx_alert_fire',
     'CREATE INDEX idx_alert_fire ON scheduled_alerts (fire_at)',
@@ -1689,24 +1689,24 @@ class DatabaseAtV1 extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     suppliers,
     medicines,
-    medicineBarcodes,
     supplierInvoices,
     batches,
+    idxBatchExpiry,
     supplierReturns,
     stockAdjustments,
+    supplierReturnLines,
+    idxBatchMed,
+    idxBatchSupplier,
     supplierPayments,
     supplierCredits,
-    supplierReturnLines,
+    idxInvDue,
+    medicineBarcodes,
+    idxMedSearch,
     reorderOrders,
     reorderReminderState,
     scheduledAlerts,
     alertLog,
     settings,
-    idxMedSearch,
-    idxBatchExpiry,
-    idxBatchMed,
-    idxBatchSupplier,
-    idxInvDue,
     idxAlertFire,
   ];
   @override

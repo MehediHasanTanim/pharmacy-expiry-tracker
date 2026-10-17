@@ -114,4 +114,23 @@ void main() {
       ]),
     );
   });
+
+  test('idx_batch_expiry is partial and used for in-stock lookups', () async {
+    final def = await db
+        .customSelect(
+          "SELECT sql FROM sqlite_master WHERE name = 'idx_batch_expiry'",
+        )
+        .getSingle();
+    expect(def.read<String>('sql'), contains('WHERE quantity_on_hand > 0'));
+
+    final plan = await db
+        .customSelect(
+          'EXPLAIN QUERY PLAN SELECT id FROM batches '
+          "WHERE quantity_on_hand > 0 AND expiry_date <= '2027-01-01' "
+          'ORDER BY expiry_date',
+        )
+        .get();
+    final detail = plan.map((r) => r.read<String>('detail')).join(' ');
+    expect(detail, contains('idx_batch_expiry'));
+  });
 }

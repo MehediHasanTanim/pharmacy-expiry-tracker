@@ -1,0 +1,5 @@
+import 'tables/stock.dart';
+
+-- Partial index: the near-expiry query only ever looks at batches that still
+-- hold stock, so depleted/discarded rows are kept out of the index.
+CREATE INDEX idx_batch_expiry ON batches (expiry_date) WHERE quantity_on_hand > 0;

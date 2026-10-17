@@ -2,11 +2,11 @@ import 'package:drift/drift.dart';
 import 'package:pharmacy_expiry_tracker/data/db/tables/catalog.dart';
 import 'package:pharmacy_expiry_tracker/data/db/tables/suppliers.dart';
 
-// The partial index from the technical design (`WHERE quantity_on_hand > 0`)
-// is not expressible with @TableIndex; a plain index is used instead.
-@TableIndex(name: 'idx_batch_expiry', columns: {#expiryDate})
+// `idx_batch_expiry` is a partial index (`WHERE quantity_on_hand > 0`), which
+// @TableIndex cannot express; it lives in `indexes.drift`.
 @TableIndex(name: 'idx_batch_med', columns: {#medicineId})
 @TableIndex(name: 'idx_batch_supplier', columns: {#supplierId})
+@DataClassName('BatchRow')
 class Batches extends Table {
   TextColumn get id => text()();
   TextColumn get medicineId => text().references(Medicines, #id)();
@@ -44,6 +44,7 @@ class Batches extends Table {
   ];
 }
 
+@DataClassName('StockAdjustmentRow')
 class StockAdjustments extends Table {
   TextColumn get id => text()();
   TextColumn get batchId => text().references(Batches, #id)();

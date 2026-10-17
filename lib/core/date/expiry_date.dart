@@ -34,6 +34,13 @@ class ExpiryDate implements Comparable<ExpiryDate> {
     return ExpiryDate._(_validated(y, m, d), precision);
   }
 
+  /// Like [ExpiryDate.day] but returns null for an impossible date.
+  static ExpiryDate? tryDay(int year, int month, int day) {
+    final d = DateTime(year, month, day);
+    if (d.year != year || d.month != month || d.day != day) return null;
+    return ExpiryDate._(d, ExpiryPrecision.day);
+  }
+
   /// Local calendar date (no time component).
   final DateTime date;
   final ExpiryPrecision precision;

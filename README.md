@@ -18,15 +18,20 @@ flutter gen-l10n                # localizations
 
 ## Run
 
-Android has `dev` and `prod` flavors (`dev` installs side by side as
-`com.pharmacytracker.pharmacy_expiry_tracker.dev`).
+Android and iOS both have `dev` and `prod` flavors. `dev` installs side by
+side with `prod` (Android id `com.pharmacytracker.pharmacy_expiry_tracker.dev`,
+iOS `com.pharmacytracker.pharmacyExpiryTracker.dev`) and is labelled
+"Expiry Tracker Dev".
 
 ```bash
 flutter run --flavor dev
 ```
 
-Flavor is available in code as `appFlavor` (`package:flutter/services.dart`).
-iOS flavor schemes are not set up yet; use the default `Runner` scheme.
+The flavor is available in code as `appFlavor`
+(`package:flutter/services.dart`). There is no default scheme: always pass
+`--flavor`. On iOS the flavors are the `dev` / `prod` schemes with build
+configurations `Debug-dev`, `Release-prod`, etc. (Podfile and
+`ios/Flutter/*-<flavor>.xcconfig` follow that naming).
 
 ## Checks
 

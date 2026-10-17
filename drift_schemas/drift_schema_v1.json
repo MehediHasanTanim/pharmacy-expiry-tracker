@@ -390,87 +390,6 @@
     {
       "id": 2,
       "references": [
-        1
-      ],
-      "type": "table",
-      "data": {
-        "name": "medicine_barcodes",
-        "was_declared_in_moor": false,
-        "columns": [
-          {
-            "name": "id",
-            "getter_name": "id",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "medicine_id",
-            "getter_name": "medicineId",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "defaultConstraints": "REFERENCES medicines (id)",
-            "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES medicines (id)"
-            },
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [
-              {
-                "foreign_key": {
-                  "to": {
-                    "table": "medicines",
-                    "column": "id"
-                  },
-                  "initially_deferred": false,
-                  "on_update": null,
-                  "on_delete": null
-                }
-              }
-            ]
-          },
-          {
-            "name": "value",
-            "getter_name": "value",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "defaultConstraints": "UNIQUE",
-            "dialectAwareDefaultConstraints": {
-              "sqlite": "UNIQUE"
-            },
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [
-              "unique"
-            ]
-          },
-          {
-            "name": "symbology",
-            "getter_name": "symbology",
-            "moor_type": "string",
-            "nullable": true,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          }
-        ],
-        "is_virtual": false,
-        "without_rowid": false,
-        "constraints": [],
-        "explicit_pk": [
-          "id"
-        ]
-      }
-    },
-    {
-      "id": 3,
-      "references": [
         0
       ],
       "type": "table",
@@ -614,11 +533,11 @@
       }
     },
     {
-      "id": 4,
+      "id": 3,
       "references": [
         1,
         0,
-        3
+        2
       ],
       "type": "table",
       "data": {
@@ -880,6 +799,20 @@
       }
     },
     {
+      "id": 4,
+      "references": [
+        3
+      ],
+      "type": "index",
+      "data": {
+        "on": 3,
+        "name": "idx_batch_expiry",
+        "sql": "CREATE INDEX idx_batch_expiry ON batches (expiry_date) WHERE quantity_on_hand > 0;",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
       "id": 5,
       "references": [
         0
@@ -967,7 +900,7 @@
     {
       "id": 6,
       "references": [
-        4,
+        3,
         5
       ],
       "type": "table",
@@ -1099,8 +1032,148 @@
     {
       "id": 7,
       "references": [
-        0,
+        5,
         3
+      ],
+      "type": "table",
+      "data": {
+        "name": "supplier_return_lines",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "return_id",
+            "getter_name": "returnId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES supplier_returns (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES supplier_returns (id)"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "supplier_returns",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "batch_id",
+            "getter_name": "batchId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES batches (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES batches (id)"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "batches",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "quantity",
+            "getter_name": "quantity",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "value_minor",
+            "getter_name": "valueMinor",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "references": [
+        3
+      ],
+      "type": "index",
+      "data": {
+        "on": 3,
+        "name": "idx_batch_med",
+        "sql": null,
+        "unique": false,
+        "columns": [
+          {
+            "column": "medicine_id",
+            "order_by": null
+          }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "references": [
+        3
+      ],
+      "type": "index",
+      "data": {
+        "on": 3,
+        "name": "idx_batch_supplier",
+        "sql": null,
+        "unique": false,
+        "columns": [
+          {
+            "column": "supplier_id",
+            "order_by": null
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "references": [
+        0,
+        2
       ],
       "type": "table",
       "data": {
@@ -1239,10 +1312,10 @@
       }
     },
     {
-      "id": 8,
+      "id": 11,
       "references": [
         0,
-        3,
+        2,
         5
       ],
       "type": "table",
@@ -1398,14 +1471,32 @@
       }
     },
     {
-      "id": 9,
+      "id": 12,
       "references": [
-        5,
-        4
+        2
+      ],
+      "type": "index",
+      "data": {
+        "on": 2,
+        "name": "idx_inv_due",
+        "sql": null,
+        "unique": false,
+        "columns": [
+          {
+            "column": "due_date",
+            "order_by": null
+          }
+        ]
+      }
+    },
+    {
+      "id": 13,
+      "references": [
+        1
       ],
       "type": "table",
       "data": {
-        "name": "supplier_return_lines",
+        "name": "medicine_barcodes",
         "was_declared_in_moor": false,
         "columns": [
           {
@@ -1419,14 +1510,14 @@
             "dsl_features": []
           },
           {
-            "name": "return_id",
-            "getter_name": "returnId",
+            "name": "medicine_id",
+            "getter_name": "medicineId",
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
-            "defaultConstraints": "REFERENCES supplier_returns (id)",
+            "defaultConstraints": "REFERENCES medicines (id)",
             "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES supplier_returns (id)"
+              "sqlite": "REFERENCES medicines (id)"
             },
             "default_dart": null,
             "default_client_dart": null,
@@ -1434,7 +1525,7 @@
               {
                 "foreign_key": {
                   "to": {
-                    "table": "supplier_returns",
+                    "table": "medicines",
                     "column": "id"
                   },
                   "initially_deferred": false,
@@ -1445,45 +1536,25 @@
             ]
           },
           {
-            "name": "batch_id",
-            "getter_name": "batchId",
+            "name": "value",
+            "getter_name": "value",
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
-            "defaultConstraints": "REFERENCES batches (id)",
+            "defaultConstraints": "UNIQUE",
             "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES batches (id)"
+              "sqlite": "UNIQUE"
             },
             "default_dart": null,
             "default_client_dart": null,
             "dsl_features": [
-              {
-                "foreign_key": {
-                  "to": {
-                    "table": "batches",
-                    "column": "id"
-                  },
-                  "initially_deferred": false,
-                  "on_update": null,
-                  "on_delete": null
-                }
-              }
+              "unique"
             ]
           },
           {
-            "name": "quantity",
-            "getter_name": "quantity",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "value_minor",
-            "getter_name": "valueMinor",
-            "moor_type": "int",
+            "name": "symbology",
+            "getter_name": "symbology",
+            "moor_type": "string",
             "nullable": true,
             "customConstraints": null,
             "default_dart": null,
@@ -1500,7 +1571,26 @@
       }
     },
     {
-      "id": 10,
+      "id": 14,
+      "references": [
+        1
+      ],
+      "type": "index",
+      "data": {
+        "on": 1,
+        "name": "idx_med_search",
+        "sql": null,
+        "unique": false,
+        "columns": [
+          {
+            "column": "search_text",
+            "order_by": null
+          }
+        ]
+      }
+    },
+    {
+      "id": 15,
       "references": [
         1,
         0
@@ -1632,7 +1722,7 @@
       }
     },
     {
-      "id": 11,
+      "id": 16,
       "references": [
         1
       ],
@@ -1697,7 +1787,7 @@
       }
     },
     {
-      "id": 12,
+      "id": 17,
       "references": [],
       "type": "table",
       "data": {
@@ -1790,7 +1880,7 @@
       }
     },
     {
-      "id": 13,
+      "id": 18,
       "references": [],
       "type": "table",
       "data": {
@@ -1877,7 +1967,7 @@
       }
     },
     {
-      "id": 14,
+      "id": 19,
       "references": [],
       "type": "table",
       "data": {
@@ -1914,108 +2004,13 @@
       }
     },
     {
-      "id": 15,
-      "references": [
-        1
-      ],
-      "type": "index",
-      "data": {
-        "on": 1,
-        "name": "idx_med_search",
-        "sql": null,
-        "unique": false,
-        "columns": [
-          {
-            "column": "search_text",
-            "order_by": null
-          }
-        ]
-      }
-    },
-    {
-      "id": 16,
-      "references": [
-        4
-      ],
-      "type": "index",
-      "data": {
-        "on": 4,
-        "name": "idx_batch_expiry",
-        "sql": null,
-        "unique": false,
-        "columns": [
-          {
-            "column": "expiry_date",
-            "order_by": null
-          }
-        ]
-      }
-    },
-    {
-      "id": 17,
-      "references": [
-        4
-      ],
-      "type": "index",
-      "data": {
-        "on": 4,
-        "name": "idx_batch_med",
-        "sql": null,
-        "unique": false,
-        "columns": [
-          {
-            "column": "medicine_id",
-            "order_by": null
-          }
-        ]
-      }
-    },
-    {
-      "id": 18,
-      "references": [
-        4
-      ],
-      "type": "index",
-      "data": {
-        "on": 4,
-        "name": "idx_batch_supplier",
-        "sql": null,
-        "unique": false,
-        "columns": [
-          {
-            "column": "supplier_id",
-            "order_by": null
-          }
-        ]
-      }
-    },
-    {
-      "id": 19,
-      "references": [
-        3
-      ],
-      "type": "index",
-      "data": {
-        "on": 3,
-        "name": "idx_inv_due",
-        "sql": null,
-        "unique": false,
-        "columns": [
-          {
-            "column": "due_date",
-            "order_by": null
-          }
-        ]
-      }
-    },
-    {
       "id": 20,
       "references": [
-        12
+        17
       ],
       "type": "index",
       "data": {
-        "on": 12,
+        "on": 17,
         "name": "idx_alert_fire",
         "sql": null,
         "unique": false,
@@ -2048,15 +2043,6 @@
       ]
     },
     {
-      "name": "medicine_barcodes",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"medicine_barcodes\" (\"id\" TEXT NOT NULL, \"medicine_id\" TEXT NOT NULL REFERENCES medicines (id), \"value\" TEXT NOT NULL UNIQUE, \"symbology\" TEXT NULL, PRIMARY KEY (\"id\"));"
-        }
-      ]
-    },
-    {
       "name": "supplier_invoices",
       "sql": [
         {
@@ -2071,6 +2057,15 @@
         {
           "dialect": "sqlite",
           "sql": "CREATE TABLE IF NOT EXISTS \"batches\" (\"id\" TEXT NOT NULL, \"medicine_id\" TEXT NOT NULL REFERENCES medicines (id), \"batch_number\" TEXT NOT NULL, \"expiry_date\" TEXT NOT NULL, \"expiry_precision\" TEXT NOT NULL, \"quantity_received\" INTEGER NOT NULL, \"quantity_on_hand\" INTEGER NOT NULL, \"cost_price_minor\" INTEGER NULL, \"selling_price_minor\" INTEGER NULL, \"received_date\" TEXT NOT NULL, \"supplier_id\" TEXT NULL REFERENCES suppliers (id), \"invoice_id\" TEXT NULL REFERENCES supplier_invoices (id), \"status\" TEXT NOT NULL DEFAULT 'ACTIVE', \"snoozed_until\" TEXT NULL, \"handled_at\" INTEGER NULL, \"notes\" TEXT NULL, \"created_at\" INTEGER NOT NULL, \"updated_at\" INTEGER NOT NULL, \"deleted_at\" INTEGER NULL, PRIMARY KEY (\"id\"), UNIQUE (\"medicine_id\", \"batch_number\", \"expiry_date\"));"
+        }
+      ]
+    },
+    {
+      "name": "idx_batch_expiry",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX idx_batch_expiry ON batches (expiry_date) WHERE quantity_on_hand > 0"
         }
       ]
     },
@@ -2093,6 +2088,33 @@
       ]
     },
     {
+      "name": "supplier_return_lines",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"supplier_return_lines\" (\"id\" TEXT NOT NULL, \"return_id\" TEXT NOT NULL REFERENCES supplier_returns (id), \"batch_id\" TEXT NOT NULL REFERENCES batches (id), \"quantity\" INTEGER NOT NULL, \"value_minor\" INTEGER NULL, PRIMARY KEY (\"id\"));"
+        }
+      ]
+    },
+    {
+      "name": "idx_batch_med",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX idx_batch_med ON batches (medicine_id)"
+        }
+      ]
+    },
+    {
+      "name": "idx_batch_supplier",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX idx_batch_supplier ON batches (supplier_id)"
+        }
+      ]
+    },
+    {
       "name": "supplier_payments",
       "sql": [
         {
@@ -2111,11 +2133,29 @@
       ]
     },
     {
-      "name": "supplier_return_lines",
+      "name": "idx_inv_due",
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"supplier_return_lines\" (\"id\" TEXT NOT NULL, \"return_id\" TEXT NOT NULL REFERENCES supplier_returns (id), \"batch_id\" TEXT NOT NULL REFERENCES batches (id), \"quantity\" INTEGER NOT NULL, \"value_minor\" INTEGER NULL, PRIMARY KEY (\"id\"));"
+          "sql": "CREATE INDEX idx_inv_due ON supplier_invoices (due_date)"
+        }
+      ]
+    },
+    {
+      "name": "medicine_barcodes",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"medicine_barcodes\" (\"id\" TEXT NOT NULL, \"medicine_id\" TEXT NOT NULL REFERENCES medicines (id), \"value\" TEXT NOT NULL UNIQUE, \"symbology\" TEXT NULL, PRIMARY KEY (\"id\"));"
+        }
+      ]
+    },
+    {
+      "name": "idx_med_search",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX idx_med_search ON medicines (search_text)"
         }
       ]
     },
@@ -2161,51 +2201,6 @@
         {
           "dialect": "sqlite",
           "sql": "CREATE TABLE IF NOT EXISTS \"settings\" (\"key\" TEXT NOT NULL, \"value\" TEXT NOT NULL, PRIMARY KEY (\"key\"));"
-        }
-      ]
-    },
-    {
-      "name": "idx_med_search",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE INDEX idx_med_search ON medicines (search_text)"
-        }
-      ]
-    },
-    {
-      "name": "idx_batch_expiry",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE INDEX idx_batch_expiry ON batches (expiry_date)"
-        }
-      ]
-    },
-    {
-      "name": "idx_batch_med",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE INDEX idx_batch_med ON batches (medicine_id)"
-        }
-      ]
-    },
-    {
-      "name": "idx_batch_supplier",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE INDEX idx_batch_supplier ON batches (supplier_id)"
-        }
-      ]
-    },
-    {
-      "name": "idx_inv_due",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE INDEX idx_inv_due ON supplier_invoices (due_date)"
         }
       ]
     },

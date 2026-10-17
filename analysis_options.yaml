@@ -18,3 +18,5 @@ linter:
     lines_longer_than_80_chars: false
     unnecessary_type_name_in_constructor: false
     sort_pub_dependencies: false
+    # Riverpod provider types are inferred; spelling them out adds noise.
+    specify_nonobvious_property_types: false

@@ -771,7 +771,7 @@ class SuppliersCompanion extends UpdateCompanion<Supplier> {
 }
 
 class $MedicinesTable extends Medicines
-    with TableInfo<$MedicinesTable, Medicine> {
+    with TableInfo<$MedicinesTable, MedicineRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -1018,7 +1018,7 @@ class $MedicinesTable extends Medicines
   static const String $name = 'medicines';
   @override
   VerificationContext validateIntegrity(
-    Insertable<Medicine> instance, {
+    Insertable<MedicineRow> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -1168,9 +1168,9 @@ class $MedicinesTable extends Medicines
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Medicine map(Map<String, dynamic> data, {String? tablePrefix}) {
+  MedicineRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Medicine(
+    return MedicineRow(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -1256,7 +1256,7 @@ class $MedicinesTable extends Medicines
   }
 }
 
-class Medicine extends DataClass implements Insertable<Medicine> {
+class MedicineRow extends DataClass implements Insertable<MedicineRow> {
   final String id;
   final String brandName;
   final String? genericName;
@@ -1280,7 +1280,7 @@ class Medicine extends DataClass implements Insertable<Medicine> {
   final int createdAt;
   final int updatedAt;
   final int? deletedAt;
-  const Medicine({
+  const MedicineRow({
     required this.id,
     required this.brandName,
     this.genericName,
@@ -1390,12 +1390,12 @@ class Medicine extends DataClass implements Insertable<Medicine> {
     );
   }
 
-  factory Medicine.fromJson(
+  factory MedicineRow.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Medicine(
+    return MedicineRow(
       id: serializer.fromJson<String>(json['id']),
       brandName: serializer.fromJson<String>(json['brandName']),
       genericName: serializer.fromJson<String?>(json['genericName']),
@@ -1445,7 +1445,7 @@ class Medicine extends DataClass implements Insertable<Medicine> {
     };
   }
 
-  Medicine copyWith({
+  MedicineRow copyWith({
     String? id,
     String? brandName,
     Value<String?> genericName = const Value.absent(),
@@ -1465,7 +1465,7 @@ class Medicine extends DataClass implements Insertable<Medicine> {
     int? createdAt,
     int? updatedAt,
     Value<int?> deletedAt = const Value.absent(),
-  }) => Medicine(
+  }) => MedicineRow(
     id: id ?? this.id,
     brandName: brandName ?? this.brandName,
     genericName: genericName.present ? genericName.value : this.genericName,
@@ -1492,8 +1492,8 @@ class Medicine extends DataClass implements Insertable<Medicine> {
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
   );
-  Medicine copyWithCompanion(MedicinesCompanion data) {
-    return Medicine(
+  MedicineRow copyWithCompanion(MedicinesCompanion data) {
+    return MedicineRow(
       id: data.id.present ? data.id.value : this.id,
       brandName: data.brandName.present ? data.brandName.value : this.brandName,
       genericName: data.genericName.present
@@ -1536,7 +1536,7 @@ class Medicine extends DataClass implements Insertable<Medicine> {
 
   @override
   String toString() {
-    return (StringBuffer('Medicine(')
+    return (StringBuffer('MedicineRow(')
           ..write('id: $id, ')
           ..write('brandName: $brandName, ')
           ..write('genericName: $genericName, ')
@@ -1585,7 +1585,7 @@ class Medicine extends DataClass implements Insertable<Medicine> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Medicine &&
+      (other is MedicineRow &&
           other.id == this.id &&
           other.brandName == this.brandName &&
           other.genericName == this.genericName &&
@@ -1607,7 +1607,7 @@ class Medicine extends DataClass implements Insertable<Medicine> {
           other.deletedAt == this.deletedAt);
 }
 
-class MedicinesCompanion extends UpdateCompanion<Medicine> {
+class MedicinesCompanion extends UpdateCompanion<MedicineRow> {
   final Value<String> id;
   final Value<String> brandName;
   final Value<String?> genericName;
@@ -1676,7 +1676,7 @@ class MedicinesCompanion extends UpdateCompanion<Medicine> {
        searchText = Value(searchText),
        createdAt = Value(createdAt),
        updatedAt = Value(updatedAt);
-  static Insertable<Medicine> custom({
+  static Insertable<MedicineRow> custom({
     Expression<String>? id,
     Expression<String>? brandName,
     Expression<String>? genericName,
@@ -1859,321 +1859,6 @@ class MedicinesCompanion extends UpdateCompanion<Medicine> {
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
-          ..write('rowid: $rowid')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $MedicineBarcodesTable extends MedicineBarcodes
-    with TableInfo<$MedicineBarcodesTable, MedicineBarcode> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $MedicineBarcodesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
-    'id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _medicineIdMeta = const VerificationMeta(
-    'medicineId',
-  );
-  @override
-  late final GeneratedColumn<String> medicineId = GeneratedColumn<String>(
-    'medicine_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES medicines (id)',
-    ),
-  );
-  static const VerificationMeta _valueMeta = const VerificationMeta('value');
-  @override
-  late final GeneratedColumn<String> value = GeneratedColumn<String>(
-    'value',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
-  );
-  static const VerificationMeta _symbologyMeta = const VerificationMeta(
-    'symbology',
-  );
-  @override
-  late final GeneratedColumn<String> symbology = GeneratedColumn<String>(
-    'symbology',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  @override
-  List<GeneratedColumn> get $columns => [id, medicineId, value, symbology];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'medicine_barcodes';
-  @override
-  VerificationContext validateIntegrity(
-    Insertable<MedicineBarcode> instance, {
-    bool isInserting = false,
-  }) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
-    }
-    if (data.containsKey('medicine_id')) {
-      context.handle(
-        _medicineIdMeta,
-        medicineId.isAcceptableOrUnknown(data['medicine_id']!, _medicineIdMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_medicineIdMeta);
-    }
-    if (data.containsKey('value')) {
-      context.handle(
-        _valueMeta,
-        value.isAcceptableOrUnknown(data['value']!, _valueMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_valueMeta);
-    }
-    if (data.containsKey('symbology')) {
-      context.handle(
-        _symbologyMeta,
-        symbology.isAcceptableOrUnknown(data['symbology']!, _symbologyMeta),
-      );
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  MedicineBarcode map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return MedicineBarcode(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}id'],
-      )!,
-      medicineId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}medicine_id'],
-      )!,
-      value: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}value'],
-      )!,
-      symbology: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}symbology'],
-      ),
-    );
-  }
-
-  @override
-  $MedicineBarcodesTable createAlias(String alias) {
-    return $MedicineBarcodesTable(attachedDatabase, alias);
-  }
-}
-
-class MedicineBarcode extends DataClass implements Insertable<MedicineBarcode> {
-  final String id;
-  final String medicineId;
-  final String value;
-  final String? symbology;
-  const MedicineBarcode({
-    required this.id,
-    required this.medicineId,
-    required this.value,
-    this.symbology,
-  });
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<String>(id);
-    map['medicine_id'] = Variable<String>(medicineId);
-    map['value'] = Variable<String>(value);
-    if (!nullToAbsent || symbology != null) {
-      map['symbology'] = Variable<String>(symbology);
-    }
-    return map;
-  }
-
-  MedicineBarcodesCompanion toCompanion(bool nullToAbsent) {
-    return MedicineBarcodesCompanion(
-      id: Value(id),
-      medicineId: Value(medicineId),
-      value: Value(value),
-      symbology: symbology == null && nullToAbsent
-          ? const Value.absent()
-          : Value(symbology),
-    );
-  }
-
-  factory MedicineBarcode.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return MedicineBarcode(
-      id: serializer.fromJson<String>(json['id']),
-      medicineId: serializer.fromJson<String>(json['medicineId']),
-      value: serializer.fromJson<String>(json['value']),
-      symbology: serializer.fromJson<String?>(json['symbology']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<String>(id),
-      'medicineId': serializer.toJson<String>(medicineId),
-      'value': serializer.toJson<String>(value),
-      'symbology': serializer.toJson<String?>(symbology),
-    };
-  }
-
-  MedicineBarcode copyWith({
-    String? id,
-    String? medicineId,
-    String? value,
-    Value<String?> symbology = const Value.absent(),
-  }) => MedicineBarcode(
-    id: id ?? this.id,
-    medicineId: medicineId ?? this.medicineId,
-    value: value ?? this.value,
-    symbology: symbology.present ? symbology.value : this.symbology,
-  );
-  MedicineBarcode copyWithCompanion(MedicineBarcodesCompanion data) {
-    return MedicineBarcode(
-      id: data.id.present ? data.id.value : this.id,
-      medicineId: data.medicineId.present
-          ? data.medicineId.value
-          : this.medicineId,
-      value: data.value.present ? data.value.value : this.value,
-      symbology: data.symbology.present ? data.symbology.value : this.symbology,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('MedicineBarcode(')
-          ..write('id: $id, ')
-          ..write('medicineId: $medicineId, ')
-          ..write('value: $value, ')
-          ..write('symbology: $symbology')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, medicineId, value, symbology);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is MedicineBarcode &&
-          other.id == this.id &&
-          other.medicineId == this.medicineId &&
-          other.value == this.value &&
-          other.symbology == this.symbology);
-}
-
-class MedicineBarcodesCompanion extends UpdateCompanion<MedicineBarcode> {
-  final Value<String> id;
-  final Value<String> medicineId;
-  final Value<String> value;
-  final Value<String?> symbology;
-  final Value<int> rowid;
-  const MedicineBarcodesCompanion({
-    this.id = const Value.absent(),
-    this.medicineId = const Value.absent(),
-    this.value = const Value.absent(),
-    this.symbology = const Value.absent(),
-    this.rowid = const Value.absent(),
-  });
-  MedicineBarcodesCompanion.insert({
-    required String id,
-    required String medicineId,
-    required String value,
-    this.symbology = const Value.absent(),
-    this.rowid = const Value.absent(),
-  }) : id = Value(id),
-       medicineId = Value(medicineId),
-       value = Value(value);
-  static Insertable<MedicineBarcode> custom({
-    Expression<String>? id,
-    Expression<String>? medicineId,
-    Expression<String>? value,
-    Expression<String>? symbology,
-    Expression<int>? rowid,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (medicineId != null) 'medicine_id': medicineId,
-      if (value != null) 'value': value,
-      if (symbology != null) 'symbology': symbology,
-      if (rowid != null) 'rowid': rowid,
-    });
-  }
-
-  MedicineBarcodesCompanion copyWith({
-    Value<String>? id,
-    Value<String>? medicineId,
-    Value<String>? value,
-    Value<String?>? symbology,
-    Value<int>? rowid,
-  }) {
-    return MedicineBarcodesCompanion(
-      id: id ?? this.id,
-      medicineId: medicineId ?? this.medicineId,
-      value: value ?? this.value,
-      symbology: symbology ?? this.symbology,
-      rowid: rowid ?? this.rowid,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<String>(id.value);
-    }
-    if (medicineId.present) {
-      map['medicine_id'] = Variable<String>(medicineId.value);
-    }
-    if (value.present) {
-      map['value'] = Variable<String>(value.value);
-    }
-    if (symbology.present) {
-      map['symbology'] = Variable<String>(symbology.value);
-    }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('MedicineBarcodesCompanion(')
-          ..write('id: $id, ')
-          ..write('medicineId: $medicineId, ')
-          ..write('value: $value, ')
-          ..write('symbology: $symbology, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -2873,7 +2558,7 @@ class SupplierInvoicesCompanion extends UpdateCompanion<SupplierInvoice> {
   }
 }
 
-class $BatchesTable extends Batches with TableInfo<$BatchesTable, Batche> {
+class $BatchesTable extends Batches with TableInfo<$BatchesTable, BatchRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -3120,7 +2805,7 @@ class $BatchesTable extends Batches with TableInfo<$BatchesTable, Batche> {
   static const String $name = 'batches';
   @override
   VerificationContext validateIntegrity(
-    Insertable<Batche> instance, {
+    Insertable<BatchRow> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -3290,9 +2975,9 @@ class $BatchesTable extends Batches with TableInfo<$BatchesTable, Batche> {
     {medicineId, batchNumber, expiryDate},
   ];
   @override
-  Batche map(Map<String, dynamic> data, {String? tablePrefix}) {
+  BatchRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Batche(
+    return BatchRow(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -3378,7 +3063,7 @@ class $BatchesTable extends Batches with TableInfo<$BatchesTable, Batche> {
   }
 }
 
-class Batche extends DataClass implements Insertable<Batche> {
+class BatchRow extends DataClass implements Insertable<BatchRow> {
   final String id;
   final String medicineId;
   final String batchNumber;
@@ -3404,7 +3089,7 @@ class Batche extends DataClass implements Insertable<Batche> {
   final int createdAt;
   final int updatedAt;
   final int? deletedAt;
-  const Batche({
+  const BatchRow({
     required this.id,
     required this.medicineId,
     required this.batchNumber,
@@ -3506,12 +3191,12 @@ class Batche extends DataClass implements Insertable<Batche> {
     );
   }
 
-  factory Batche.fromJson(
+  factory BatchRow.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Batche(
+    return BatchRow(
       id: serializer.fromJson<String>(json['id']),
       medicineId: serializer.fromJson<String>(json['medicineId']),
       batchNumber: serializer.fromJson<String>(json['batchNumber']),
@@ -3559,7 +3244,7 @@ class Batche extends DataClass implements Insertable<Batche> {
     };
   }
 
-  Batche copyWith({
+  BatchRow copyWith({
     String? id,
     String? medicineId,
     String? batchNumber,
@@ -3579,7 +3264,7 @@ class Batche extends DataClass implements Insertable<Batche> {
     int? createdAt,
     int? updatedAt,
     Value<int?> deletedAt = const Value.absent(),
-  }) => Batche(
+  }) => BatchRow(
     id: id ?? this.id,
     medicineId: medicineId ?? this.medicineId,
     batchNumber: batchNumber ?? this.batchNumber,
@@ -3604,8 +3289,8 @@ class Batche extends DataClass implements Insertable<Batche> {
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
   );
-  Batche copyWithCompanion(BatchesCompanion data) {
-    return Batche(
+  BatchRow copyWithCompanion(BatchesCompanion data) {
+    return BatchRow(
       id: data.id.present ? data.id.value : this.id,
       medicineId: data.medicineId.present
           ? data.medicineId.value
@@ -3652,7 +3337,7 @@ class Batche extends DataClass implements Insertable<Batche> {
 
   @override
   String toString() {
-    return (StringBuffer('Batche(')
+    return (StringBuffer('BatchRow(')
           ..write('id: $id, ')
           ..write('medicineId: $medicineId, ')
           ..write('batchNumber: $batchNumber, ')
@@ -3701,7 +3386,7 @@ class Batche extends DataClass implements Insertable<Batche> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Batche &&
+      (other is BatchRow &&
           other.id == this.id &&
           other.medicineId == this.medicineId &&
           other.batchNumber == this.batchNumber &&
@@ -3723,7 +3408,7 @@ class Batche extends DataClass implements Insertable<Batche> {
           other.deletedAt == this.deletedAt);
 }
 
-class BatchesCompanion extends UpdateCompanion<Batche> {
+class BatchesCompanion extends UpdateCompanion<BatchRow> {
   final Value<String> id;
   final Value<String> medicineId;
   final Value<String> batchNumber;
@@ -3797,7 +3482,7 @@ class BatchesCompanion extends UpdateCompanion<Batche> {
        receivedDate = Value(receivedDate),
        createdAt = Value(createdAt),
        updatedAt = Value(updatedAt);
-  static Insertable<Batche> custom({
+  static Insertable<BatchRow> custom({
     Expression<String>? id,
     Expression<String>? medicineId,
     Expression<String>? batchNumber,
@@ -4350,7 +4035,7 @@ class SupplierReturnsCompanion extends UpdateCompanion<SupplierReturn> {
 }
 
 class $StockAdjustmentsTable extends StockAdjustments
-    with TableInfo<$StockAdjustmentsTable, StockAdjustment> {
+    with TableInfo<$StockAdjustmentsTable, StockAdjustmentRow> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -4461,7 +4146,7 @@ class $StockAdjustmentsTable extends StockAdjustments
   static const String $name = 'stock_adjustments';
   @override
   VerificationContext validateIntegrity(
-    Insertable<StockAdjustment> instance, {
+    Insertable<StockAdjustmentRow> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -4530,9 +4215,9 @@ class $StockAdjustmentsTable extends StockAdjustments
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  StockAdjustment map(Map<String, dynamic> data, {String? tablePrefix}) {
+  StockAdjustmentRow map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return StockAdjustment(
+    return StockAdjustmentRow(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -4574,7 +4259,8 @@ class $StockAdjustmentsTable extends StockAdjustments
   }
 }
 
-class StockAdjustment extends DataClass implements Insertable<StockAdjustment> {
+class StockAdjustmentRow extends DataClass
+    implements Insertable<StockAdjustmentRow> {
   final String id;
   final String batchId;
   final int deltaQty;
@@ -4586,7 +4272,7 @@ class StockAdjustment extends DataClass implements Insertable<StockAdjustment> {
   final int? valueImpactMinor;
   final String? returnId;
   final int createdAt;
-  const StockAdjustment({
+  const StockAdjustmentRow({
     required this.id,
     required this.batchId,
     required this.deltaQty,
@@ -4633,12 +4319,12 @@ class StockAdjustment extends DataClass implements Insertable<StockAdjustment> {
     );
   }
 
-  factory StockAdjustment.fromJson(
+  factory StockAdjustmentRow.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return StockAdjustment(
+    return StockAdjustmentRow(
       id: serializer.fromJson<String>(json['id']),
       batchId: serializer.fromJson<String>(json['batchId']),
       deltaQty: serializer.fromJson<int>(json['deltaQty']),
@@ -4664,7 +4350,7 @@ class StockAdjustment extends DataClass implements Insertable<StockAdjustment> {
     };
   }
 
-  StockAdjustment copyWith({
+  StockAdjustmentRow copyWith({
     String? id,
     String? batchId,
     int? deltaQty,
@@ -4673,7 +4359,7 @@ class StockAdjustment extends DataClass implements Insertable<StockAdjustment> {
     Value<int?> valueImpactMinor = const Value.absent(),
     Value<String?> returnId = const Value.absent(),
     int? createdAt,
-  }) => StockAdjustment(
+  }) => StockAdjustmentRow(
     id: id ?? this.id,
     batchId: batchId ?? this.batchId,
     deltaQty: deltaQty ?? this.deltaQty,
@@ -4685,8 +4371,8 @@ class StockAdjustment extends DataClass implements Insertable<StockAdjustment> {
     returnId: returnId.present ? returnId.value : this.returnId,
     createdAt: createdAt ?? this.createdAt,
   );
-  StockAdjustment copyWithCompanion(StockAdjustmentsCompanion data) {
-    return StockAdjustment(
+  StockAdjustmentRow copyWithCompanion(StockAdjustmentsCompanion data) {
+    return StockAdjustmentRow(
       id: data.id.present ? data.id.value : this.id,
       batchId: data.batchId.present ? data.batchId.value : this.batchId,
       deltaQty: data.deltaQty.present ? data.deltaQty.value : this.deltaQty,
@@ -4702,7 +4388,7 @@ class StockAdjustment extends DataClass implements Insertable<StockAdjustment> {
 
   @override
   String toString() {
-    return (StringBuffer('StockAdjustment(')
+    return (StringBuffer('StockAdjustmentRow(')
           ..write('id: $id, ')
           ..write('batchId: $batchId, ')
           ..write('deltaQty: $deltaQty, ')
@@ -4729,7 +4415,7 @@ class StockAdjustment extends DataClass implements Insertable<StockAdjustment> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is StockAdjustment &&
+      (other is StockAdjustmentRow &&
           other.id == this.id &&
           other.batchId == this.batchId &&
           other.deltaQty == this.deltaQty &&
@@ -4740,7 +4426,7 @@ class StockAdjustment extends DataClass implements Insertable<StockAdjustment> {
           other.createdAt == this.createdAt);
 }
 
-class StockAdjustmentsCompanion extends UpdateCompanion<StockAdjustment> {
+class StockAdjustmentsCompanion extends UpdateCompanion<StockAdjustmentRow> {
   final Value<String> id;
   final Value<String> batchId;
   final Value<int> deltaQty;
@@ -4776,7 +4462,7 @@ class StockAdjustmentsCompanion extends UpdateCompanion<StockAdjustment> {
        deltaQty = Value(deltaQty),
        reason = Value(reason),
        createdAt = Value(createdAt);
-  static Insertable<StockAdjustment> custom({
+  static Insertable<StockAdjustmentRow> custom({
     Expression<String>? id,
     Expression<String>? batchId,
     Expression<int>? deltaQty,
@@ -4868,6 +4554,378 @@ class StockAdjustmentsCompanion extends UpdateCompanion<StockAdjustment> {
           ..write('valueImpactMinor: $valueImpactMinor, ')
           ..write('returnId: $returnId, ')
           ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SupplierReturnLinesTable extends SupplierReturnLines
+    with TableInfo<$SupplierReturnLinesTable, SupplierReturnLine> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SupplierReturnLinesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _returnIdMeta = const VerificationMeta(
+    'returnId',
+  );
+  @override
+  late final GeneratedColumn<String> returnId = GeneratedColumn<String>(
+    'return_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES supplier_returns (id)',
+    ),
+  );
+  static const VerificationMeta _batchIdMeta = const VerificationMeta(
+    'batchId',
+  );
+  @override
+  late final GeneratedColumn<String> batchId = GeneratedColumn<String>(
+    'batch_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES batches (id)',
+    ),
+  );
+  static const VerificationMeta _quantityMeta = const VerificationMeta(
+    'quantity',
+  );
+  @override
+  late final GeneratedColumn<int> quantity = GeneratedColumn<int>(
+    'quantity',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _valueMinorMeta = const VerificationMeta(
+    'valueMinor',
+  );
+  @override
+  late final GeneratedColumn<int> valueMinor = GeneratedColumn<int>(
+    'value_minor',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    returnId,
+    batchId,
+    quantity,
+    valueMinor,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'supplier_return_lines';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<SupplierReturnLine> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('return_id')) {
+      context.handle(
+        _returnIdMeta,
+        returnId.isAcceptableOrUnknown(data['return_id']!, _returnIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_returnIdMeta);
+    }
+    if (data.containsKey('batch_id')) {
+      context.handle(
+        _batchIdMeta,
+        batchId.isAcceptableOrUnknown(data['batch_id']!, _batchIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_batchIdMeta);
+    }
+    if (data.containsKey('quantity')) {
+      context.handle(
+        _quantityMeta,
+        quantity.isAcceptableOrUnknown(data['quantity']!, _quantityMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_quantityMeta);
+    }
+    if (data.containsKey('value_minor')) {
+      context.handle(
+        _valueMinorMeta,
+        valueMinor.isAcceptableOrUnknown(data['value_minor']!, _valueMinorMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SupplierReturnLine map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SupplierReturnLine(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      returnId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}return_id'],
+      )!,
+      batchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}batch_id'],
+      )!,
+      quantity: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}quantity'],
+      )!,
+      valueMinor: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}value_minor'],
+      ),
+    );
+  }
+
+  @override
+  $SupplierReturnLinesTable createAlias(String alias) {
+    return $SupplierReturnLinesTable(attachedDatabase, alias);
+  }
+}
+
+class SupplierReturnLine extends DataClass
+    implements Insertable<SupplierReturnLine> {
+  final String id;
+  final String returnId;
+  final String batchId;
+  final int quantity;
+  final int? valueMinor;
+  const SupplierReturnLine({
+    required this.id,
+    required this.returnId,
+    required this.batchId,
+    required this.quantity,
+    this.valueMinor,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['return_id'] = Variable<String>(returnId);
+    map['batch_id'] = Variable<String>(batchId);
+    map['quantity'] = Variable<int>(quantity);
+    if (!nullToAbsent || valueMinor != null) {
+      map['value_minor'] = Variable<int>(valueMinor);
+    }
+    return map;
+  }
+
+  SupplierReturnLinesCompanion toCompanion(bool nullToAbsent) {
+    return SupplierReturnLinesCompanion(
+      id: Value(id),
+      returnId: Value(returnId),
+      batchId: Value(batchId),
+      quantity: Value(quantity),
+      valueMinor: valueMinor == null && nullToAbsent
+          ? const Value.absent()
+          : Value(valueMinor),
+    );
+  }
+
+  factory SupplierReturnLine.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SupplierReturnLine(
+      id: serializer.fromJson<String>(json['id']),
+      returnId: serializer.fromJson<String>(json['returnId']),
+      batchId: serializer.fromJson<String>(json['batchId']),
+      quantity: serializer.fromJson<int>(json['quantity']),
+      valueMinor: serializer.fromJson<int?>(json['valueMinor']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'returnId': serializer.toJson<String>(returnId),
+      'batchId': serializer.toJson<String>(batchId),
+      'quantity': serializer.toJson<int>(quantity),
+      'valueMinor': serializer.toJson<int?>(valueMinor),
+    };
+  }
+
+  SupplierReturnLine copyWith({
+    String? id,
+    String? returnId,
+    String? batchId,
+    int? quantity,
+    Value<int?> valueMinor = const Value.absent(),
+  }) => SupplierReturnLine(
+    id: id ?? this.id,
+    returnId: returnId ?? this.returnId,
+    batchId: batchId ?? this.batchId,
+    quantity: quantity ?? this.quantity,
+    valueMinor: valueMinor.present ? valueMinor.value : this.valueMinor,
+  );
+  SupplierReturnLine copyWithCompanion(SupplierReturnLinesCompanion data) {
+    return SupplierReturnLine(
+      id: data.id.present ? data.id.value : this.id,
+      returnId: data.returnId.present ? data.returnId.value : this.returnId,
+      batchId: data.batchId.present ? data.batchId.value : this.batchId,
+      quantity: data.quantity.present ? data.quantity.value : this.quantity,
+      valueMinor: data.valueMinor.present
+          ? data.valueMinor.value
+          : this.valueMinor,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupplierReturnLine(')
+          ..write('id: $id, ')
+          ..write('returnId: $returnId, ')
+          ..write('batchId: $batchId, ')
+          ..write('quantity: $quantity, ')
+          ..write('valueMinor: $valueMinor')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, returnId, batchId, quantity, valueMinor);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SupplierReturnLine &&
+          other.id == this.id &&
+          other.returnId == this.returnId &&
+          other.batchId == this.batchId &&
+          other.quantity == this.quantity &&
+          other.valueMinor == this.valueMinor);
+}
+
+class SupplierReturnLinesCompanion extends UpdateCompanion<SupplierReturnLine> {
+  final Value<String> id;
+  final Value<String> returnId;
+  final Value<String> batchId;
+  final Value<int> quantity;
+  final Value<int?> valueMinor;
+  final Value<int> rowid;
+  const SupplierReturnLinesCompanion({
+    this.id = const Value.absent(),
+    this.returnId = const Value.absent(),
+    this.batchId = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.valueMinor = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SupplierReturnLinesCompanion.insert({
+    required String id,
+    required String returnId,
+    required String batchId,
+    required int quantity,
+    this.valueMinor = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       returnId = Value(returnId),
+       batchId = Value(batchId),
+       quantity = Value(quantity);
+  static Insertable<SupplierReturnLine> custom({
+    Expression<String>? id,
+    Expression<String>? returnId,
+    Expression<String>? batchId,
+    Expression<int>? quantity,
+    Expression<int>? valueMinor,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (returnId != null) 'return_id': returnId,
+      if (batchId != null) 'batch_id': batchId,
+      if (quantity != null) 'quantity': quantity,
+      if (valueMinor != null) 'value_minor': valueMinor,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SupplierReturnLinesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? returnId,
+    Value<String>? batchId,
+    Value<int>? quantity,
+    Value<int?>? valueMinor,
+    Value<int>? rowid,
+  }) {
+    return SupplierReturnLinesCompanion(
+      id: id ?? this.id,
+      returnId: returnId ?? this.returnId,
+      batchId: batchId ?? this.batchId,
+      quantity: quantity ?? this.quantity,
+      valueMinor: valueMinor ?? this.valueMinor,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (returnId.present) {
+      map['return_id'] = Variable<String>(returnId.value);
+    }
+    if (batchId.present) {
+      map['batch_id'] = Variable<String>(batchId.value);
+    }
+    if (quantity.present) {
+      map['quantity'] = Variable<int>(quantity.value);
+    }
+    if (valueMinor.present) {
+      map['value_minor'] = Variable<int>(valueMinor.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SupplierReturnLinesCompanion(')
+          ..write('id: $id, ')
+          ..write('returnId: $returnId, ')
+          ..write('batchId: $batchId, ')
+          ..write('quantity: $quantity, ')
+          ..write('valueMinor: $valueMinor, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -6023,12 +6081,12 @@ class SupplierCreditsCompanion extends UpdateCompanion<SupplierCredit> {
   }
 }
 
-class $SupplierReturnLinesTable extends SupplierReturnLines
-    with TableInfo<$SupplierReturnLinesTable, SupplierReturnLine> {
+class $MedicineBarcodesTable extends MedicineBarcodes
+    with TableInfo<$MedicineBarcodesTable, MedicineBarcode> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $SupplierReturnLinesTable(this.attachedDatabase, [this._alias]);
+  $MedicineBarcodesTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
@@ -6038,72 +6096,51 @@ class $SupplierReturnLinesTable extends SupplierReturnLines
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _returnIdMeta = const VerificationMeta(
-    'returnId',
+  static const VerificationMeta _medicineIdMeta = const VerificationMeta(
+    'medicineId',
   );
   @override
-  late final GeneratedColumn<String> returnId = GeneratedColumn<String>(
-    'return_id',
+  late final GeneratedColumn<String> medicineId = GeneratedColumn<String>(
+    'medicine_id',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES supplier_returns (id)',
+      'REFERENCES medicines (id)',
     ),
   );
-  static const VerificationMeta _batchIdMeta = const VerificationMeta(
-    'batchId',
-  );
+  static const VerificationMeta _valueMeta = const VerificationMeta('value');
   @override
-  late final GeneratedColumn<String> batchId = GeneratedColumn<String>(
-    'batch_id',
+  late final GeneratedColumn<String> value = GeneratedColumn<String>(
+    'value',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES batches (id)',
-    ),
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
-  static const VerificationMeta _quantityMeta = const VerificationMeta(
-    'quantity',
+  static const VerificationMeta _symbologyMeta = const VerificationMeta(
+    'symbology',
   );
   @override
-  late final GeneratedColumn<int> quantity = GeneratedColumn<int>(
-    'quantity',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _valueMinorMeta = const VerificationMeta(
-    'valueMinor',
-  );
-  @override
-  late final GeneratedColumn<int> valueMinor = GeneratedColumn<int>(
-    'value_minor',
+  late final GeneratedColumn<String> symbology = GeneratedColumn<String>(
+    'symbology',
     aliasedName,
     true,
-    type: DriftSqlType.int,
+    type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
   @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    returnId,
-    batchId,
-    quantity,
-    valueMinor,
-  ];
+  List<GeneratedColumn> get $columns => [id, medicineId, value, symbology];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'supplier_return_lines';
+  static const String $name = 'medicine_barcodes';
   @override
   VerificationContext validateIntegrity(
-    Insertable<SupplierReturnLine> instance, {
+    Insertable<MedicineBarcode> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -6113,34 +6150,26 @@ class $SupplierReturnLinesTable extends SupplierReturnLines
     } else if (isInserting) {
       context.missing(_idMeta);
     }
-    if (data.containsKey('return_id')) {
+    if (data.containsKey('medicine_id')) {
       context.handle(
-        _returnIdMeta,
-        returnId.isAcceptableOrUnknown(data['return_id']!, _returnIdMeta),
+        _medicineIdMeta,
+        medicineId.isAcceptableOrUnknown(data['medicine_id']!, _medicineIdMeta),
       );
     } else if (isInserting) {
-      context.missing(_returnIdMeta);
+      context.missing(_medicineIdMeta);
     }
-    if (data.containsKey('batch_id')) {
+    if (data.containsKey('value')) {
       context.handle(
-        _batchIdMeta,
-        batchId.isAcceptableOrUnknown(data['batch_id']!, _batchIdMeta),
+        _valueMeta,
+        value.isAcceptableOrUnknown(data['value']!, _valueMeta),
       );
     } else if (isInserting) {
-      context.missing(_batchIdMeta);
+      context.missing(_valueMeta);
     }
-    if (data.containsKey('quantity')) {
+    if (data.containsKey('symbology')) {
       context.handle(
-        _quantityMeta,
-        quantity.isAcceptableOrUnknown(data['quantity']!, _quantityMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_quantityMeta);
-    }
-    if (data.containsKey('value_minor')) {
-      context.handle(
-        _valueMinorMeta,
-        valueMinor.isAcceptableOrUnknown(data['value_minor']!, _valueMinorMeta),
+        _symbologyMeta,
+        symbology.isAcceptableOrUnknown(data['symbology']!, _symbologyMeta),
       );
     }
     return context;
@@ -6149,88 +6178,78 @@ class $SupplierReturnLinesTable extends SupplierReturnLines
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  SupplierReturnLine map(Map<String, dynamic> data, {String? tablePrefix}) {
+  MedicineBarcode map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return SupplierReturnLine(
+    return MedicineBarcode(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
       )!,
-      returnId: attachedDatabase.typeMapping.read(
+      medicineId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}return_id'],
+        data['${effectivePrefix}medicine_id'],
       )!,
-      batchId: attachedDatabase.typeMapping.read(
+      value: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}batch_id'],
+        data['${effectivePrefix}value'],
       )!,
-      quantity: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}quantity'],
-      )!,
-      valueMinor: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}value_minor'],
+      symbology: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}symbology'],
       ),
     );
   }
 
   @override
-  $SupplierReturnLinesTable createAlias(String alias) {
-    return $SupplierReturnLinesTable(attachedDatabase, alias);
+  $MedicineBarcodesTable createAlias(String alias) {
+    return $MedicineBarcodesTable(attachedDatabase, alias);
   }
 }
 
-class SupplierReturnLine extends DataClass
-    implements Insertable<SupplierReturnLine> {
+class MedicineBarcode extends DataClass implements Insertable<MedicineBarcode> {
   final String id;
-  final String returnId;
-  final String batchId;
-  final int quantity;
-  final int? valueMinor;
-  const SupplierReturnLine({
+  final String medicineId;
+  final String value;
+  final String? symbology;
+  const MedicineBarcode({
     required this.id,
-    required this.returnId,
-    required this.batchId,
-    required this.quantity,
-    this.valueMinor,
+    required this.medicineId,
+    required this.value,
+    this.symbology,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
-    map['return_id'] = Variable<String>(returnId);
-    map['batch_id'] = Variable<String>(batchId);
-    map['quantity'] = Variable<int>(quantity);
-    if (!nullToAbsent || valueMinor != null) {
-      map['value_minor'] = Variable<int>(valueMinor);
+    map['medicine_id'] = Variable<String>(medicineId);
+    map['value'] = Variable<String>(value);
+    if (!nullToAbsent || symbology != null) {
+      map['symbology'] = Variable<String>(symbology);
     }
     return map;
   }
 
-  SupplierReturnLinesCompanion toCompanion(bool nullToAbsent) {
-    return SupplierReturnLinesCompanion(
+  MedicineBarcodesCompanion toCompanion(bool nullToAbsent) {
+    return MedicineBarcodesCompanion(
       id: Value(id),
-      returnId: Value(returnId),
-      batchId: Value(batchId),
-      quantity: Value(quantity),
-      valueMinor: valueMinor == null && nullToAbsent
+      medicineId: Value(medicineId),
+      value: Value(value),
+      symbology: symbology == null && nullToAbsent
           ? const Value.absent()
-          : Value(valueMinor),
+          : Value(symbology),
     );
   }
 
-  factory SupplierReturnLine.fromJson(
+  factory MedicineBarcode.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return SupplierReturnLine(
+    return MedicineBarcode(
       id: serializer.fromJson<String>(json['id']),
-      returnId: serializer.fromJson<String>(json['returnId']),
-      batchId: serializer.fromJson<String>(json['batchId']),
-      quantity: serializer.fromJson<int>(json['quantity']),
-      valueMinor: serializer.fromJson<int?>(json['valueMinor']),
+      medicineId: serializer.fromJson<String>(json['medicineId']),
+      value: serializer.fromJson<String>(json['value']),
+      symbology: serializer.fromJson<String?>(json['symbology']),
     );
   }
   @override
@@ -6238,121 +6257,107 @@ class SupplierReturnLine extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'returnId': serializer.toJson<String>(returnId),
-      'batchId': serializer.toJson<String>(batchId),
-      'quantity': serializer.toJson<int>(quantity),
-      'valueMinor': serializer.toJson<int?>(valueMinor),
+      'medicineId': serializer.toJson<String>(medicineId),
+      'value': serializer.toJson<String>(value),
+      'symbology': serializer.toJson<String?>(symbology),
     };
   }
 
-  SupplierReturnLine copyWith({
+  MedicineBarcode copyWith({
     String? id,
-    String? returnId,
-    String? batchId,
-    int? quantity,
-    Value<int?> valueMinor = const Value.absent(),
-  }) => SupplierReturnLine(
+    String? medicineId,
+    String? value,
+    Value<String?> symbology = const Value.absent(),
+  }) => MedicineBarcode(
     id: id ?? this.id,
-    returnId: returnId ?? this.returnId,
-    batchId: batchId ?? this.batchId,
-    quantity: quantity ?? this.quantity,
-    valueMinor: valueMinor.present ? valueMinor.value : this.valueMinor,
+    medicineId: medicineId ?? this.medicineId,
+    value: value ?? this.value,
+    symbology: symbology.present ? symbology.value : this.symbology,
   );
-  SupplierReturnLine copyWithCompanion(SupplierReturnLinesCompanion data) {
-    return SupplierReturnLine(
+  MedicineBarcode copyWithCompanion(MedicineBarcodesCompanion data) {
+    return MedicineBarcode(
       id: data.id.present ? data.id.value : this.id,
-      returnId: data.returnId.present ? data.returnId.value : this.returnId,
-      batchId: data.batchId.present ? data.batchId.value : this.batchId,
-      quantity: data.quantity.present ? data.quantity.value : this.quantity,
-      valueMinor: data.valueMinor.present
-          ? data.valueMinor.value
-          : this.valueMinor,
+      medicineId: data.medicineId.present
+          ? data.medicineId.value
+          : this.medicineId,
+      value: data.value.present ? data.value.value : this.value,
+      symbology: data.symbology.present ? data.symbology.value : this.symbology,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('SupplierReturnLine(')
+    return (StringBuffer('MedicineBarcode(')
           ..write('id: $id, ')
-          ..write('returnId: $returnId, ')
-          ..write('batchId: $batchId, ')
-          ..write('quantity: $quantity, ')
-          ..write('valueMinor: $valueMinor')
+          ..write('medicineId: $medicineId, ')
+          ..write('value: $value, ')
+          ..write('symbology: $symbology')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, returnId, batchId, quantity, valueMinor);
+  int get hashCode => Object.hash(id, medicineId, value, symbology);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is SupplierReturnLine &&
+      (other is MedicineBarcode &&
           other.id == this.id &&
-          other.returnId == this.returnId &&
-          other.batchId == this.batchId &&
-          other.quantity == this.quantity &&
-          other.valueMinor == this.valueMinor);
+          other.medicineId == this.medicineId &&
+          other.value == this.value &&
+          other.symbology == this.symbology);
 }
 
-class SupplierReturnLinesCompanion extends UpdateCompanion<SupplierReturnLine> {
+class MedicineBarcodesCompanion extends UpdateCompanion<MedicineBarcode> {
   final Value<String> id;
-  final Value<String> returnId;
-  final Value<String> batchId;
-  final Value<int> quantity;
-  final Value<int?> valueMinor;
+  final Value<String> medicineId;
+  final Value<String> value;
+  final Value<String?> symbology;
   final Value<int> rowid;
-  const SupplierReturnLinesCompanion({
+  const MedicineBarcodesCompanion({
     this.id = const Value.absent(),
-    this.returnId = const Value.absent(),
-    this.batchId = const Value.absent(),
-    this.quantity = const Value.absent(),
-    this.valueMinor = const Value.absent(),
+    this.medicineId = const Value.absent(),
+    this.value = const Value.absent(),
+    this.symbology = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  SupplierReturnLinesCompanion.insert({
+  MedicineBarcodesCompanion.insert({
     required String id,
-    required String returnId,
-    required String batchId,
-    required int quantity,
-    this.valueMinor = const Value.absent(),
+    required String medicineId,
+    required String value,
+    this.symbology = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
-       returnId = Value(returnId),
-       batchId = Value(batchId),
-       quantity = Value(quantity);
-  static Insertable<SupplierReturnLine> custom({
+       medicineId = Value(medicineId),
+       value = Value(value);
+  static Insertable<MedicineBarcode> custom({
     Expression<String>? id,
-    Expression<String>? returnId,
-    Expression<String>? batchId,
-    Expression<int>? quantity,
-    Expression<int>? valueMinor,
+    Expression<String>? medicineId,
+    Expression<String>? value,
+    Expression<String>? symbology,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (returnId != null) 'return_id': returnId,
-      if (batchId != null) 'batch_id': batchId,
-      if (quantity != null) 'quantity': quantity,
-      if (valueMinor != null) 'value_minor': valueMinor,
+      if (medicineId != null) 'medicine_id': medicineId,
+      if (value != null) 'value': value,
+      if (symbology != null) 'symbology': symbology,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
-  SupplierReturnLinesCompanion copyWith({
+  MedicineBarcodesCompanion copyWith({
     Value<String>? id,
-    Value<String>? returnId,
-    Value<String>? batchId,
-    Value<int>? quantity,
-    Value<int?>? valueMinor,
+    Value<String>? medicineId,
+    Value<String>? value,
+    Value<String?>? symbology,
     Value<int>? rowid,
   }) {
-    return SupplierReturnLinesCompanion(
+    return MedicineBarcodesCompanion(
       id: id ?? this.id,
-      returnId: returnId ?? this.returnId,
-      batchId: batchId ?? this.batchId,
-      quantity: quantity ?? this.quantity,
-      valueMinor: valueMinor ?? this.valueMinor,
+      medicineId: medicineId ?? this.medicineId,
+      value: value ?? this.value,
+      symbology: symbology ?? this.symbology,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -6363,17 +6368,14 @@ class SupplierReturnLinesCompanion extends UpdateCompanion<SupplierReturnLine> {
     if (id.present) {
       map['id'] = Variable<String>(id.value);
     }
-    if (returnId.present) {
-      map['return_id'] = Variable<String>(returnId.value);
+    if (medicineId.present) {
+      map['medicine_id'] = Variable<String>(medicineId.value);
     }
-    if (batchId.present) {
-      map['batch_id'] = Variable<String>(batchId.value);
+    if (value.present) {
+      map['value'] = Variable<String>(value.value);
     }
-    if (quantity.present) {
-      map['quantity'] = Variable<int>(quantity.value);
-    }
-    if (valueMinor.present) {
-      map['value_minor'] = Variable<int>(valueMinor.value);
+    if (symbology.present) {
+      map['symbology'] = Variable<String>(symbology.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -6383,12 +6385,11 @@ class SupplierReturnLinesCompanion extends UpdateCompanion<SupplierReturnLine> {
 
   @override
   String toString() {
-    return (StringBuffer('SupplierReturnLinesCompanion(')
+    return (StringBuffer('MedicineBarcodesCompanion(')
           ..write('id: $id, ')
-          ..write('returnId: $returnId, ')
-          ..write('batchId: $batchId, ')
-          ..write('quantity: $quantity, ')
-          ..write('valueMinor: $valueMinor, ')
+          ..write('medicineId: $medicineId, ')
+          ..write('value: $value, ')
+          ..write('symbology: $symbology, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -8345,43 +8346,22 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $SuppliersTable suppliers = $SuppliersTable(this);
   late final $MedicinesTable medicines = $MedicinesTable(this);
-  late final $MedicineBarcodesTable medicineBarcodes = $MedicineBarcodesTable(
-    this,
-  );
   late final $SupplierInvoicesTable supplierInvoices = $SupplierInvoicesTable(
     this,
   );
   late final $BatchesTable batches = $BatchesTable(this);
+  late final Index idxBatchExpiry = Index(
+    'idx_batch_expiry',
+    'CREATE INDEX idx_batch_expiry ON batches (expiry_date) WHERE quantity_on_hand > 0',
+  );
   late final $SupplierReturnsTable supplierReturns = $SupplierReturnsTable(
     this,
   );
   late final $StockAdjustmentsTable stockAdjustments = $StockAdjustmentsTable(
     this,
   );
-  late final $SupplierPaymentsTable supplierPayments = $SupplierPaymentsTable(
-    this,
-  );
-  late final $SupplierCreditsTable supplierCredits = $SupplierCreditsTable(
-    this,
-  );
   late final $SupplierReturnLinesTable supplierReturnLines =
       $SupplierReturnLinesTable(this);
-  late final $ReorderOrdersTable reorderOrders = $ReorderOrdersTable(this);
-  late final $ReorderReminderStateTable reorderReminderState =
-      $ReorderReminderStateTable(this);
-  late final $ScheduledAlertsTable scheduledAlerts = $ScheduledAlertsTable(
-    this,
-  );
-  late final $AlertLogTable alertLog = $AlertLogTable(this);
-  late final $SettingsTable settings = $SettingsTable(this);
-  late final Index idxMedSearch = Index(
-    'idx_med_search',
-    'CREATE INDEX idx_med_search ON medicines (search_text)',
-  );
-  late final Index idxBatchExpiry = Index(
-    'idx_batch_expiry',
-    'CREATE INDEX idx_batch_expiry ON batches (expiry_date)',
-  );
   late final Index idxBatchMed = Index(
     'idx_batch_med',
     'CREATE INDEX idx_batch_med ON batches (medicine_id)',
@@ -8390,10 +8370,31 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     'idx_batch_supplier',
     'CREATE INDEX idx_batch_supplier ON batches (supplier_id)',
   );
+  late final $SupplierPaymentsTable supplierPayments = $SupplierPaymentsTable(
+    this,
+  );
+  late final $SupplierCreditsTable supplierCredits = $SupplierCreditsTable(
+    this,
+  );
   late final Index idxInvDue = Index(
     'idx_inv_due',
     'CREATE INDEX idx_inv_due ON supplier_invoices (due_date)',
   );
+  late final $MedicineBarcodesTable medicineBarcodes = $MedicineBarcodesTable(
+    this,
+  );
+  late final Index idxMedSearch = Index(
+    'idx_med_search',
+    'CREATE INDEX idx_med_search ON medicines (search_text)',
+  );
+  late final $ReorderOrdersTable reorderOrders = $ReorderOrdersTable(this);
+  late final $ReorderReminderStateTable reorderReminderState =
+      $ReorderReminderStateTable(this);
+  late final $ScheduledAlertsTable scheduledAlerts = $ScheduledAlertsTable(
+    this,
+  );
+  late final $AlertLogTable alertLog = $AlertLogTable(this);
+  late final $SettingsTable settings = $SettingsTable(this);
   late final Index idxAlertFire = Index(
     'idx_alert_fire',
     'CREATE INDEX idx_alert_fire ON scheduled_alerts (fire_at)',
@@ -8405,24 +8406,24 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     suppliers,
     medicines,
-    medicineBarcodes,
     supplierInvoices,
     batches,
+    idxBatchExpiry,
     supplierReturns,
     stockAdjustments,
+    supplierReturnLines,
+    idxBatchMed,
+    idxBatchSupplier,
     supplierPayments,
     supplierCredits,
-    supplierReturnLines,
+    idxInvDue,
+    medicineBarcodes,
+    idxMedSearch,
     reorderOrders,
     reorderReminderState,
     scheduledAlerts,
     alertLog,
     settings,
-    idxMedSearch,
-    idxBatchExpiry,
-    idxBatchMed,
-    idxBatchSupplier,
-    idxInvDue,
     idxAlertFire,
   ];
 }
@@ -8464,7 +8465,7 @@ final class $$SuppliersTableReferences
     extends BaseReferences<_$AppDatabase, $SuppliersTable, Supplier> {
   $$SuppliersTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static MultiTypedResultKey<$MedicinesTable, List<Medicine>>
+  static MultiTypedResultKey<$MedicinesTable, List<MedicineRow>>
   _medicinesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.medicines,
     aliasName: 'suppliers__id__medicines__preferred_supplier_id',
@@ -8501,7 +8502,7 @@ final class $$SuppliersTableReferences
     );
   }
 
-  static MultiTypedResultKey<$BatchesTable, List<Batche>> _batchesRefsTable(
+  static MultiTypedResultKey<$BatchesTable, List<BatchRow>> _batchesRefsTable(
     _$AppDatabase db,
   ) => MultiTypedResultKey.fromTable(
     db.batches,
@@ -9288,7 +9289,7 @@ class $$SuppliersTableTableManager
                         await $_getPrefetchedData<
                           Supplier,
                           $SuppliersTable,
-                          Medicine
+                          MedicineRow
                         >(
                           currentTable: table,
                           referencedTable: $$SuppliersTableReferences
@@ -9330,7 +9331,7 @@ class $$SuppliersTableTableManager
                         await $_getPrefetchedData<
                           Supplier,
                           $SuppliersTable,
-                          Batche
+                          BatchRow
                         >(
                           currentTable: table,
                           referencedTable: $$SuppliersTableReferences
@@ -9507,7 +9508,7 @@ typedef $$MedicinesTableUpdateCompanionBuilder = MedicinesCompanion Function({
 });
 
 final class $$MedicinesTableReferences
-    extends BaseReferences<_$AppDatabase, $MedicinesTable, Medicine> {
+    extends BaseReferences<_$AppDatabase, $MedicinesTable, MedicineRow> {
   $$MedicinesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static $SuppliersTable _preferredSupplierIdTable(_$AppDatabase db) => db
@@ -9528,6 +9529,25 @@ final class $$MedicinesTableReferences
     );
   }
 
+  static MultiTypedResultKey<$BatchesTable, List<BatchRow>> _batchesRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.batches,
+    aliasName: 'medicines__id__batches__medicine_id',
+  );
+
+  $$BatchesTableProcessedTableManager get batchesRefs {
+    final manager = $$BatchesTableTableManager(
+      $_db,
+      $_db.batches,
+    ).filter((f) => f.medicineId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_batchesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
   static MultiTypedResultKey<$MedicineBarcodesTable, List<MedicineBarcode>>
   _medicineBarcodesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.medicineBarcodes,
@@ -9543,25 +9563,6 @@ final class $$MedicinesTableReferences
     final cache = $_typedResult.readTableOrNull(
       _medicineBarcodesRefsTable($_db),
     );
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: cache),
-    );
-  }
-
-  static MultiTypedResultKey<$BatchesTable, List<Batche>> _batchesRefsTable(
-    _$AppDatabase db,
-  ) => MultiTypedResultKey.fromTable(
-    db.batches,
-    aliasName: 'medicines__id__batches__medicine_id',
-  );
-
-  $$BatchesTableProcessedTableManager get batchesRefs {
-    final manager = $$BatchesTableTableManager(
-      $_db,
-      $_db.batches,
-    ).filter((f) => f.medicineId.id.sqlEquals($_itemColumn<String>('id')!));
-
-    final cache = $_typedResult.readTableOrNull(_batchesRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -9733,31 +9734,6 @@ class $$MedicinesTableFilterComposer
     return composer;
   }
 
-  Expression<bool> medicineBarcodesRefs(
-    Expression<bool> Function($$MedicineBarcodesTableFilterComposer f) f,
-  ) {
-    final $$MedicineBarcodesTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.medicineBarcodes,
-      getReferencedColumn: (t) => t.medicineId,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$MedicineBarcodesTableFilterComposer(
-            $db: $db,
-            $table: $db.medicineBarcodes,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-
   Expression<bool> batchesRefs(
     Expression<bool> Function($$BatchesTableFilterComposer f) f,
   ) {
@@ -9774,6 +9750,31 @@ class $$MedicinesTableFilterComposer
           }) => $$BatchesTableFilterComposer(
             $db: $db,
             $table: $db.batches,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> medicineBarcodesRefs(
+    Expression<bool> Function($$MedicineBarcodesTableFilterComposer f) f,
+  ) {
+    final $$MedicineBarcodesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.medicineBarcodes,
+      getReferencedColumn: (t) => t.medicineId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MedicineBarcodesTableFilterComposer(
+            $db: $db,
+            $table: $db.medicineBarcodes,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -10059,31 +10060,6 @@ class $$MedicinesTableAnnotationComposer
     return composer;
   }
 
-  Expression<T> medicineBarcodesRefs<T extends Object>(
-    Expression<T> Function($$MedicineBarcodesTableAnnotationComposer a) f,
-  ) {
-    final $$MedicineBarcodesTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.medicineBarcodes,
-      getReferencedColumn: (t) => t.medicineId,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$MedicineBarcodesTableAnnotationComposer(
-            $db: $db,
-            $table: $db.medicineBarcodes,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-
   Expression<T> batchesRefs<T extends Object>(
     Expression<T> Function($$BatchesTableAnnotationComposer a) f,
   ) {
@@ -10100,6 +10076,31 @@ class $$MedicinesTableAnnotationComposer
           }) => $$BatchesTableAnnotationComposer(
             $db: $db,
             $table: $db.batches,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> medicineBarcodesRefs<T extends Object>(
+    Expression<T> Function($$MedicineBarcodesTableAnnotationComposer a) f,
+  ) {
+    final $$MedicineBarcodesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.medicineBarcodes,
+      getReferencedColumn: (t) => t.medicineId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MedicineBarcodesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.medicineBarcodes,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -10166,18 +10167,18 @@ class $$MedicinesTableTableManager
         RootTableManager<
           _$AppDatabase,
           $MedicinesTable,
-          Medicine,
+          MedicineRow,
           $$MedicinesTableFilterComposer,
           $$MedicinesTableOrderingComposer,
           $$MedicinesTableAnnotationComposer,
           $$MedicinesTableCreateCompanionBuilder,
           $$MedicinesTableUpdateCompanionBuilder,
-          (Medicine, $$MedicinesTableReferences),
-          Medicine,
+          (MedicineRow, $$MedicinesTableReferences),
+          MedicineRow,
           PrefetchHooks Function({
             bool preferredSupplierId,
-            bool medicineBarcodesRefs,
             bool batchesRefs,
+            bool medicineBarcodesRefs,
             bool reorderOrdersRefs,
             bool reorderReminderStateRefs,
           })
@@ -10284,7 +10285,7 @@ class $$MedicinesTableTableManager
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable<$MedicinesTable, Medicine>(table),
+                  e.readTable<$MedicinesTable, MedicineRow>(table),
                   $$MedicinesTableReferences(db, table, e),
                 ),
               )
@@ -10292,16 +10293,16 @@ class $$MedicinesTableTableManager
           prefetchHooksCallback:
               ({
                 preferredSupplierId = false,
-                medicineBarcodesRefs = false,
                 batchesRefs = false,
+                medicineBarcodesRefs = false,
                 reorderOrdersRefs = false,
                 reorderReminderStateRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
-                    if (medicineBarcodesRefs) db.medicineBarcodes,
                     if (batchesRefs) db.batches,
+                    if (medicineBarcodesRefs) db.medicineBarcodes,
                     if (reorderOrdersRefs) db.reorderOrders,
                     if (reorderReminderStateRefs) db.reorderReminderState,
                   ],
@@ -10337,9 +10338,30 @@ class $$MedicinesTableTableManager
                       },
                   getPrefetchedDataCallback: (items) async {
                     return [
+                      if (batchesRefs)
+                        await $_getPrefetchedData<
+                          MedicineRow,
+                          $MedicinesTable,
+                          BatchRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$MedicinesTableReferences
+                              ._batchesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$MedicinesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).batchesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.medicineId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                       if (medicineBarcodesRefs)
                         await $_getPrefetchedData<
-                          Medicine,
+                          MedicineRow,
                           $MedicinesTable,
                           MedicineBarcode
                         >(
@@ -10358,30 +10380,9 @@ class $$MedicinesTableTableManager
                               ),
                           typedResults: items,
                         ),
-                      if (batchesRefs)
-                        await $_getPrefetchedData<
-                          Medicine,
-                          $MedicinesTable,
-                          Batche
-                        >(
-                          currentTable: table,
-                          referencedTable: $$MedicinesTableReferences
-                              ._batchesRefsTable(db),
-                          managerFromTypedResult: (p0) =>
-                              $$MedicinesTableReferences(
-                                db,
-                                table,
-                                p0,
-                              ).batchesRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.medicineId == item.id,
-                              ),
-                          typedResults: items,
-                        ),
                       if (reorderOrdersRefs)
                         await $_getPrefetchedData<
-                          Medicine,
+                          MedicineRow,
                           $MedicinesTable,
                           ReorderOrder
                         >(
@@ -10402,7 +10403,7 @@ class $$MedicinesTableTableManager
                         ),
                       if (reorderReminderStateRefs)
                         await $_getPrefetchedData<
-                          Medicine,
+                          MedicineRow,
                           $MedicinesTable,
                           ReorderReminderStateData
                         >(
@@ -10433,324 +10434,21 @@ typedef $$MedicinesTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
       $MedicinesTable,
-      Medicine,
+      MedicineRow,
       $$MedicinesTableFilterComposer,
       $$MedicinesTableOrderingComposer,
       $$MedicinesTableAnnotationComposer,
       $$MedicinesTableCreateCompanionBuilder,
       $$MedicinesTableUpdateCompanionBuilder,
-      (Medicine, $$MedicinesTableReferences),
-      Medicine,
+      (MedicineRow, $$MedicinesTableReferences),
+      MedicineRow,
       PrefetchHooks Function({
         bool preferredSupplierId,
-        bool medicineBarcodesRefs,
         bool batchesRefs,
+        bool medicineBarcodesRefs,
         bool reorderOrdersRefs,
         bool reorderReminderStateRefs,
       })
-    >;
-typedef $$MedicineBarcodesTableCreateCompanionBuilder =
-    MedicineBarcodesCompanion Function({
-      required String id,
-      required String medicineId,
-      required String value,
-      Value<String?> symbology,
-      Value<int> rowid,
-    });
-typedef $$MedicineBarcodesTableUpdateCompanionBuilder =
-    MedicineBarcodesCompanion Function({
-      Value<String> id,
-      Value<String> medicineId,
-      Value<String> value,
-      Value<String?> symbology,
-      Value<int> rowid,
-    });
-
-final class $$MedicineBarcodesTableReferences
-    extends
-        BaseReferences<_$AppDatabase, $MedicineBarcodesTable, MedicineBarcode> {
-  $$MedicineBarcodesTableReferences(
-    super.$_db,
-    super.$_table,
-    super.$_typedResult,
-  );
-
-  static $MedicinesTable _medicineIdTable(_$AppDatabase db) =>
-      db.medicines.createAlias('medicine_barcodes__medicine_id__medicines__id');
-
-  $$MedicinesTableProcessedTableManager get medicineId {
-    final $_column = $_itemColumn<String>('medicine_id')!;
-
-    final manager = $$MedicinesTableTableManager(
-      $_db,
-      $_db.medicines,
-    ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_medicineIdTable($_db));
-    if (item == null) return manager;
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: [item]),
-    );
-  }
-}
-
-class $$MedicineBarcodesTableFilterComposer
-    extends Composer<_$AppDatabase, $MedicineBarcodesTable> {
-  $$MedicineBarcodesTableFilterComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnFilters<String> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get value => $composableBuilder(
-    column: $table.value,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get symbology => $composableBuilder(
-    column: $table.symbology,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  $$MedicinesTableFilterComposer get medicineId {
-    final $$MedicinesTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.medicineId,
-      referencedTable: $db.medicines,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$MedicinesTableFilterComposer(
-            $db: $db,
-            $table: $db.medicines,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-}
-
-class $$MedicineBarcodesTableOrderingComposer
-    extends Composer<_$AppDatabase, $MedicineBarcodesTable> {
-  $$MedicineBarcodesTableOrderingComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnOrderings<String> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get value => $composableBuilder(
-    column: $table.value,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get symbology => $composableBuilder(
-    column: $table.symbology,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  $$MedicinesTableOrderingComposer get medicineId {
-    final $$MedicinesTableOrderingComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.medicineId,
-      referencedTable: $db.medicines,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$MedicinesTableOrderingComposer(
-            $db: $db,
-            $table: $db.medicines,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-}
-
-class $$MedicineBarcodesTableAnnotationComposer
-    extends Composer<_$AppDatabase, $MedicineBarcodesTable> {
-  $$MedicineBarcodesTableAnnotationComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  GeneratedColumn<String> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
-
-  GeneratedColumn<String> get value =>
-      $composableBuilder(column: $table.value, builder: (column) => column);
-
-  GeneratedColumn<String> get symbology =>
-      $composableBuilder(column: $table.symbology, builder: (column) => column);
-
-  $$MedicinesTableAnnotationComposer get medicineId {
-    final $$MedicinesTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.medicineId,
-      referencedTable: $db.medicines,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$MedicinesTableAnnotationComposer(
-            $db: $db,
-            $table: $db.medicines,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-}
-
-class $$MedicineBarcodesTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $MedicineBarcodesTable,
-          MedicineBarcode,
-          $$MedicineBarcodesTableFilterComposer,
-          $$MedicineBarcodesTableOrderingComposer,
-          $$MedicineBarcodesTableAnnotationComposer,
-          $$MedicineBarcodesTableCreateCompanionBuilder,
-          $$MedicineBarcodesTableUpdateCompanionBuilder,
-          (MedicineBarcode, $$MedicineBarcodesTableReferences),
-          MedicineBarcode,
-          PrefetchHooks Function({bool medicineId})
-        > {
-  $$MedicineBarcodesTableTableManager(
-    _$AppDatabase db,
-    $MedicineBarcodesTable table,
-  ) : super(
-        TableManagerState(
-          db: db,
-          table: table,
-          createFilteringComposer: () =>
-              $$MedicineBarcodesTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$MedicineBarcodesTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$MedicineBarcodesTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback:
-              ({
-                Value<String> id = const Value.absent(),
-                Value<String> medicineId = const Value.absent(),
-                Value<String> value = const Value.absent(),
-                Value<String?> symbology = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
-              }) => MedicineBarcodesCompanion(
-                id: id,
-                medicineId: medicineId,
-                value: value,
-                symbology: symbology,
-                rowid: rowid,
-              ),
-          createCompanionCallback:
-              ({
-                required String id,
-                required String medicineId,
-                required String value,
-                Value<String?> symbology = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
-              }) => MedicineBarcodesCompanion.insert(
-                id: id,
-                medicineId: medicineId,
-                value: value,
-                symbology: symbology,
-                rowid: rowid,
-              ),
-          withReferenceMapper: (p0) => p0
-              .map(
-                (e) => (
-                  e.readTable<$MedicineBarcodesTable, MedicineBarcode>(table),
-                  $$MedicineBarcodesTableReferences(db, table, e),
-                ),
-              )
-              .toList(),
-          prefetchHooksCallback: ({medicineId = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [],
-              addJoins:
-                  <
-                    T extends TableManagerState<
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic
-                    >
-                  >(state) {
-                    if (medicineId) {
-                      state = state.withJoin(
-                        currentTable: table,
-                        currentColumn: table.medicineId,
-                        referencedTable: $$MedicineBarcodesTableReferences
-                            ._medicineIdTable(db),
-                        referencedColumn: $$MedicineBarcodesTableReferences
-                            ._medicineIdTable(db)
-                            .id,
-                      ) as T;
-                    }
-
-                    return state;
-                  },
-              getPrefetchedDataCallback: (items) async {
-                return [];
-              },
-            );
-          },
-        ),
-      );
-}
-
-typedef $$MedicineBarcodesTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $MedicineBarcodesTable,
-      MedicineBarcode,
-      $$MedicineBarcodesTableFilterComposer,
-      $$MedicineBarcodesTableOrderingComposer,
-      $$MedicineBarcodesTableAnnotationComposer,
-      $$MedicineBarcodesTableCreateCompanionBuilder,
-      $$MedicineBarcodesTableUpdateCompanionBuilder,
-      (MedicineBarcode, $$MedicineBarcodesTableReferences),
-      MedicineBarcode,
-      PrefetchHooks Function({bool medicineId})
     >;
 typedef $$SupplierInvoicesTableCreateCompanionBuilder =
     SupplierInvoicesCompanion Function({
@@ -10809,7 +10507,7 @@ final class $$SupplierInvoicesTableReferences
     );
   }
 
-  static MultiTypedResultKey<$BatchesTable, List<Batche>> _batchesRefsTable(
+  static MultiTypedResultKey<$BatchesTable, List<BatchRow>> _batchesRefsTable(
     _$AppDatabase db,
   ) => MultiTypedResultKey.fromTable(
     db.batches,
@@ -11403,7 +11101,7 @@ class $$SupplierInvoicesTableTableManager
                         await $_getPrefetchedData<
                           SupplierInvoice,
                           $SupplierInvoicesTable,
-                          Batche
+                          BatchRow
                         >(
                           currentTable: table,
                           referencedTable: $$SupplierInvoicesTableReferences
@@ -11535,7 +11233,7 @@ typedef $$BatchesTableUpdateCompanionBuilder = BatchesCompanion Function({
 });
 
 final class $$BatchesTableReferences
-    extends BaseReferences<_$AppDatabase, $BatchesTable, Batche> {
+    extends BaseReferences<_$AppDatabase, $BatchesTable, BatchRow> {
   $$BatchesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static $MedicinesTable _medicineIdTable(_$AppDatabase db) =>
@@ -11590,7 +11288,7 @@ final class $$BatchesTableReferences
     );
   }
 
-  static MultiTypedResultKey<$StockAdjustmentsTable, List<StockAdjustment>>
+  static MultiTypedResultKey<$StockAdjustmentsTable, List<StockAdjustmentRow>>
   _stockAdjustmentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.stockAdjustments,
     aliasName: 'batches__id__stock_adjustments__batch_id',
@@ -12204,14 +11902,14 @@ class $$BatchesTableTableManager
         RootTableManager<
           _$AppDatabase,
           $BatchesTable,
-          Batche,
+          BatchRow,
           $$BatchesTableFilterComposer,
           $$BatchesTableOrderingComposer,
           $$BatchesTableAnnotationComposer,
           $$BatchesTableCreateCompanionBuilder,
           $$BatchesTableUpdateCompanionBuilder,
-          (Batche, $$BatchesTableReferences),
-          Batche,
+          (BatchRow, $$BatchesTableReferences),
+          BatchRow,
           PrefetchHooks Function({
             bool medicineId,
             bool supplierId,
@@ -12322,7 +12020,7 @@ class $$BatchesTableTableManager
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable<$BatchesTable, Batche>(table),
+                  e.readTable<$BatchesTable, BatchRow>(table),
                   $$BatchesTableReferences(db, table, e),
                 ),
               )
@@ -12397,9 +12095,9 @@ class $$BatchesTableTableManager
                     return [
                       if (stockAdjustmentsRefs)
                         await $_getPrefetchedData<
-                          Batche,
+                          BatchRow,
                           $BatchesTable,
-                          StockAdjustment
+                          StockAdjustmentRow
                         >(
                           currentTable: table,
                           referencedTable: $$BatchesTableReferences
@@ -12418,7 +12116,7 @@ class $$BatchesTableTableManager
                         ),
                       if (supplierReturnLinesRefs)
                         await $_getPrefetchedData<
-                          Batche,
+                          BatchRow,
                           $BatchesTable,
                           SupplierReturnLine
                         >(
@@ -12449,14 +12147,14 @@ typedef $$BatchesTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
       $BatchesTable,
-      Batche,
+      BatchRow,
       $$BatchesTableFilterComposer,
       $$BatchesTableOrderingComposer,
       $$BatchesTableAnnotationComposer,
       $$BatchesTableCreateCompanionBuilder,
       $$BatchesTableUpdateCompanionBuilder,
-      (Batche, $$BatchesTableReferences),
-      Batche,
+      (BatchRow, $$BatchesTableReferences),
+      BatchRow,
       PrefetchHooks Function({
         bool medicineId,
         bool supplierId,
@@ -12510,7 +12208,7 @@ final class $$SupplierReturnsTableReferences
     );
   }
 
-  static MultiTypedResultKey<$StockAdjustmentsTable, List<StockAdjustment>>
+  static MultiTypedResultKey<$StockAdjustmentsTable, List<StockAdjustmentRow>>
   _stockAdjustmentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.stockAdjustments,
     aliasName: 'supplier_returns__id__stock_adjustments__return_id',
@@ -12524,26 +12222,6 @@ final class $$SupplierReturnsTableReferences
 
     final cache = $_typedResult.readTableOrNull(
       _stockAdjustmentsRefsTable($_db),
-    );
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: cache),
-    );
-  }
-
-  static MultiTypedResultKey<$SupplierCreditsTable, List<SupplierCredit>>
-  _supplierCreditsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.supplierCredits,
-    aliasName: 'supplier_returns__id__supplier_credits__return_id',
-  );
-
-  $$SupplierCreditsTableProcessedTableManager get supplierCreditsRefs {
-    final manager = $$SupplierCreditsTableTableManager(
-      $_db,
-      $_db.supplierCredits,
-    ).filter((f) => f.returnId.id.sqlEquals($_itemColumn<String>('id')!));
-
-    final cache = $_typedResult.readTableOrNull(
-      _supplierCreditsRefsTable($_db),
     );
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
@@ -12568,6 +12246,26 @@ final class $$SupplierReturnsTableReferences
 
     final cache = $_typedResult.readTableOrNull(
       _supplierReturnLinesRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$SupplierCreditsTable, List<SupplierCredit>>
+  _supplierCreditsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.supplierCredits,
+    aliasName: 'supplier_returns__id__supplier_credits__return_id',
+  );
+
+  $$SupplierCreditsTableProcessedTableManager get supplierCreditsRefs {
+    final manager = $$SupplierCreditsTableTableManager(
+      $_db,
+      $_db.supplierCredits,
+    ).filter((f) => f.returnId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _supplierCreditsRefsTable($_db),
     );
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
@@ -12652,31 +12350,6 @@ class $$SupplierReturnsTableFilterComposer
     return f(composer);
   }
 
-  Expression<bool> supplierCreditsRefs(
-    Expression<bool> Function($$SupplierCreditsTableFilterComposer f) f,
-  ) {
-    final $$SupplierCreditsTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.supplierCredits,
-      getReferencedColumn: (t) => t.returnId,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$SupplierCreditsTableFilterComposer(
-            $db: $db,
-            $table: $db.supplierCredits,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-
   Expression<bool> supplierReturnLinesRefs(
     Expression<bool> Function($$SupplierReturnLinesTableFilterComposer f) f,
   ) {
@@ -12693,6 +12366,31 @@ class $$SupplierReturnsTableFilterComposer
           }) => $$SupplierReturnLinesTableFilterComposer(
             $db: $db,
             $table: $db.supplierReturnLines,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> supplierCreditsRefs(
+    Expression<bool> Function($$SupplierCreditsTableFilterComposer f) f,
+  ) {
+    final $$SupplierCreditsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.supplierCredits,
+      getReferencedColumn: (t) => t.returnId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SupplierCreditsTableFilterComposer(
+            $db: $db,
+            $table: $db.supplierCredits,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -12827,31 +12525,6 @@ class $$SupplierReturnsTableAnnotationComposer
     return f(composer);
   }
 
-  Expression<T> supplierCreditsRefs<T extends Object>(
-    Expression<T> Function($$SupplierCreditsTableAnnotationComposer a) f,
-  ) {
-    final $$SupplierCreditsTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.supplierCredits,
-      getReferencedColumn: (t) => t.returnId,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$SupplierCreditsTableAnnotationComposer(
-            $db: $db,
-            $table: $db.supplierCredits,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-
   Expression<T> supplierReturnLinesRefs<T extends Object>(
     Expression<T> Function($$SupplierReturnLinesTableAnnotationComposer a) f,
   ) {
@@ -12877,6 +12550,31 @@ class $$SupplierReturnsTableAnnotationComposer
         );
     return f(composer);
   }
+
+  Expression<T> supplierCreditsRefs<T extends Object>(
+    Expression<T> Function($$SupplierCreditsTableAnnotationComposer a) f,
+  ) {
+    final $$SupplierCreditsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.supplierCredits,
+      getReferencedColumn: (t) => t.returnId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SupplierCreditsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.supplierCredits,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$SupplierReturnsTableTableManager
@@ -12895,8 +12593,8 @@ class $$SupplierReturnsTableTableManager
           PrefetchHooks Function({
             bool supplierId,
             bool stockAdjustmentsRefs,
-            bool supplierCreditsRefs,
             bool supplierReturnLinesRefs,
+            bool supplierCreditsRefs,
           })
         > {
   $$SupplierReturnsTableTableManager(
@@ -12956,15 +12654,15 @@ class $$SupplierReturnsTableTableManager
               ({
                 supplierId = false,
                 stockAdjustmentsRefs = false,
-                supplierCreditsRefs = false,
                 supplierReturnLinesRefs = false,
+                supplierCreditsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (stockAdjustmentsRefs) db.stockAdjustments,
-                    if (supplierCreditsRefs) db.supplierCredits,
                     if (supplierReturnLinesRefs) db.supplierReturnLines,
+                    if (supplierCreditsRefs) db.supplierCredits,
                   ],
                   addJoins:
                       <
@@ -13002,7 +12700,7 @@ class $$SupplierReturnsTableTableManager
                         await $_getPrefetchedData<
                           SupplierReturn,
                           $SupplierReturnsTable,
-                          StockAdjustment
+                          StockAdjustmentRow
                         >(
                           currentTable: table,
                           referencedTable: $$SupplierReturnsTableReferences
@@ -13013,27 +12711,6 @@ class $$SupplierReturnsTableTableManager
                                 table,
                                 p0,
                               ).stockAdjustmentsRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.returnId == item.id,
-                              ),
-                          typedResults: items,
-                        ),
-                      if (supplierCreditsRefs)
-                        await $_getPrefetchedData<
-                          SupplierReturn,
-                          $SupplierReturnsTable,
-                          SupplierCredit
-                        >(
-                          currentTable: table,
-                          referencedTable: $$SupplierReturnsTableReferences
-                              ._supplierCreditsRefsTable(db),
-                          managerFromTypedResult: (p0) =>
-                              $$SupplierReturnsTableReferences(
-                                db,
-                                table,
-                                p0,
-                              ).supplierCreditsRefs,
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
                                 (e) => e.returnId == item.id,
@@ -13055,6 +12732,27 @@ class $$SupplierReturnsTableTableManager
                                 table,
                                 p0,
                               ).supplierReturnLinesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.returnId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (supplierCreditsRefs)
+                        await $_getPrefetchedData<
+                          SupplierReturn,
+                          $SupplierReturnsTable,
+                          SupplierCredit
+                        >(
+                          currentTable: table,
+                          referencedTable: $$SupplierReturnsTableReferences
+                              ._supplierCreditsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$SupplierReturnsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).supplierCreditsRefs,
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
                                 (e) => e.returnId == item.id,
@@ -13084,8 +12782,8 @@ typedef $$SupplierReturnsTableProcessedTableManager =
       PrefetchHooks Function({
         bool supplierId,
         bool stockAdjustmentsRefs,
-        bool supplierCreditsRefs,
         bool supplierReturnLinesRefs,
+        bool supplierCreditsRefs,
       })
     >;
 typedef $$StockAdjustmentsTableCreateCompanionBuilder =
@@ -13115,7 +12813,11 @@ typedef $$StockAdjustmentsTableUpdateCompanionBuilder =
 
 final class $$StockAdjustmentsTableReferences
     extends
-        BaseReferences<_$AppDatabase, $StockAdjustmentsTable, StockAdjustment> {
+        BaseReferences<
+          _$AppDatabase,
+          $StockAdjustmentsTable,
+          StockAdjustmentRow
+        > {
   $$StockAdjustmentsTableReferences(
     super.$_db,
     super.$_table,
@@ -13411,14 +13113,14 @@ class $$StockAdjustmentsTableTableManager
         RootTableManager<
           _$AppDatabase,
           $StockAdjustmentsTable,
-          StockAdjustment,
+          StockAdjustmentRow,
           $$StockAdjustmentsTableFilterComposer,
           $$StockAdjustmentsTableOrderingComposer,
           $$StockAdjustmentsTableAnnotationComposer,
           $$StockAdjustmentsTableCreateCompanionBuilder,
           $$StockAdjustmentsTableUpdateCompanionBuilder,
-          (StockAdjustment, $$StockAdjustmentsTableReferences),
-          StockAdjustment,
+          (StockAdjustmentRow, $$StockAdjustmentsTableReferences),
+          StockAdjustmentRow,
           PrefetchHooks Function({bool batchId, bool returnId})
         > {
   $$StockAdjustmentsTableTableManager(
@@ -13481,7 +13183,9 @@ class $$StockAdjustmentsTableTableManager
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable<$StockAdjustmentsTable, StockAdjustment>(table),
+                  e.readTable<$StockAdjustmentsTable, StockAdjustmentRow>(
+                    table,
+                  ),
                   $$StockAdjustmentsTableReferences(db, table, e),
                 ),
               )
@@ -13544,15 +13248,436 @@ typedef $$StockAdjustmentsTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
       $StockAdjustmentsTable,
-      StockAdjustment,
+      StockAdjustmentRow,
       $$StockAdjustmentsTableFilterComposer,
       $$StockAdjustmentsTableOrderingComposer,
       $$StockAdjustmentsTableAnnotationComposer,
       $$StockAdjustmentsTableCreateCompanionBuilder,
       $$StockAdjustmentsTableUpdateCompanionBuilder,
-      (StockAdjustment, $$StockAdjustmentsTableReferences),
-      StockAdjustment,
+      (StockAdjustmentRow, $$StockAdjustmentsTableReferences),
+      StockAdjustmentRow,
       PrefetchHooks Function({bool batchId, bool returnId})
+    >;
+typedef $$SupplierReturnLinesTableCreateCompanionBuilder =
+    SupplierReturnLinesCompanion Function({
+      required String id,
+      required String returnId,
+      required String batchId,
+      required int quantity,
+      Value<int?> valueMinor,
+      Value<int> rowid,
+    });
+typedef $$SupplierReturnLinesTableUpdateCompanionBuilder =
+    SupplierReturnLinesCompanion Function({
+      Value<String> id,
+      Value<String> returnId,
+      Value<String> batchId,
+      Value<int> quantity,
+      Value<int?> valueMinor,
+      Value<int> rowid,
+    });
+
+final class $$SupplierReturnLinesTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $SupplierReturnLinesTable,
+          SupplierReturnLine
+        > {
+  $$SupplierReturnLinesTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $SupplierReturnsTable _returnIdTable(_$AppDatabase db) => db
+      .supplierReturns
+      .createAlias('supplier_return_lines__return_id__supplier_returns__id');
+
+  $$SupplierReturnsTableProcessedTableManager get returnId {
+    final $_column = $_itemColumn<String>('return_id')!;
+
+    final manager = $$SupplierReturnsTableTableManager(
+      $_db,
+      $_db.supplierReturns,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_returnIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $BatchesTable _batchIdTable(_$AppDatabase db) =>
+      db.batches.createAlias('supplier_return_lines__batch_id__batches__id');
+
+  $$BatchesTableProcessedTableManager get batchId {
+    final $_column = $_itemColumn<String>('batch_id')!;
+
+    final manager = $$BatchesTableTableManager(
+      $_db,
+      $_db.batches,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_batchIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$SupplierReturnLinesTableFilterComposer
+    extends Composer<_$AppDatabase, $SupplierReturnLinesTable> {
+  $$SupplierReturnLinesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get quantity => $composableBuilder(
+    column: $table.quantity,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get valueMinor => $composableBuilder(
+    column: $table.valueMinor,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$SupplierReturnsTableFilterComposer get returnId {
+    final $$SupplierReturnsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.returnId,
+      referencedTable: $db.supplierReturns,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SupplierReturnsTableFilterComposer(
+            $db: $db,
+            $table: $db.supplierReturns,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$BatchesTableFilterComposer get batchId {
+    final $$BatchesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.batchId,
+      referencedTable: $db.batches,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BatchesTableFilterComposer(
+            $db: $db,
+            $table: $db.batches,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SupplierReturnLinesTableOrderingComposer
+    extends Composer<_$AppDatabase, $SupplierReturnLinesTable> {
+  $$SupplierReturnLinesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get quantity => $composableBuilder(
+    column: $table.quantity,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get valueMinor => $composableBuilder(
+    column: $table.valueMinor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$SupplierReturnsTableOrderingComposer get returnId {
+    final $$SupplierReturnsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.returnId,
+      referencedTable: $db.supplierReturns,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SupplierReturnsTableOrderingComposer(
+            $db: $db,
+            $table: $db.supplierReturns,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$BatchesTableOrderingComposer get batchId {
+    final $$BatchesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.batchId,
+      referencedTable: $db.batches,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BatchesTableOrderingComposer(
+            $db: $db,
+            $table: $db.batches,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SupplierReturnLinesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SupplierReturnLinesTable> {
+  $$SupplierReturnLinesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get quantity =>
+      $composableBuilder(column: $table.quantity, builder: (column) => column);
+
+  GeneratedColumn<int> get valueMinor => $composableBuilder(
+    column: $table.valueMinor,
+    builder: (column) => column,
+  );
+
+  $$SupplierReturnsTableAnnotationComposer get returnId {
+    final $$SupplierReturnsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.returnId,
+      referencedTable: $db.supplierReturns,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SupplierReturnsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.supplierReturns,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$BatchesTableAnnotationComposer get batchId {
+    final $$BatchesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.batchId,
+      referencedTable: $db.batches,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BatchesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.batches,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SupplierReturnLinesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SupplierReturnLinesTable,
+          SupplierReturnLine,
+          $$SupplierReturnLinesTableFilterComposer,
+          $$SupplierReturnLinesTableOrderingComposer,
+          $$SupplierReturnLinesTableAnnotationComposer,
+          $$SupplierReturnLinesTableCreateCompanionBuilder,
+          $$SupplierReturnLinesTableUpdateCompanionBuilder,
+          (SupplierReturnLine, $$SupplierReturnLinesTableReferences),
+          SupplierReturnLine,
+          PrefetchHooks Function({bool returnId, bool batchId})
+        > {
+  $$SupplierReturnLinesTableTableManager(
+    _$AppDatabase db,
+    $SupplierReturnLinesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SupplierReturnLinesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SupplierReturnLinesTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$SupplierReturnLinesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> returnId = const Value.absent(),
+                Value<String> batchId = const Value.absent(),
+                Value<int> quantity = const Value.absent(),
+                Value<int?> valueMinor = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SupplierReturnLinesCompanion(
+                id: id,
+                returnId: returnId,
+                batchId: batchId,
+                quantity: quantity,
+                valueMinor: valueMinor,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String returnId,
+                required String batchId,
+                required int quantity,
+                Value<int?> valueMinor = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SupplierReturnLinesCompanion.insert(
+                id: id,
+                returnId: returnId,
+                batchId: batchId,
+                quantity: quantity,
+                valueMinor: valueMinor,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$SupplierReturnLinesTable, SupplierReturnLine>(
+                    table,
+                  ),
+                  $$SupplierReturnLinesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({returnId = false, batchId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (returnId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.returnId,
+                        referencedTable: $$SupplierReturnLinesTableReferences
+                            ._returnIdTable(db),
+                        referencedColumn: $$SupplierReturnLinesTableReferences
+                            ._returnIdTable(db)
+                            .id,
+                      ) as T;
+                    }
+                    if (batchId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.batchId,
+                        referencedTable: $$SupplierReturnLinesTableReferences
+                            ._batchIdTable(db),
+                        referencedColumn: $$SupplierReturnLinesTableReferences
+                            ._batchIdTable(db)
+                            .id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$SupplierReturnLinesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SupplierReturnLinesTable,
+      SupplierReturnLine,
+      $$SupplierReturnLinesTableFilterComposer,
+      $$SupplierReturnLinesTableOrderingComposer,
+      $$SupplierReturnLinesTableAnnotationComposer,
+      $$SupplierReturnLinesTableCreateCompanionBuilder,
+      $$SupplierReturnLinesTableUpdateCompanionBuilder,
+      (SupplierReturnLine, $$SupplierReturnLinesTableReferences),
+      SupplierReturnLine,
+      PrefetchHooks Function({bool returnId, bool batchId})
     >;
 typedef $$SupplierPaymentsTableCreateCompanionBuilder =
     SupplierPaymentsCompanion Function({
@@ -14614,67 +14739,43 @@ typedef $$SupplierCreditsTableProcessedTableManager =
       SupplierCredit,
       PrefetchHooks Function({bool supplierId, bool invoiceId, bool returnId})
     >;
-typedef $$SupplierReturnLinesTableCreateCompanionBuilder =
-    SupplierReturnLinesCompanion Function({
+typedef $$MedicineBarcodesTableCreateCompanionBuilder =
+    MedicineBarcodesCompanion Function({
       required String id,
-      required String returnId,
-      required String batchId,
-      required int quantity,
-      Value<int?> valueMinor,
+      required String medicineId,
+      required String value,
+      Value<String?> symbology,
       Value<int> rowid,
     });
-typedef $$SupplierReturnLinesTableUpdateCompanionBuilder =
-    SupplierReturnLinesCompanion Function({
+typedef $$MedicineBarcodesTableUpdateCompanionBuilder =
+    MedicineBarcodesCompanion Function({
       Value<String> id,
-      Value<String> returnId,
-      Value<String> batchId,
-      Value<int> quantity,
-      Value<int?> valueMinor,
+      Value<String> medicineId,
+      Value<String> value,
+      Value<String?> symbology,
       Value<int> rowid,
     });
 
-final class $$SupplierReturnLinesTableReferences
+final class $$MedicineBarcodesTableReferences
     extends
-        BaseReferences<
-          _$AppDatabase,
-          $SupplierReturnLinesTable,
-          SupplierReturnLine
-        > {
-  $$SupplierReturnLinesTableReferences(
+        BaseReferences<_$AppDatabase, $MedicineBarcodesTable, MedicineBarcode> {
+  $$MedicineBarcodesTableReferences(
     super.$_db,
     super.$_table,
     super.$_typedResult,
   );
 
-  static $SupplierReturnsTable _returnIdTable(_$AppDatabase db) => db
-      .supplierReturns
-      .createAlias('supplier_return_lines__return_id__supplier_returns__id');
+  static $MedicinesTable _medicineIdTable(_$AppDatabase db) =>
+      db.medicines.createAlias('medicine_barcodes__medicine_id__medicines__id');
 
-  $$SupplierReturnsTableProcessedTableManager get returnId {
-    final $_column = $_itemColumn<String>('return_id')!;
+  $$MedicinesTableProcessedTableManager get medicineId {
+    final $_column = $_itemColumn<String>('medicine_id')!;
 
-    final manager = $$SupplierReturnsTableTableManager(
+    final manager = $$MedicinesTableTableManager(
       $_db,
-      $_db.supplierReturns,
+      $_db.medicines,
     ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_returnIdTable($_db));
-    if (item == null) return manager;
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: [item]),
-    );
-  }
-
-  static $BatchesTable _batchIdTable(_$AppDatabase db) =>
-      db.batches.createAlias('supplier_return_lines__batch_id__batches__id');
-
-  $$BatchesTableProcessedTableManager get batchId {
-    final $_column = $_itemColumn<String>('batch_id')!;
-
-    final manager = $$BatchesTableTableManager(
-      $_db,
-      $_db.batches,
-    ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_batchIdTable($_db));
+    final item = $_typedResult.readTableOrNull(_medicineIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
@@ -14682,9 +14783,9 @@ final class $$SupplierReturnLinesTableReferences
   }
 }
 
-class $$SupplierReturnLinesTableFilterComposer
-    extends Composer<_$AppDatabase, $SupplierReturnLinesTable> {
-  $$SupplierReturnLinesTableFilterComposer({
+class $$MedicineBarcodesTableFilterComposer
+    extends Composer<_$AppDatabase, $MedicineBarcodesTable> {
+  $$MedicineBarcodesTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -14696,53 +14797,30 @@ class $$SupplierReturnLinesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get quantity => $composableBuilder(
-    column: $table.quantity,
+  ColumnFilters<String> get value => $composableBuilder(
+    column: $table.value,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get valueMinor => $composableBuilder(
-    column: $table.valueMinor,
+  ColumnFilters<String> get symbology => $composableBuilder(
+    column: $table.symbology,
     builder: (column) => ColumnFilters(column),
   );
 
-  $$SupplierReturnsTableFilterComposer get returnId {
-    final $$SupplierReturnsTableFilterComposer composer = $composerBuilder(
+  $$MedicinesTableFilterComposer get medicineId {
+    final $$MedicinesTableFilterComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.returnId,
-      referencedTable: $db.supplierReturns,
+      getCurrentColumn: (t) => t.medicineId,
+      referencedTable: $db.medicines,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$SupplierReturnsTableFilterComposer(
+          }) => $$MedicinesTableFilterComposer(
             $db: $db,
-            $table: $db.supplierReturns,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-
-  $$BatchesTableFilterComposer get batchId {
-    final $$BatchesTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.batchId,
-      referencedTable: $db.batches,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$BatchesTableFilterComposer(
-            $db: $db,
-            $table: $db.batches,
+            $table: $db.medicines,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -14753,9 +14831,9 @@ class $$SupplierReturnLinesTableFilterComposer
   }
 }
 
-class $$SupplierReturnLinesTableOrderingComposer
-    extends Composer<_$AppDatabase, $SupplierReturnLinesTable> {
-  $$SupplierReturnLinesTableOrderingComposer({
+class $$MedicineBarcodesTableOrderingComposer
+    extends Composer<_$AppDatabase, $MedicineBarcodesTable> {
+  $$MedicineBarcodesTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -14767,53 +14845,30 @@ class $$SupplierReturnLinesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get quantity => $composableBuilder(
-    column: $table.quantity,
+  ColumnOrderings<String> get value => $composableBuilder(
+    column: $table.value,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get valueMinor => $composableBuilder(
-    column: $table.valueMinor,
+  ColumnOrderings<String> get symbology => $composableBuilder(
+    column: $table.symbology,
     builder: (column) => ColumnOrderings(column),
   );
 
-  $$SupplierReturnsTableOrderingComposer get returnId {
-    final $$SupplierReturnsTableOrderingComposer composer = $composerBuilder(
+  $$MedicinesTableOrderingComposer get medicineId {
+    final $$MedicinesTableOrderingComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.returnId,
-      referencedTable: $db.supplierReturns,
+      getCurrentColumn: (t) => t.medicineId,
+      referencedTable: $db.medicines,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$SupplierReturnsTableOrderingComposer(
+          }) => $$MedicinesTableOrderingComposer(
             $db: $db,
-            $table: $db.supplierReturns,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-
-  $$BatchesTableOrderingComposer get batchId {
-    final $$BatchesTableOrderingComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.batchId,
-      referencedTable: $db.batches,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$BatchesTableOrderingComposer(
-            $db: $db,
-            $table: $db.batches,
+            $table: $db.medicines,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -14824,9 +14879,9 @@ class $$SupplierReturnLinesTableOrderingComposer
   }
 }
 
-class $$SupplierReturnLinesTableAnnotationComposer
-    extends Composer<_$AppDatabase, $SupplierReturnLinesTable> {
-  $$SupplierReturnLinesTableAnnotationComposer({
+class $$MedicineBarcodesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MedicineBarcodesTable> {
+  $$MedicineBarcodesTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -14836,51 +14891,26 @@ class $$SupplierReturnLinesTableAnnotationComposer
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<int> get quantity =>
-      $composableBuilder(column: $table.quantity, builder: (column) => column);
+  GeneratedColumn<String> get value =>
+      $composableBuilder(column: $table.value, builder: (column) => column);
 
-  GeneratedColumn<int> get valueMinor => $composableBuilder(
-    column: $table.valueMinor,
-    builder: (column) => column,
-  );
+  GeneratedColumn<String> get symbology =>
+      $composableBuilder(column: $table.symbology, builder: (column) => column);
 
-  $$SupplierReturnsTableAnnotationComposer get returnId {
-    final $$SupplierReturnsTableAnnotationComposer composer = $composerBuilder(
+  $$MedicinesTableAnnotationComposer get medicineId {
+    final $$MedicinesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.returnId,
-      referencedTable: $db.supplierReturns,
+      getCurrentColumn: (t) => t.medicineId,
+      referencedTable: $db.medicines,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$SupplierReturnsTableAnnotationComposer(
+          }) => $$MedicinesTableAnnotationComposer(
             $db: $db,
-            $table: $db.supplierReturns,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-
-  $$BatchesTableAnnotationComposer get batchId {
-    final $$BatchesTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.batchId,
-      referencedTable: $db.batches,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$BatchesTableAnnotationComposer(
-            $db: $db,
-            $table: $db.batches,
+            $table: $db.medicines,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -14891,83 +14921,71 @@ class $$SupplierReturnLinesTableAnnotationComposer
   }
 }
 
-class $$SupplierReturnLinesTableTableManager
+class $$MedicineBarcodesTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $SupplierReturnLinesTable,
-          SupplierReturnLine,
-          $$SupplierReturnLinesTableFilterComposer,
-          $$SupplierReturnLinesTableOrderingComposer,
-          $$SupplierReturnLinesTableAnnotationComposer,
-          $$SupplierReturnLinesTableCreateCompanionBuilder,
-          $$SupplierReturnLinesTableUpdateCompanionBuilder,
-          (SupplierReturnLine, $$SupplierReturnLinesTableReferences),
-          SupplierReturnLine,
-          PrefetchHooks Function({bool returnId, bool batchId})
+          $MedicineBarcodesTable,
+          MedicineBarcode,
+          $$MedicineBarcodesTableFilterComposer,
+          $$MedicineBarcodesTableOrderingComposer,
+          $$MedicineBarcodesTableAnnotationComposer,
+          $$MedicineBarcodesTableCreateCompanionBuilder,
+          $$MedicineBarcodesTableUpdateCompanionBuilder,
+          (MedicineBarcode, $$MedicineBarcodesTableReferences),
+          MedicineBarcode,
+          PrefetchHooks Function({bool medicineId})
         > {
-  $$SupplierReturnLinesTableTableManager(
+  $$MedicineBarcodesTableTableManager(
     _$AppDatabase db,
-    $SupplierReturnLinesTable table,
+    $MedicineBarcodesTable table,
   ) : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$SupplierReturnLinesTableFilterComposer($db: db, $table: table),
+              $$MedicineBarcodesTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$SupplierReturnLinesTableOrderingComposer(
-                $db: db,
-                $table: table,
-              ),
+              $$MedicineBarcodesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$SupplierReturnLinesTableAnnotationComposer(
-                $db: db,
-                $table: table,
-              ),
+              $$MedicineBarcodesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
-                Value<String> returnId = const Value.absent(),
-                Value<String> batchId = const Value.absent(),
-                Value<int> quantity = const Value.absent(),
-                Value<int?> valueMinor = const Value.absent(),
+                Value<String> medicineId = const Value.absent(),
+                Value<String> value = const Value.absent(),
+                Value<String?> symbology = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => SupplierReturnLinesCompanion(
+              }) => MedicineBarcodesCompanion(
                 id: id,
-                returnId: returnId,
-                batchId: batchId,
-                quantity: quantity,
-                valueMinor: valueMinor,
+                medicineId: medicineId,
+                value: value,
+                symbology: symbology,
                 rowid: rowid,
               ),
           createCompanionCallback:
               ({
                 required String id,
-                required String returnId,
-                required String batchId,
-                required int quantity,
-                Value<int?> valueMinor = const Value.absent(),
+                required String medicineId,
+                required String value,
+                Value<String?> symbology = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => SupplierReturnLinesCompanion.insert(
+              }) => MedicineBarcodesCompanion.insert(
                 id: id,
-                returnId: returnId,
-                batchId: batchId,
-                quantity: quantity,
-                valueMinor: valueMinor,
+                medicineId: medicineId,
+                value: value,
+                symbology: symbology,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable<$SupplierReturnLinesTable, SupplierReturnLine>(
-                    table,
-                  ),
-                  $$SupplierReturnLinesTableReferences(db, table, e),
+                  e.readTable<$MedicineBarcodesTable, MedicineBarcode>(table),
+                  $$MedicineBarcodesTableReferences(db, table, e),
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({returnId = false, batchId = false}) {
+          prefetchHooksCallback: ({medicineId = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
@@ -14987,25 +15005,14 @@ class $$SupplierReturnLinesTableTableManager
                       dynamic
                     >
                   >(state) {
-                    if (returnId) {
+                    if (medicineId) {
                       state = state.withJoin(
                         currentTable: table,
-                        currentColumn: table.returnId,
-                        referencedTable: $$SupplierReturnLinesTableReferences
-                            ._returnIdTable(db),
-                        referencedColumn: $$SupplierReturnLinesTableReferences
-                            ._returnIdTable(db)
-                            .id,
-                      ) as T;
-                    }
-                    if (batchId) {
-                      state = state.withJoin(
-                        currentTable: table,
-                        currentColumn: table.batchId,
-                        referencedTable: $$SupplierReturnLinesTableReferences
-                            ._batchIdTable(db),
-                        referencedColumn: $$SupplierReturnLinesTableReferences
-                            ._batchIdTable(db)
+                        currentColumn: table.medicineId,
+                        referencedTable: $$MedicineBarcodesTableReferences
+                            ._medicineIdTable(db),
+                        referencedColumn: $$MedicineBarcodesTableReferences
+                            ._medicineIdTable(db)
                             .id,
                       ) as T;
                     }
@@ -15021,19 +15028,19 @@ class $$SupplierReturnLinesTableTableManager
       );
 }
 
-typedef $$SupplierReturnLinesTableProcessedTableManager =
+typedef $$MedicineBarcodesTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $SupplierReturnLinesTable,
-      SupplierReturnLine,
-      $$SupplierReturnLinesTableFilterComposer,
-      $$SupplierReturnLinesTableOrderingComposer,
-      $$SupplierReturnLinesTableAnnotationComposer,
-      $$SupplierReturnLinesTableCreateCompanionBuilder,
-      $$SupplierReturnLinesTableUpdateCompanionBuilder,
-      (SupplierReturnLine, $$SupplierReturnLinesTableReferences),
-      SupplierReturnLine,
-      PrefetchHooks Function({bool returnId, bool batchId})
+      $MedicineBarcodesTable,
+      MedicineBarcode,
+      $$MedicineBarcodesTableFilterComposer,
+      $$MedicineBarcodesTableOrderingComposer,
+      $$MedicineBarcodesTableAnnotationComposer,
+      $$MedicineBarcodesTableCreateCompanionBuilder,
+      $$MedicineBarcodesTableUpdateCompanionBuilder,
+      (MedicineBarcode, $$MedicineBarcodesTableReferences),
+      MedicineBarcode,
+      PrefetchHooks Function({bool medicineId})
     >;
 typedef $$ReorderOrdersTableCreateCompanionBuilder =
     ReorderOrdersCompanion Function({
@@ -16440,8 +16447,6 @@ class $AppDatabaseManager {
       $$SuppliersTableTableManager(_db, _db.suppliers);
   $$MedicinesTableTableManager get medicines =>
       $$MedicinesTableTableManager(_db, _db.medicines);
-  $$MedicineBarcodesTableTableManager get medicineBarcodes =>
-      $$MedicineBarcodesTableTableManager(_db, _db.medicineBarcodes);
   $$SupplierInvoicesTableTableManager get supplierInvoices =>
       $$SupplierInvoicesTableTableManager(_db, _db.supplierInvoices);
   $$BatchesTableTableManager get batches =>
@@ -16450,12 +16455,14 @@ class $AppDatabaseManager {
       $$SupplierReturnsTableTableManager(_db, _db.supplierReturns);
   $$StockAdjustmentsTableTableManager get stockAdjustments =>
       $$StockAdjustmentsTableTableManager(_db, _db.stockAdjustments);
+  $$SupplierReturnLinesTableTableManager get supplierReturnLines =>
+      $$SupplierReturnLinesTableTableManager(_db, _db.supplierReturnLines);
   $$SupplierPaymentsTableTableManager get supplierPayments =>
       $$SupplierPaymentsTableTableManager(_db, _db.supplierPayments);
   $$SupplierCreditsTableTableManager get supplierCredits =>
       $$SupplierCreditsTableTableManager(_db, _db.supplierCredits);
-  $$SupplierReturnLinesTableTableManager get supplierReturnLines =>
-      $$SupplierReturnLinesTableTableManager(_db, _db.supplierReturnLines);
+  $$MedicineBarcodesTableTableManager get medicineBarcodes =>
+      $$MedicineBarcodesTableTableManager(_db, _db.medicineBarcodes);
   $$ReorderOrdersTableTableManager get reorderOrders =>
       $$ReorderOrdersTableTableManager(_db, _db.reorderOrders);
   $$ReorderReminderStateTableTableManager get reorderReminderState =>

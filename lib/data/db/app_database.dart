@@ -30,6 +30,7 @@ part 'app_database.g.dart';
     AlertLog,
     Settings,
   ],
+  include: {'indexes.drift'},
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.e);

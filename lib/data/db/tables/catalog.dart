@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:pharmacy_expiry_tracker/data/db/tables/suppliers.dart';
 
 @TableIndex(name: 'idx_med_search', columns: {#searchText})
+@DataClassName('MedicineRow')
 class Medicines extends Table {
   TextColumn get id => text()();
   TextColumn get brandName => text()();

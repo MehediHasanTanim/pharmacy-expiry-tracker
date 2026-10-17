@@ -1,0 +1,6 @@
+include: ../analysis_options.yaml
+
+linter:
+  rules:
+    # Tests spell out defaults (e.g. batch number A1) for readability.
+    avoid_redundant_argument_values: false
