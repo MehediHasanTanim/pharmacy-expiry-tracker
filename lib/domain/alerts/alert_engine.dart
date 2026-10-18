@@ -90,6 +90,7 @@ class AlertEngine {
     final today = dateOnly(now);
     final maxLead = settings.alertLeadDays.fold<int>(0, math.max);
     final invoices = await _source.loadPlanInvoices();
+    final reorders = await _source.loadPlanReorders(today: today);
     for (final horizon in <int?>[maxLead + 120, maxLead + 600, null]) {
       final batches = await _source.loadPlanBatches(
         today: today,
@@ -101,6 +102,7 @@ class AlertEngine {
         settings: settings,
         batches: batches,
         invoices: invoices,
+        reorders: reorders,
         l10n: l10n,
       );
       if (horizon == null) return planned;

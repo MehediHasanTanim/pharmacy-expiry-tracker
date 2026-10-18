@@ -1425,4 +1425,311 @@ class AppLocalizationsEn extends AppLocalizations {
   String dueDialogBody(String supplier) {
     return 'Record what you owe $supplier for this delivery so you are reminded to pay.';
   }
+
+  @override
+  String alertReorderTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count medicines to reorder',
+      one: '1 medicine to reorder',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String alertReorderBody(String items, int more) {
+    String _temp0 = intl.Intl.pluralLogic(
+      more,
+      locale: localeName,
+      other: ' and $more more',
+      zero: '',
+    );
+    return '$items$_temp0';
+  }
+
+  @override
+  String alertReorderItem(String name, int left) {
+    return '$name ($left left)';
+  }
+
+  @override
+  String get homeExpired => 'Expired on shelf';
+
+  @override
+  String get homeExpiring30 => 'Expiring soon';
+
+  @override
+  String get homeReorder => 'To reorder';
+
+  @override
+  String get homeOverdueDues => 'Overdue payments';
+
+  @override
+  String get homeWeekTitle => 'Expiring this week';
+
+  @override
+  String get homeSeeAll => 'See all';
+
+  @override
+  String get homeWeekEmpty => 'Nothing expires in the next 7 days.';
+
+  @override
+  String get homeAtRisk => 'Value at risk';
+
+  @override
+  String get homeFirstTitle => 'Start by adding a medicine';
+
+  @override
+  String get homeFirstBody =>
+      'Add a medicine and receive its first batch, and expiry alerts begin.';
+
+  @override
+  String get homeAddMedicine => 'Add medicine';
+
+  @override
+  String get homeNoReorder => 'All stocked';
+
+  @override
+  String get homeAllGood => 'Nothing needs attention';
+
+  @override
+  String get bannerReplanFailed => 'Alerts could not be updated. Check again.';
+
+  @override
+  String get bannerBattery => 'Battery saving may delay your alerts.';
+
+  @override
+  String get bannerCheck => 'Check';
+
+  @override
+  String get reorderTitle => 'Reorder list';
+
+  @override
+  String get reorderEmpty => 'Nothing to reorder';
+
+  @override
+  String get reorderEmptyBody =>
+      'Medicines below their reorder level will show up here.';
+
+  @override
+  String get reorderUnassigned => 'No preferred supplier';
+
+  @override
+  String get reorderSuggested => 'Order';
+
+  @override
+  String get reorderSnooze => 'Snooze reminders';
+
+  @override
+  String get reorderResume => 'Resume reminders';
+
+  @override
+  String get snackReorderSnoozed => 'Reorder reminders snoozed';
+
+  @override
+  String get snackReorderResumed => 'Reorder reminders resumed';
+
+  @override
+  String get moreSectionAlerts => 'Alerts';
+
+  @override
+  String get moreSectionStock => 'Stock';
+
+  @override
+  String get moreReorderTile => 'Reorder list';
+
+  @override
+  String get moreSettingsTile => 'Settings';
+
+  @override
+  String get moreSectionApp => 'App';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsPharmacy => 'Pharmacy';
+
+  @override
+  String get fieldPharmacyName => 'Pharmacy name';
+
+  @override
+  String get settingsExpiry => 'Expiry';
+
+  @override
+  String get settingsWindow => 'Near-expiry window';
+
+  @override
+  String get settingsWindowHelp =>
+      'Batches expiring within this many days appear on the Expiry tab.';
+
+  @override
+  String get settingsBuckets => 'Urgency groups';
+
+  @override
+  String get settingsBucketsHelp =>
+      'Days at which batches move to the next group.';
+
+  @override
+  String get settingsBucketA => 'Urgent up to';
+
+  @override
+  String get settingsBucketB => 'Soon up to';
+
+  @override
+  String get settingsBucketC => 'Later up to';
+
+  @override
+  String get errBucketsOrder =>
+      'Each group must be longer than the one before.';
+
+  @override
+  String get settingsDisplay => 'Display';
+
+  @override
+  String get settingsCurrency => 'Currency symbol';
+
+  @override
+  String get settingsCurrencyHelp =>
+      'Shown next to amounts. Leave empty for none.';
+
+  @override
+  String get settingsDateFormat => 'Date format';
+
+  @override
+  String get settingsTheme => 'Theme';
+
+  @override
+  String get themeSystem => 'Follow the device';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get dateFormatDevice => 'Device default';
+
+  @override
+  String get alertSettingsReorder => 'Reorder reminders';
+
+  @override
+  String get alertSettingsReorderEvery => 'Remind again after';
+
+  @override
+  String get onbSkip => 'Skip';
+
+  @override
+  String get onbNext => 'Next';
+
+  @override
+  String get onbBack => 'Back';
+
+  @override
+  String get onbStart => 'Get started';
+
+  @override
+  String get onb1Title => 'Never let medicine expire unnoticed';
+
+  @override
+  String get onb1Body =>
+      'Record each batch with its expiry date. The app shows what is running out of time first.';
+
+  @override
+  String get onb2Title => 'Alerts that work offline';
+
+  @override
+  String get onb2Body =>
+      'Reminders are scheduled on your phone, so they arrive even without a signal or with the app closed.';
+
+  @override
+  String get onb3Title => 'Keep track of dues and stock';
+
+  @override
+  String get onb3Body =>
+      'See what you owe each supplier, get paid-by reminders, and know what to reorder.';
+
+  @override
+  String get onbSetupTitle => 'About your pharmacy';
+
+  @override
+  String get onbSetupBody => 'You can change all of this later in Settings.';
+
+  @override
+  String get onbAlertsTitle => 'Turn on expiry alerts';
+
+  @override
+  String get onbAlertsBody =>
+      'The app needs permission to show notifications. Alerts stay on your phone.';
+
+  @override
+  String get onbDoneTitle => 'You are ready';
+
+  @override
+  String get onbDoneBody =>
+      'Add your first medicine and its batches to start tracking.';
+
+  @override
+  String get onbAddFirst => 'Add first medicine';
+
+  @override
+  String get onbExplore => 'Explore the app';
+
+  @override
+  String homeBatchCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count batches',
+      one: '1 batch',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeMedicineCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count medicines',
+      one: '1 medicine',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeInvoiceCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count invoices',
+      one: '1 invoice',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String homeCardSemantics(String label, String value) {
+    return '$label: $value';
+  }
+
+  @override
+  String reorderLevelLine(int usable, int level) {
+    return '$usable on hand · reorder at $level';
+  }
+
+  @override
+  String settingsWindowDays(int count) {
+    return '$count days';
+  }
+
+  @override
+  String onbStep(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get rowActionsTooltip => 'More actions';
 }

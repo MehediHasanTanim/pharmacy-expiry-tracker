@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:drift/drift.dart' hide Batch;
 import 'package:pharmacy_expiry_tracker/data/db/app_database.dart';
 import 'package:pharmacy_expiry_tracker/data/mappers/mappers.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/reorder_sql.dart';
 import 'package:pharmacy_expiry_tracker/domain/alerts/alert_planner.dart';
 import 'package:pharmacy_expiry_tracker/domain/alerts/alert_records.dart';
 import 'package:pharmacy_expiry_tracker/domain/alerts/planned_alert.dart';
@@ -29,6 +30,10 @@ class AlertStoreImpl implements AlertStore {
       route: payload['route'] as String? ?? '',
       contentHash: r.contentHash,
       state: ScheduledState.fromDb(r.state),
+      refs: [
+        for (final id in (payload['refs'] as List<dynamic>? ?? const []))
+          id as String,
+      ],
     );
   }
 
@@ -54,6 +59,7 @@ class AlertStoreImpl implements AlertStore {
               'title': a.title,
               'body': a.body,
               'route': a.route,
+              'refs': a.refs,
             }),
             contentHash: a.contentHash,
             state: ScheduledState.pending.db,
@@ -161,6 +167,25 @@ class AlertStoreImpl implements AlertStore {
   }
 
   @override
+  Future<void> markReorderNotified(
+    List<String> medicineIds,
+    DateTime day,
+  ) async {
+    final iso = dateToIso(day);
+    for (final id in medicineIds) {
+      // Only the notified date changes; an existing snooze is kept.
+      await _db
+          .into(_db.reorderReminderState)
+          .insertOnConflictUpdate(
+            ReorderReminderStateCompanion(
+              medicineId: Value(id),
+              lastNotifiedOn: Value(iso),
+            ),
+          );
+    }
+  }
+
+  @override
   Stream<int> watchPendingCount() {
     final count = _s.id.count();
     return (_db.selectOnly(_s)
@@ -232,6 +257,32 @@ class AlertSourceImpl implements AlertSource {
           quantity: r.data['qty']! as int,
           windowDays: r.data['window_days']! as int,
           snoozeDay: r.data['snooze_day'] as int?,
+        ),
+    ];
+  }
+
+  @override
+  Future<List<PlanReorder>> loadPlanReorders({required DateTime today}) async {
+    final rows = await _db
+        .customSelect(
+          belowLevelSql,
+          variables: [Variable<String>(dateToIso(today))],
+          readsFrom: {_db.medicines, _db.batches, _db.reorderReminderState},
+        )
+        .get();
+    int? day(Object? iso) =>
+        iso == null ? null : dayNumber(dateFromIso(iso as String));
+    return [
+      for (final r in rows)
+        PlanReorder(
+          medicineId: r.data['id']! as String,
+          name: _name(
+            r.data['brand']! as String,
+            r.data['strength'] as String?,
+          ),
+          usable: r.data['usable']! as int,
+          lastNotifiedDay: day(r.data['last_notified_on']),
+          snoozeDay: day(r.data['snoozed_until']),
         ),
     ];
   }

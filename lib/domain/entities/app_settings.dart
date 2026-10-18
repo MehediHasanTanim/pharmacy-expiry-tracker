@@ -29,6 +29,7 @@ class AppSettings {
     this.expiryForm = '',
     this.expiryHideHandled = false,
     this.alertPermissionAsked = false,
+    this.onboardingDone = false,
   });
 
   /// Rebuilds settings from stored key/value rows; missing or malformed values
@@ -74,6 +75,7 @@ class AppSettings {
           _bool(m[SettingKey.expiryHideHandled]) ?? d.expiryHideHandled,
       alertPermissionAsked:
           _bool(m[SettingKey.alertPermissionAsked]) ?? d.alertPermissionAsked,
+      onboardingDone: _bool(m[SettingKey.onboardingDone]) ?? d.onboardingDone,
     );
   }
 
@@ -132,6 +134,9 @@ class AppSettings {
   /// refusal now needs the system settings rather than another prompt.
   final bool alertPermissionAsked;
 
+  /// The first-run introduction has been completed or skipped.
+  final bool onboardingDone;
+
   Map<String, String> toMap() => {
     SettingKey.pharmacyName: pharmacyName,
     SettingKey.nearExpiryWindowDays: '$nearExpiryWindowDays',
@@ -158,6 +163,7 @@ class AppSettings {
     SettingKey.expiryForm: expiryForm,
     SettingKey.expiryHideHandled: '$expiryHideHandled',
     SettingKey.alertPermissionAsked: '$alertPermissionAsked',
+    SettingKey.onboardingDone: '$onboardingDone',
   };
 
   AppSettings copyWith({
@@ -186,6 +192,7 @@ class AppSettings {
     String? expiryForm,
     bool? expiryHideHandled,
     bool? alertPermissionAsked,
+    bool? onboardingDone,
   }) {
     return AppSettings(
       pharmacyName: pharmacyName ?? this.pharmacyName,
@@ -214,6 +221,7 @@ class AppSettings {
       expiryForm: expiryForm ?? this.expiryForm,
       expiryHideHandled: expiryHideHandled ?? this.expiryHideHandled,
       alertPermissionAsked: alertPermissionAsked ?? this.alertPermissionAsked,
+      onboardingDone: onboardingDone ?? this.onboardingDone,
     );
   }
 
@@ -269,4 +277,5 @@ abstract final class SettingKey {
   static const expiryForm = 'expiry_form';
   static const expiryHideHandled = 'expiry_hide_handled';
   static const alertPermissionAsked = 'alert_permission_asked';
+  static const onboardingDone = 'onboarding_done';
 }

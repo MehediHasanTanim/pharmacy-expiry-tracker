@@ -7,6 +7,7 @@ import 'package:pharmacy_expiry_tracker/app/theme.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/app_settings.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/expiry.dart';
 import 'package:pharmacy_expiry_tracker/domain/rules/expiry_bucket.dart';
+import 'package:pharmacy_expiry_tracker/features/common/search_field.dart';
 import 'package:pharmacy_expiry_tracker/features/expiry/expiry_actions.dart';
 import 'package:pharmacy_expiry_tracker/features/expiry/expiry_filter_sheet.dart';
 import 'package:pharmacy_expiry_tracker/features/expiry/expiry_providers.dart';
@@ -138,12 +139,11 @@ class _ExpiryScreenState extends ConsumerState<ExpiryScreen> {
           if (_searching)
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: SearchBar(
+              child: SearchField(
                 key: const Key('expiry-search'),
                 controller: _search,
-                autoFocus: true,
+                autofocus: true,
                 hintText: l10n.expirySearchHint,
-                leading: const Icon(Icons.search),
                 onChanged: (v) =>
                     ref.read(expirySearchProvider.notifier).set(v),
               ),
@@ -197,7 +197,8 @@ class _BucketChips extends ConsumerWidget {
     // The ">90 days" chip only matters if some medicine has a longer window.
     final showLater = (summary?.count(ExpiryBucket.ok) ?? 0) > 0;
     return SizedBox(
-      height: 56,
+      // Room for chips at the full 48 dp touch height.
+      height: 64,
       child: ListView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

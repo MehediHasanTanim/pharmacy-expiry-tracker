@@ -30,29 +30,39 @@ class InvoiceTile extends ConsumerWidget {
             ? l10n.invoiceNoNumber(formatDate(context, inv.invoiceDate))
             : l10n.invoiceNumberLabel(inv.invoiceNumber!),
       ),
-      subtitle: Text(
-        [
-          if (inv.dueDate != null)
-            l10n.invoiceDueIn(formatDate(context, inv.dueDate!)),
-          '${l10n.invoiceTotalLabel} ${inv.total.format(symbol: currency)}',
-        ].join(' · '),
-      ),
-      trailing: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
+      isThreeLine: true,
+      // Status and balance live in the subtitle so they can wrap at large
+      // text sizes instead of being squeezed into a trailing column.
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          InvoiceStatusChip(status: balance.status),
-          if (!balance.isSettled)
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: Text(
-                balance.balance.format(symbol: currency),
-                key: Key('invoice-balance-${inv.id}'),
-                style: Theme.of(context).textTheme.labelLarge,
-              ),
+          Text(
+            [
+              if (inv.dueDate != null)
+                l10n.invoiceDueIn(formatDate(context, inv.dueDate!)),
+              '${l10n.invoiceTotalLabel} ${inv.total.format(symbol: currency)}',
+            ].join(' · '),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                InvoiceStatusChip(status: balance.status),
+                if (!balance.isSettled)
+                  Text(
+                    balance.balance.format(symbol: currency),
+                    key: Key('invoice-balance-${inv.id}'),
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+              ],
             ),
+          ),
         ],
       ),
+      trailing: const Icon(Icons.chevron_right),
       onTap: () => context.push(
         '${Routes.suppliers}/${inv.supplierId}/invoice/${inv.id}',
       ),
@@ -163,6 +173,7 @@ Future<DateTime?> askReminderSnooze(
   BuildContext context,
   WidgetRef ref, {
   DateTime? dueDate,
+  String? title,
 }) {
   final l10n = AppLocalizations.of(context);
   final today = ref.read(todayDateProvider);
@@ -170,7 +181,7 @@ Future<DateTime?> askReminderSnooze(
   return showDialog<DateTime>(
     context: context,
     builder: (ctx) => SimpleDialog(
-      title: Text(l10n.snoozeRemindersTitle),
+      title: Text(title ?? l10n.snoozeRemindersTitle),
       children: [
         SimpleDialogOption(
           key: const Key('rsnooze-1d'),

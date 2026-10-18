@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pharmacy_expiry_tracker/app/routes.dart';
+import 'package:pharmacy_expiry_tracker/features/common/search_field.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/medicine_tile.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/stock_providers.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
@@ -38,11 +39,10 @@ class _MedicinePickerScreenState extends ConsumerState<MedicinePickerScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.all(16),
-            child: SearchBar(
+            child: SearchField(
               key: const Key('picker-search'),
-              autoFocus: true,
+              autofocus: true,
               hintText: l10n.stockSearchHint,
-              leading: const Icon(Icons.search),
               onChanged: (v) => setState(() => _query = v.trim()),
             ),
           ),

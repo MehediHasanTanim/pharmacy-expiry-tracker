@@ -756,5 +756,172 @@
         "type": "String"
       }
     }
-  }
+  },
+  "alertReorderTitle": "{count, plural, =1{1 medicine to reorder} other{{count} medicines to reorder}}",
+  "@alertReorderTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "alertReorderBody": "{items}{more, plural, =0{} other{ and {more} more}}",
+  "@alertReorderBody": {
+    "placeholders": {
+      "items": {
+        "type": "String"
+      },
+      "more": {
+        "type": "int"
+      }
+    }
+  },
+  "alertReorderItem": "{name} ({left} left)",
+  "@alertReorderItem": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "left": {
+        "type": "int"
+      }
+    }
+  },
+  "homeExpired": "Expired on shelf",
+  "homeExpiring30": "Expiring soon",
+  "homeReorder": "To reorder",
+  "homeOverdueDues": "Overdue payments",
+  "homeWeekTitle": "Expiring this week",
+  "homeSeeAll": "See all",
+  "homeWeekEmpty": "Nothing expires in the next 7 days.",
+  "homeAtRisk": "Value at risk",
+  "homeFirstTitle": "Start by adding a medicine",
+  "homeFirstBody": "Add a medicine and receive its first batch, and expiry alerts begin.",
+  "homeAddMedicine": "Add medicine",
+  "homeNoReorder": "All stocked",
+  "homeAllGood": "Nothing needs attention",
+  "bannerReplanFailed": "Alerts could not be updated. Check again.",
+  "bannerBattery": "Battery saving may delay your alerts.",
+  "bannerCheck": "Check",
+  "reorderTitle": "Reorder list",
+  "reorderEmpty": "Nothing to reorder",
+  "reorderEmptyBody": "Medicines below their reorder level will show up here.",
+  "reorderUnassigned": "No preferred supplier",
+  "reorderSuggested": "Order",
+  "reorderSnooze": "Snooze reminders",
+  "reorderResume": "Resume reminders",
+  "snackReorderSnoozed": "Reorder reminders snoozed",
+  "snackReorderResumed": "Reorder reminders resumed",
+  "moreSectionAlerts": "Alerts",
+  "moreSectionStock": "Stock",
+  "moreReorderTile": "Reorder list",
+  "moreSettingsTile": "Settings",
+  "moreSectionApp": "App",
+  "settingsTitle": "Settings",
+  "settingsPharmacy": "Pharmacy",
+  "fieldPharmacyName": "Pharmacy name",
+  "settingsExpiry": "Expiry",
+  "settingsWindow": "Near-expiry window",
+  "settingsWindowHelp": "Batches expiring within this many days appear on the Expiry tab.",
+  "settingsBuckets": "Urgency groups",
+  "settingsBucketsHelp": "Days at which batches move to the next group.",
+  "settingsBucketA": "Urgent up to",
+  "settingsBucketB": "Soon up to",
+  "settingsBucketC": "Later up to",
+  "errBucketsOrder": "Each group must be longer than the one before.",
+  "settingsDisplay": "Display",
+  "settingsCurrency": "Currency symbol",
+  "settingsCurrencyHelp": "Shown next to amounts. Leave empty for none.",
+  "settingsDateFormat": "Date format",
+  "settingsTheme": "Theme",
+  "themeSystem": "Follow the device",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "dateFormatDevice": "Device default",
+  "alertSettingsReorder": "Reorder reminders",
+  "alertSettingsReorderEvery": "Remind again after",
+  "onbSkip": "Skip",
+  "onbNext": "Next",
+  "onbBack": "Back",
+  "onbStart": "Get started",
+  "onb1Title": "Never let medicine expire unnoticed",
+  "onb1Body": "Record each batch with its expiry date. The app shows what is running out of time first.",
+  "onb2Title": "Alerts that work offline",
+  "onb2Body": "Reminders are scheduled on your phone, so they arrive even without a signal or with the app closed.",
+  "onb3Title": "Keep track of dues and stock",
+  "onb3Body": "See what you owe each supplier, get paid-by reminders, and know what to reorder.",
+  "onbSetupTitle": "About your pharmacy",
+  "onbSetupBody": "You can change all of this later in Settings.",
+  "onbAlertsTitle": "Turn on expiry alerts",
+  "onbAlertsBody": "The app needs permission to show notifications. Alerts stay on your phone.",
+  "onbDoneTitle": "You are ready",
+  "onbDoneBody": "Add your first medicine and its batches to start tracking.",
+  "onbAddFirst": "Add first medicine",
+  "onbExplore": "Explore the app",
+  "homeBatchCount": "{count, plural, =1{1 batch} other{{count} batches}}",
+  "@homeBatchCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeMedicineCount": "{count, plural, =1{1 medicine} other{{count} medicines}}",
+  "@homeMedicineCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeInvoiceCount": "{count, plural, =1{1 invoice} other{{count} invoices}}",
+  "@homeInvoiceCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeCardSemantics": "{label}: {value}",
+  "@homeCardSemantics": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "reorderLevelLine": "{usable} on hand · reorder at {level}",
+  "@reorderLevelLine": {
+    "placeholders": {
+      "usable": {
+        "type": "int"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsWindowDays": "{count} days",
+  "@settingsWindowDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "onbStep": "Step {current} of {total}",
+  "@onbStep": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "rowActionsTooltip": "More actions"
 }

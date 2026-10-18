@@ -196,3 +196,19 @@ after the daily alert time** (default 09:10).
 
 Exit criteria (Sprint 4): a due-date reminder fires on the device; paying cancels
 the remaining reminders (P6) with no duplicates after repeated *Check again*.
+
+---
+
+## Sprint 5 additions: reorder reminders and badge
+
+Reminders arrive **15 minutes after the daily alert time** (default 09:15).
+
+| # | Steps | Expect | P | S | X | I |
+|---|---|---|---|---|---|---|
+| R1 | Medicine with reorder level 20, stock 5; alert time ~3 min ahead | "1 medicine to reorder" arrives ~18 min later | ☐ | ☐ | ☐ | ☐ |
+| R2 | Tap the notification | Opens the reorder list | ☐ | ☐ | ☐ | ☐ |
+| R3 | Receive a reminder, do not restock | Next arrives after the set interval (default 3 days), not daily | ☐ | ☐ | ☐ | ☐ |
+| R4 | Restock above the level, *Check again* | Reorder reminders disappear from *Scheduled alerts* | ☐ | ☐ | ☐ | ☐ |
+| R5 | Snooze a medicine until tomorrow | No reminder today | ☐ | ☐ | ☐ | ☐ |
+| R6 | Airplane mode, app swiped away | Reminder still arrives | ☐ | ☐ | ☐ | ☐ |
+| R7 | Add an expired batch so the badge count should be 1; background the app | Launcher icon shows 1 where the launcher supports badges (iOS always) | ☐ | ☐ | ☐ | ☐ |

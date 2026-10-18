@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pharmacy_expiry_tracker/app/app.dart';
 import 'package:pharmacy_expiry_tracker/app/deep_links.dart';
+import 'package:pharmacy_expiry_tracker/app/onboarding_gate.dart';
 import 'package:pharmacy_expiry_tracker/app/providers.dart';
 import 'package:pharmacy_expiry_tracker/app/router.dart';
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
@@ -47,6 +48,7 @@ void main() {
       ProviderScope(
         overrides: [
           databaseProvider.overrideWithValue(env.db),
+          onboardingEnabledProvider.overrideWithValue(false),
           clockProvider.overrideWithValue(env.clock),
           dataChangeBusProvider.overrideWithValue(env.bus),
           alertEngineEnabledProvider.overrideWithValue(false),
@@ -437,7 +439,7 @@ void main() {
       final c = await open(t);
       c.read(deepLinksProvider).handle('/nonsense');
       await settle(t);
-      expect(find.text('Your dashboard will appear here'), findsOneWidget);
+      expect(find.byKey(const Key('home-first-medicine')), findsOneWidget);
       await disposeApp(t);
     });
 

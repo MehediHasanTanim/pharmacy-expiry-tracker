@@ -6,6 +6,7 @@ import 'package:pharmacy_expiry_tracker/app/providers.dart';
 import 'package:pharmacy_expiry_tracker/app/routes.dart';
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
 import 'package:pharmacy_expiry_tracker/data/dev/seed_data.dart';
+import 'package:pharmacy_expiry_tracker/features/home/home_providers.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 
 class MoreScreen extends ConsumerWidget {
@@ -21,6 +22,17 @@ class MoreScreen extends ConsumerWidget {
       appBar: AppBar(title: Text(l10n.tabMore)),
       body: ListView(
         children: [
+          _Section(l10n.moreSectionStock),
+          ListTile(
+            key: const Key('more-reorder'),
+            leading: const Icon(Icons.shopping_cart_outlined),
+            title: Text(l10n.moreReorderTile),
+            trailing: _CountBadge(
+              count: ref.watch(reorderItemsProvider).value?.length ?? 0,
+            ),
+            onTap: () => context.push(Routes.reorder),
+          ),
+          _Section(l10n.moreSectionAlerts),
           ListTile(
             key: const Key('more-alerts'),
             leading: const Icon(Icons.notifications_outlined),
@@ -41,6 +53,14 @@ class MoreScreen extends ConsumerWidget {
             title: Text(l10n.alertCenterTitle),
             trailing: const Icon(Icons.chevron_right),
             onTap: () => context.push(Routes.alertHistory),
+          ),
+          _Section(l10n.moreSectionApp),
+          ListTile(
+            key: const Key('more-settings'),
+            leading: const Icon(Icons.settings_outlined),
+            title: Text(l10n.moreSettingsTile),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push(Routes.settings),
           ),
           if (showDevTools) ...[
             const Divider(),
@@ -91,5 +111,48 @@ class MoreScreen extends ConsumerWidget {
       batches: 10000,
     );
     messenger.showSnackBar(SnackBar(content: Text(l10n.devSeedDone)));
+  }
+}
+
+class _Section extends StatelessWidget {
+  const _Section(this.text);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+    child: Semantics(
+      header: true,
+      child: Text(text, style: Theme.of(context).textTheme.titleSmall),
+    ),
+  );
+}
+
+/// A small count, with the number spelled out for screen readers.
+class _CountBadge extends StatelessWidget {
+  const _CountBadge({required this.count});
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    if (count == 0) return const Icon(Icons.chevron_right);
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      key: const Key('more-reorder-count'),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: scheme.primaryContainer,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        '$count',
+        style: TextStyle(
+          color: scheme.onPrimaryContainer,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
   }
 }

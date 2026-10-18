@@ -43,6 +43,7 @@ class PlannedAlert {
     required this.body,
     required this.route,
     this.osId = 0,
+    this.refs = const [],
   });
 
   /// e.g. `lead:2026-11-17`, `day:2026-11-17`, `digest:2026-10-18`.
@@ -60,10 +61,14 @@ class PlannedAlert {
   /// 31-bit id handed to the OS scheduler; assigned by [assignOsIds].
   final int osId;
 
+  /// Ids of the things this alert is about (e.g. medicines in a reorder
+  /// reminder), kept so firing it can be recorded against each of them.
+  final List<String> refs;
+
   /// Changes whenever anything the user would see or rely on changes.
-  String get contentHash =>
-      stableHash('$title|$body|$route|${fireAt.millisecondsSinceEpoch}')
-          .toRadixString(16);
+  String get contentHash => stableHash(
+    '$title|$body|$route|${fireAt.millisecondsSinceEpoch}|${refs.join(',')}',
+  ).toRadixString(16);
 
   PlannedAlert withOsId(int id) => PlannedAlert(
     key: key,
@@ -73,6 +78,7 @@ class PlannedAlert {
     body: body,
     route: route,
     osId: id,
+    refs: refs,
   );
 
   ScheduledNotification toNotification() => ScheduledNotification(
@@ -95,10 +101,20 @@ class PlannedAlert {
       other.title == title &&
       other.body == body &&
       other.route == route &&
-      other.osId == osId;
+      other.osId == osId &&
+      listEquals(other.refs, refs);
 
   @override
-  int get hashCode => Object.hash(key, kind, fireAt, title, body, route, osId);
+  int get hashCode => Object.hash(
+    key,
+    kind,
+    fireAt,
+    title,
+    body,
+    route,
+    osId,
+    Object.hashAll(refs),
+  );
 
   @override
   String toString() => 'PlannedAlert($key @ $fireAt)';

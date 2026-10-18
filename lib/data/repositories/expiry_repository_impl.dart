@@ -73,6 +73,20 @@ class ExpiryRepositoryImpl implements ExpiryRepository {
     if (f.category != null) e = e & _m.category.equals(f.category!);
     if (f.form != null) e = e & _m.dosageForm.equals(f.form!.name);
     if (f.supplierId != null) e = e & _b.supplierId.equals(f.supplierId!);
+    if (f.fromDays != null) {
+      e =
+          e &
+          _b.expiryDate.isBiggerOrEqualValue(
+            _iso(_plusDays(q.today, f.fromDays!)),
+          );
+    }
+    if (f.toDays != null) {
+      e =
+          e &
+          _b.expiryDate.isSmallerOrEqualValue(
+            _iso(_plusDays(q.today, f.toDays!)),
+          );
+    }
     if (f.hideHandled) {
       // Expired stock stays visible until it is actually dealt with.
       e = e & (_b.handledAt.isNull() | _b.expiryDate.isSmallerThanValue(today));
@@ -160,48 +174,54 @@ class ExpiryRepositoryImpl implements ExpiryRepository {
     final t = query.thresholds;
     String at(int days) => _iso(_plusDays(today, days));
 
-    final expired = _b.id.count(
-      filter: _b.expiryDate.isSmallerThanValue(_iso(today)),
-    );
-    final d30 = _b.id.count(
-      filter:
+    final inBucket = <ExpiryBucket, Expression<bool>>{
+      ExpiryBucket.expired: _b.expiryDate.isSmallerThanValue(_iso(today)),
+      ExpiryBucket.d30:
           _b.expiryDate.isBiggerOrEqualValue(_iso(today)) &
           _b.expiryDate.isSmallerOrEqualValue(at(t[0])),
-    );
-    final d60 = _b.id.count(
-      filter:
+      ExpiryBucket.d60:
           _b.expiryDate.isBiggerThanValue(at(t[0])) &
           _b.expiryDate.isSmallerOrEqualValue(at(t[1])),
-    );
-    final d90 = _b.id.count(
-      filter:
+      ExpiryBucket.d90:
           _b.expiryDate.isBiggerThanValue(at(t[1])) &
           _b.expiryDate.isSmallerOrEqualValue(at(t[2])),
-    );
-    final ok = _b.id.count(filter: _b.expiryDate.isBiggerThanValue(at(t[2])));
-    final value = _valueExpr.sum();
-    final missing = _b.id.count(filter: _b.costPriceMinor.isNull());
+      ExpiryBucket.ok: _b.expiryDate.isBiggerThanValue(at(t[2])),
+    };
+    // Per bucket: how many batches, what they are worth, how many have no
+    // price. One pass over the rows computes all of it.
+    final counts = {
+      for (final e in inBucket.entries) e.key: _b.id.count(filter: e.value),
+    };
+    final values = {
+      for (final e in inBucket.entries) e.key: _valueExpr.sum(filter: e.value),
+    };
+    final missing = {
+      for (final e in inBucket.entries)
+        e.key: _b.id.count(filter: e.value & _b.costPriceMinor.isNull()),
+    };
 
     final stmt =
         _db.selectOnly(_b).join([innerJoin(_m, _m.id.equalsExp(_b.medicineId))])
-          ..addColumns([expired, d30, d60, d90, ok, value, missing])
+          ..addColumns([...counts.values, ...values.values, ...missing.values])
           ..where(_base(query));
 
-    return stmt.watchSingle().map(
-      (r) => ExpirySummary(
-        counts: {
-          ExpiryBucket.expired: r.read(expired) ?? 0,
-          ExpiryBucket.d30: r.read(d30) ?? 0,
-          ExpiryBucket.d60: r.read(d60) ?? 0,
-          ExpiryBucket.d90: r.read(d90) ?? 0,
-          ExpiryBucket.ok: r.read(ok) ?? 0,
-        },
+    return stmt.watchSingle().map((r) {
+      final perBucket = {
+        for (final k in inBucket.keys)
+          k: ValueAtRisk(
+            total: Money(r.read(values[k]!) ?? 0),
+            missingCost: r.read(missing[k]!) ?? 0,
+          ),
+      };
+      return ExpirySummary(
+        counts: {for (final k in inBucket.keys) k: r.read(counts[k]!) ?? 0},
         value: ValueAtRisk(
-          total: Money(r.read(value) ?? 0),
-          missingCost: r.read(missing) ?? 0,
+          total: Money(perBucket.values.fold(0, (a, v) => a + v.total.minor)),
+          missingCost: perBucket.values.fold(0, (a, v) => a + v.missingCost),
         ),
-      ),
-    );
+        values: perBucket,
+      );
+    });
   }
 
   @override

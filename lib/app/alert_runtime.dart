@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharmacy_expiry_tracker/app/deep_links.dart';
 import 'package:pharmacy_expiry_tracker/app/providers.dart';
+import 'package:pharmacy_expiry_tracker/domain/entities/expiry.dart';
+import 'package:pharmacy_expiry_tracker/features/home/home_providers.dart';
 
 /// Starts the alert engine with the app and keeps it fresh: initialises the
 /// OS scheduler, opens a notification that launched the app, re-plans at
@@ -25,13 +27,26 @@ class _AlertRuntimeState extends ConsumerState<AlertRuntime>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    if (ref.read(alertEngineEnabledProvider)) unawaited(_start());
+    if (ref.read(alertEngineEnabledProvider)) {
+      unawaited(_start());
+      // Keep the icon badge equal to the number of batches needing action.
+      ref.listenManual(
+        homeExpirySummaryProvider,
+        (_, next) => _updateBadge(next.value),
+        fireImmediately: true,
+      );
+    }
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  void _updateBadge(ExpirySummary? summary) {
+    if (summary == null) return;
+    unawaited(ref.read(appBadgeProvider).setCount(needsActionCount(summary)));
   }
 
   Future<void> _start() async {
@@ -58,6 +73,7 @@ class _AlertRuntimeState extends ConsumerState<AlertRuntime>
       ..invalidate(notificationPermissionsProvider)
       ..invalidate(deviceAlertConditionsProvider);
     unawaited(ref.read(alertCoordinatorProvider).replanNow());
+    _updateBadge(ref.read(homeExpirySummaryProvider).value);
   }
 
   @override

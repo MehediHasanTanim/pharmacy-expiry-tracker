@@ -5,6 +5,7 @@ import 'package:pharmacy_expiry_tracker/app/providers.dart';
 import 'package:pharmacy_expiry_tracker/app/routes.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/supplier.dart';
 import 'package:pharmacy_expiry_tracker/features/common/labels.dart';
+import 'package:pharmacy_expiry_tracker/features/common/search_field.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/suppliers_providers.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 
@@ -41,6 +42,8 @@ class _SuppliersScreenState extends ConsumerState<SuppliersScreen> {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.tabSuppliers)),
       floatingActionButton: FloatingActionButton.extended(
+        // Tabs stay alive side by side; a shared default hero tag would clash.
+        heroTag: null,
         key: const Key('add-supplier'),
         onPressed: () => context.push('${Routes.suppliers}/new'),
         icon: const Icon(Icons.add),
@@ -51,15 +54,15 @@ class _SuppliersScreenState extends ConsumerState<SuppliersScreen> {
           const _DuesBar(),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-            child: SearchBar(
+            child: SearchField(
               key: const Key('supplier-search'),
               hintText: l10n.supplierSearchHint,
-              leading: const Icon(Icons.search),
               onChanged: (v) => setState(() => _query = v.trim()),
             ),
           ),
           SizedBox(
-            height: 56,
+            // Room for chips at the full 48 dp touch height.
+            height: 64,
             child: ListView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -188,22 +191,12 @@ class _SupplierTile extends ConsumerWidget {
       child: ListTile(
         key: Key('supplier-${s.id}'),
         title: Text(s.name),
+        isThreeLine: true,
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (subtitle.isNotEmpty) Text(subtitle),
             if (s.isArchived) Text(l10n.archivedBadge),
-            if (summary.nextDue != null)
-              Text(
-                l10n.supplierNextDueLine(formatDate(context, summary.nextDue!)),
-              ),
-          ],
-        ),
-        isThreeLine: subtitle.isNotEmpty && summary.nextDue != null,
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
             Text(
               summary.outstanding.minor == 0
                   ? l10n.duesAllClear
@@ -213,6 +206,10 @@ class _SupplierTile extends ConsumerWidget {
               key: Key('owed-${s.id}'),
               style: theme.textTheme.labelLarge,
             ),
+            if (summary.nextDue != null)
+              Text(
+                l10n.supplierNextDueLine(formatDate(context, summary.nextDue!)),
+              ),
             if (summary.hasOverdue)
               Padding(
                 padding: const EdgeInsets.only(top: 4),
@@ -235,12 +232,14 @@ class _SupplierTile extends ConsumerWidget {
                         color: theme.colorScheme.onErrorContainer,
                       ),
                       const SizedBox(width: 4),
-                      Text(
-                        l10n.supplierOverdueLine(
-                          summary.overdue.format(symbol: currency),
-                        ),
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: theme.colorScheme.onErrorContainer,
+                      Flexible(
+                        child: Text(
+                          l10n.supplierOverdueLine(
+                            summary.overdue.format(symbol: currency),
+                          ),
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: theme.colorScheme.onErrorContainer,
+                          ),
                         ),
                       ),
                     ],
@@ -249,6 +248,7 @@ class _SupplierTile extends ConsumerWidget {
               ),
           ],
         ),
+        trailing: const Icon(Icons.chevron_right),
         onTap: () => context.push('${Routes.suppliers}/${s.id}'),
       ),
     );
@@ -261,8 +261,9 @@ class _EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    // Scrollable so short screens and large text never overflow.
     return Center(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(32),
         child: Column(
           mainAxisSize: MainAxisSize.min,

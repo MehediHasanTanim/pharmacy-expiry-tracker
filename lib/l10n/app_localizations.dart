@@ -2433,6 +2433,498 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Record what you owe {supplier} for this delivery so you are reminded to pay.'**
   String dueDialogBody(String supplier);
+
+  /// No description provided for @alertReorderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 medicine to reorder} other{{count} medicines to reorder}}'**
+  String alertReorderTitle(int count);
+
+  /// No description provided for @alertReorderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{items}{more, plural, =0{} other{ and {more} more}}'**
+  String alertReorderBody(String items, int more);
+
+  /// No description provided for @alertReorderItem.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} ({left} left)'**
+  String alertReorderItem(String name, int left);
+
+  /// No description provided for @homeExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired on shelf'**
+  String get homeExpired;
+
+  /// No description provided for @homeExpiring30.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiring soon'**
+  String get homeExpiring30;
+
+  /// No description provided for @homeReorder.
+  ///
+  /// In en, this message translates to:
+  /// **'To reorder'**
+  String get homeReorder;
+
+  /// No description provided for @homeOverdueDues.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue payments'**
+  String get homeOverdueDues;
+
+  /// No description provided for @homeWeekTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiring this week'**
+  String get homeWeekTitle;
+
+  /// No description provided for @homeSeeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get homeSeeAll;
+
+  /// No description provided for @homeWeekEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing expires in the next 7 days.'**
+  String get homeWeekEmpty;
+
+  /// No description provided for @homeAtRisk.
+  ///
+  /// In en, this message translates to:
+  /// **'Value at risk'**
+  String get homeAtRisk;
+
+  /// No description provided for @homeFirstTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start by adding a medicine'**
+  String get homeFirstTitle;
+
+  /// No description provided for @homeFirstBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a medicine and receive its first batch, and expiry alerts begin.'**
+  String get homeFirstBody;
+
+  /// No description provided for @homeAddMedicine.
+  ///
+  /// In en, this message translates to:
+  /// **'Add medicine'**
+  String get homeAddMedicine;
+
+  /// No description provided for @homeNoReorder.
+  ///
+  /// In en, this message translates to:
+  /// **'All stocked'**
+  String get homeNoReorder;
+
+  /// No description provided for @homeAllGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing needs attention'**
+  String get homeAllGood;
+
+  /// No description provided for @bannerReplanFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts could not be updated. Check again.'**
+  String get bannerReplanFailed;
+
+  /// No description provided for @bannerBattery.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery saving may delay your alerts.'**
+  String get bannerBattery;
+
+  /// No description provided for @bannerCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Check'**
+  String get bannerCheck;
+
+  /// No description provided for @reorderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reorder list'**
+  String get reorderTitle;
+
+  /// No description provided for @reorderEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to reorder'**
+  String get reorderEmpty;
+
+  /// No description provided for @reorderEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Medicines below their reorder level will show up here.'**
+  String get reorderEmptyBody;
+
+  /// No description provided for @reorderUnassigned.
+  ///
+  /// In en, this message translates to:
+  /// **'No preferred supplier'**
+  String get reorderUnassigned;
+
+  /// No description provided for @reorderSuggested.
+  ///
+  /// In en, this message translates to:
+  /// **'Order'**
+  String get reorderSuggested;
+
+  /// No description provided for @reorderSnooze.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze reminders'**
+  String get reorderSnooze;
+
+  /// No description provided for @reorderResume.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume reminders'**
+  String get reorderResume;
+
+  /// No description provided for @snackReorderSnoozed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reorder reminders snoozed'**
+  String get snackReorderSnoozed;
+
+  /// No description provided for @snackReorderResumed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reorder reminders resumed'**
+  String get snackReorderResumed;
+
+  /// No description provided for @moreSectionAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts'**
+  String get moreSectionAlerts;
+
+  /// No description provided for @moreSectionStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock'**
+  String get moreSectionStock;
+
+  /// No description provided for @moreReorderTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Reorder list'**
+  String get moreReorderTile;
+
+  /// No description provided for @moreSettingsTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get moreSettingsTile;
+
+  /// No description provided for @moreSectionApp.
+  ///
+  /// In en, this message translates to:
+  /// **'App'**
+  String get moreSectionApp;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsPharmacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Pharmacy'**
+  String get settingsPharmacy;
+
+  /// No description provided for @fieldPharmacyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Pharmacy name'**
+  String get fieldPharmacyName;
+
+  /// No description provided for @settingsExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry'**
+  String get settingsExpiry;
+
+  /// No description provided for @settingsWindow.
+  ///
+  /// In en, this message translates to:
+  /// **'Near-expiry window'**
+  String get settingsWindow;
+
+  /// No description provided for @settingsWindowHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Batches expiring within this many days appear on the Expiry tab.'**
+  String get settingsWindowHelp;
+
+  /// No description provided for @settingsBuckets.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgency groups'**
+  String get settingsBuckets;
+
+  /// No description provided for @settingsBucketsHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Days at which batches move to the next group.'**
+  String get settingsBucketsHelp;
+
+  /// No description provided for @settingsBucketA.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent up to'**
+  String get settingsBucketA;
+
+  /// No description provided for @settingsBucketB.
+  ///
+  /// In en, this message translates to:
+  /// **'Soon up to'**
+  String get settingsBucketB;
+
+  /// No description provided for @settingsBucketC.
+  ///
+  /// In en, this message translates to:
+  /// **'Later up to'**
+  String get settingsBucketC;
+
+  /// No description provided for @errBucketsOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Each group must be longer than the one before.'**
+  String get errBucketsOrder;
+
+  /// No description provided for @settingsDisplay.
+  ///
+  /// In en, this message translates to:
+  /// **'Display'**
+  String get settingsDisplay;
+
+  /// No description provided for @settingsCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency symbol'**
+  String get settingsCurrency;
+
+  /// No description provided for @settingsCurrencyHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown next to amounts. Leave empty for none.'**
+  String get settingsCurrencyHelp;
+
+  /// No description provided for @settingsDateFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Date format'**
+  String get settingsDateFormat;
+
+  /// No description provided for @settingsTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsTheme;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow the device'**
+  String get themeSystem;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @dateFormatDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Device default'**
+  String get dateFormatDevice;
+
+  /// No description provided for @alertSettingsReorder.
+  ///
+  /// In en, this message translates to:
+  /// **'Reorder reminders'**
+  String get alertSettingsReorder;
+
+  /// No description provided for @alertSettingsReorderEvery.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind again after'**
+  String get alertSettingsReorderEvery;
+
+  /// No description provided for @onbSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onbSkip;
+
+  /// No description provided for @onbNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onbNext;
+
+  /// No description provided for @onbBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get onbBack;
+
+  /// No description provided for @onbStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get onbStart;
+
+  /// No description provided for @onb1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Never let medicine expire unnoticed'**
+  String get onb1Title;
+
+  /// No description provided for @onb1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Record each batch with its expiry date. The app shows what is running out of time first.'**
+  String get onb1Body;
+
+  /// No description provided for @onb2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts that work offline'**
+  String get onb2Title;
+
+  /// No description provided for @onb2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders are scheduled on your phone, so they arrive even without a signal or with the app closed.'**
+  String get onb2Body;
+
+  /// No description provided for @onb3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep track of dues and stock'**
+  String get onb3Title;
+
+  /// No description provided for @onb3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'See what you owe each supplier, get paid-by reminders, and know what to reorder.'**
+  String get onb3Body;
+
+  /// No description provided for @onbSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About your pharmacy'**
+  String get onbSetupTitle;
+
+  /// No description provided for @onbSetupBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change all of this later in Settings.'**
+  String get onbSetupBody;
+
+  /// No description provided for @onbAlertsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on expiry alerts'**
+  String get onbAlertsTitle;
+
+  /// No description provided for @onbAlertsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The app needs permission to show notifications. Alerts stay on your phone.'**
+  String get onbAlertsBody;
+
+  /// No description provided for @onbDoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You are ready'**
+  String get onbDoneTitle;
+
+  /// No description provided for @onbDoneBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your first medicine and its batches to start tracking.'**
+  String get onbDoneBody;
+
+  /// No description provided for @onbAddFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Add first medicine'**
+  String get onbAddFirst;
+
+  /// No description provided for @onbExplore.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore the app'**
+  String get onbExplore;
+
+  /// No description provided for @homeBatchCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 batch} other{{count} batches}}'**
+  String homeBatchCount(int count);
+
+  /// No description provided for @homeMedicineCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 medicine} other{{count} medicines}}'**
+  String homeMedicineCount(int count);
+
+  /// No description provided for @homeInvoiceCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 invoice} other{{count} invoices}}'**
+  String homeInvoiceCount(int count);
+
+  /// No description provided for @homeCardSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: {value}'**
+  String homeCardSemantics(String label, String value);
+
+  /// No description provided for @reorderLevelLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{usable} on hand · reorder at {level}'**
+  String reorderLevelLine(int usable, int level);
+
+  /// No description provided for @settingsWindowDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days'**
+  String settingsWindowDays(int count);
+
+  /// No description provided for @onbStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String onbStep(int current, int total);
+
+  /// No description provided for @rowActionsTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'More actions'**
+  String get rowActionsTooltip;
 }
 
 class _AppLocalizationsDelegate

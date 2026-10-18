@@ -263,6 +263,37 @@ class AlertSettingsScreen extends ConsumerWidget {
             ),
           ),
           const Divider(height: 32),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+            child: Text(
+              l10n.alertSettingsReorder,
+              style: theme.textTheme.titleMedium,
+            ),
+          ),
+          ListTile(
+            title: Text(l10n.alertSettingsReorderEvery),
+            trailing: DropdownButton<int>(
+              key: const Key('reorder-every'),
+              value: const [1, 2, 3, 5, 7].contains(s.reorderRefireDays)
+                  ? s.reorderRefireDays
+                  : 3,
+              items: [
+                for (final n in const [1, 2, 3, 5, 7])
+                  DropdownMenuItem(
+                    value: n,
+                    child: Text(l10n.overdueEveryDays(n)),
+                  ),
+              ],
+              onChanged: (v) {
+                if (v != null) {
+                  unawaited(
+                    _update(ref, (s) => s.copyWith(reorderRefireDays: v)),
+                  );
+                }
+              },
+            ),
+          ),
+          const Divider(height: 32),
           ListTile(
             key: const Key('open-health'),
             leading: const Icon(Icons.health_and_safety_outlined),

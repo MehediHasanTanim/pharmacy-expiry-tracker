@@ -29,6 +29,9 @@ abstract interface class AlertStore {
   Future<DateTime?> nextPendingFireAt(DateTime now);
 
   Stream<int> watchPendingCount();
+
+  /// Records that a reorder reminder for each medicine was delivered on [day].
+  Future<void> markReorderNotified(List<String> medicineIds, DateTime day);
 }
 
 /// Reads the batches alert planning needs.
@@ -44,4 +47,7 @@ abstract interface class AlertSource {
 
   /// Unpaid invoices that have a due date, from any supplier.
   Future<List<PlanInvoice>> loadPlanInvoices();
+
+  /// Medicines below their reorder level as of [today].
+  Future<List<PlanReorder>> loadPlanReorders({required DateTime today});
 }

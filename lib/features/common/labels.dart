@@ -39,8 +39,42 @@ String reasonLabel(AppLocalizations l, AdjustmentReason r) => switch (r) {
   AdjustmentReason.other => l.adjustReasonOther,
 };
 
-String formatDate(BuildContext context, DateTime d) =>
-    DateFormat.yMMMd(Localizations.localeOf(context).toString()).format(d);
+/// Carries the user's date-format choice (Settings → Display) down the tree so
+/// every screen formats dates the same way.
+class FormatScope extends InheritedWidget {
+  const FormatScope({
+    required this.datePattern,
+    required super.child,
+    super.key,
+  });
+
+  /// An intl pattern such as `dd/MM/yyyy`; empty means the device default.
+  final String datePattern;
+
+  static String of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<FormatScope>()?.datePattern ??
+      '';
+
+  @override
+  bool updateShouldNotify(FormatScope old) => datePattern != old.datePattern;
+}
+
+/// Patterns offered in Settings (SET-9).
+const dateFormatChoices = [
+  '',
+  'dd/MM/yyyy',
+  'MM/dd/yyyy',
+  'yyyy-MM-dd',
+  'd MMM yyyy',
+];
+
+String formatDate(BuildContext context, DateTime d) {
+  final locale = Localizations.localeOf(context).toString();
+  final pattern = FormatScope.of(context);
+  return pattern.isEmpty
+      ? DateFormat.yMMMd(locale).format(d)
+      : DateFormat(pattern, locale).format(d);
+}
 
 String formatDateTime(BuildContext context, DateTime d) {
   final locale = Localizations.localeOf(context).toString();

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:pharmacy_expiry_tracker/domain/alerts/alert_reconciler.dart';
 import 'package:pharmacy_expiry_tracker/domain/alerts/alert_records.dart';
+import 'package:pharmacy_expiry_tracker/domain/alerts/planned_alert.dart';
 import 'package:pharmacy_expiry_tracker/domain/notifications/notification_plugin.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/alert_store.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/transaction_runner.dart';
@@ -47,6 +48,10 @@ class AlertScheduler {
   Future<int> recoverPastDue(DateTime now) async {
     final fired = await _store.markPastDueFired(now);
     for (final r in fired) {
+      // A delivered reorder reminder starts the wait before the next one.
+      if (r.kind == AlertKind.reorder && r.refs.isNotEmpty) {
+        await _store.markReorderNotified(r.refs, r.fireAt);
+      }
       await _store.addLog(
         AlertLogEntry(
           id: '${r.key}@${r.fireAt.millisecondsSinceEpoch}',

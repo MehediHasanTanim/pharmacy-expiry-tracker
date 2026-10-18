@@ -27,18 +27,19 @@ class MedicineTile extends StatelessWidget {
       child: ListTile(
         key: Key('medicine-${m.id}'),
         title: Text(m.displayName),
-        subtitle: Text(
-          m.isArchived ? '$subtitle · ${l10n.archivedBadge}' : subtitle,
-        ),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
+        isThreeLine: summary.nearestExpiry != null,
+        // Everything sits in the subtitle so large text can wrap; a trailing
+        // column would be squeezed into the tile's fixed height.
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(m.isArchived ? '$subtitle · ${l10n.archivedBadge}' : subtitle),
             Text(stock, style: Theme.of(context).textTheme.labelLarge),
-            if (summary.nearestExpiry != null) ...[
-              const SizedBox(height: 4),
-              ExpiryChip(expiry: summary.nearestExpiry!),
-            ],
+            if (summary.nearestExpiry != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: ExpiryChip(expiry: summary.nearestExpiry!),
+              ),
           ],
         ),
         onTap: onTap,

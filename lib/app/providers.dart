@@ -9,10 +9,12 @@ import 'package:pharmacy_expiry_tracker/data/repositories/batch_repository_impl.
 import 'package:pharmacy_expiry_tracker/data/repositories/expiry_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/ledger_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/medicine_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/reorder_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/search_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/settings_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/supplier_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/services/alert_engine_factory.dart';
+import 'package:pharmacy_expiry_tracker/data/services/app_badge_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/services/local_notification_plugin.dart';
 import 'package:pharmacy_expiry_tracker/data/services/platform_alert_settings_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/services/url_contact_launcher.dart';
@@ -21,6 +23,7 @@ import 'package:pharmacy_expiry_tracker/domain/alerts/alert_records.dart';
 import 'package:pharmacy_expiry_tracker/domain/contact_launcher.dart';
 import 'package:pharmacy_expiry_tracker/domain/data_changes.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/app_settings.dart';
+import 'package:pharmacy_expiry_tracker/domain/notifications/app_badge.dart';
 import 'package:pharmacy_expiry_tracker/domain/notifications/notification_plugin.dart';
 import 'package:pharmacy_expiry_tracker/domain/notifications/platform_alert_settings.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/alert_store.dart';
@@ -28,6 +31,7 @@ import 'package:pharmacy_expiry_tracker/domain/repositories/batch_repository.dar
 import 'package:pharmacy_expiry_tracker/domain/repositories/expiry_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/ledger_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/medicine_repository.dart';
+import 'package:pharmacy_expiry_tracker/domain/repositories/reorder_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/search_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/settings_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/supplier_repository.dart';
@@ -36,6 +40,7 @@ import 'package:pharmacy_expiry_tracker/domain/usecases/batch_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/expiry_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/ledger_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/medicine_usecases.dart';
+import 'package:pharmacy_expiry_tracker/domain/usecases/reorder_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/supplier_usecases.dart';
 
 final databaseProvider = Provider<AppDatabase>((ref) {
@@ -289,3 +294,18 @@ final reminderSnoozeProvider = Provider<UpdateReminderSnooze>(
 final contactLauncherProvider = Provider<ContactLauncher>(
   (ref) => const UrlContactLauncher(),
 );
+
+final reorderRepositoryProvider = Provider<ReorderRepository>(
+  (ref) => ReorderRepositoryImpl(ref.watch(databaseProvider)),
+);
+
+final reorderSnoozeProvider = Provider<UpdateReorderSnooze>(
+  (ref) => UpdateReorderSnooze(
+    reorder: ref.watch(reorderRepositoryProvider),
+    clock: ref.watch(clockProvider),
+    bus: ref.watch(dataChangeBusProvider),
+  ),
+);
+
+/// The app-icon badge. Replaced in tests.
+final appBadgeProvider = Provider<AppBadge>((ref) => const PluginAppBadge());

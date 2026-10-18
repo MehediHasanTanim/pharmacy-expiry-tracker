@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pharmacy_expiry_tracker/app/app.dart';
+import 'package:pharmacy_expiry_tracker/app/onboarding_gate.dart';
 import 'package:pharmacy_expiry_tracker/app/providers.dart';
 import 'package:pharmacy_expiry_tracker/data/db/app_database.dart';
 
@@ -15,6 +16,7 @@ void main() {
       ProviderScope(
         overrides: [
           databaseProvider.overrideWithValue(db),
+          onboardingEnabledProvider.overrideWithValue(false),
           // This test is about navigation, not the alert engine.
           alertEngineEnabledProvider.overrideWithValue(false),
         ],
@@ -33,7 +35,7 @@ void main() {
         reason: label,
       );
     }
-    expect(find.text('Your dashboard will appear here'), findsOneWidget);
+    expect(find.byKey(const Key('home-first-medicine')), findsOneWidget);
 
     await tester.tap(find.text('Expiry'));
     await settle(tester);

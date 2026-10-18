@@ -29,6 +29,7 @@ class ScheduledAlertRecord {
     required this.route,
     required this.contentHash,
     required this.state,
+    this.refs = const [],
   });
 
   final String key;
@@ -40,6 +41,9 @@ class ScheduledAlertRecord {
   final String route;
   final String contentHash;
   final ScheduledState state;
+
+  /// Things the alert is about (see `PlannedAlert.refs`).
+  final List<String> refs;
 
   bool get isPending => state == ScheduledState.pending;
 }

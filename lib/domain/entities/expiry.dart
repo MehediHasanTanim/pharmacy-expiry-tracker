@@ -34,6 +34,8 @@ class ExpiryFilter {
     this.supplierId,
     this.query = '',
     this.hideHandled = false,
+    this.fromDays,
+    this.toDays,
   });
 
   final ExpiryBucket? bucket;
@@ -46,6 +48,11 @@ class ExpiryFilter {
 
   /// Hides batches marked handled (expired ones always stay visible).
   final bool hideHandled;
+
+  /// Only batches expiring between [fromDays] and [toDays] days from today
+  /// (inclusive), e.g. 0 and 7 for "this week".
+  final int? fromDays;
+  final int? toDays;
 
   /// Filters other than the bucket chips and the free-text search.
   bool get hasSheetFilters =>
@@ -65,6 +72,8 @@ class ExpiryFilter {
       supplierId: supplierId,
       query: query ?? this.query,
       hideHandled: hideHandled,
+      fromDays: fromDays,
+      toDays: toDays,
     );
   }
 
@@ -76,11 +85,21 @@ class ExpiryFilter {
       other.form == form &&
       other.supplierId == supplierId &&
       other.query == query &&
-      other.hideHandled == hideHandled;
+      other.hideHandled == hideHandled &&
+      other.fromDays == fromDays &&
+      other.toDays == toDays;
 
   @override
-  int get hashCode =>
-      Object.hash(bucket, category, form, supplierId, query, hideHandled);
+  int get hashCode => Object.hash(
+    bucket,
+    category,
+    form,
+    supplierId,
+    query,
+    hideHandled,
+    fromDays,
+    toDays,
+  );
 }
 
 /// Everything the expiry queries depend on.
@@ -195,10 +214,16 @@ class ExpirySummary {
   const ExpirySummary({
     this.counts = const {},
     this.value = const ValueAtRisk(),
+    this.values = const {},
   });
 
   final Map<ExpiryBucket, int> counts;
   final ValueAtRisk value;
+
+  /// Value at risk within each bucket.
+  final Map<ExpiryBucket, ValueAtRisk> values;
+
+  ValueAtRisk valueOf(ExpiryBucket b) => values[b] ?? const ValueAtRisk();
 
   int count(ExpiryBucket b) => counts[b] ?? 0;
 
@@ -208,7 +233,8 @@ class ExpirySummary {
   bool operator ==(Object other) =>
       other is ExpirySummary &&
       mapEquals(other.counts, counts) &&
-      other.value == value;
+      other.value == value &&
+      mapEquals(other.values, values);
 
   @override
   int get hashCode => Object.hash(

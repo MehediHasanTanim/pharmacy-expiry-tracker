@@ -7,6 +7,7 @@ import 'package:pharmacy_expiry_tracker/app/providers.dart';
 import 'package:pharmacy_expiry_tracker/app/routes.dart';
 import 'package:pharmacy_expiry_tracker/features/common/expiry_chip.dart';
 import 'package:pharmacy_expiry_tracker/features/common/labels.dart';
+import 'package:pharmacy_expiry_tracker/features/common/search_field.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/medicine_tile.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/stock_providers.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
@@ -70,6 +71,8 @@ class _StockScreenState extends ConsumerState<StockScreen> {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.tabStock)),
       floatingActionButton: FloatingActionButton.extended(
+        // Tabs stay alive side by side; a shared default hero tag would clash.
+        heroTag: null,
         key: const Key('add-stock'),
         onPressed: () => context.push('${Routes.stock}/pick'),
         icon: const Icon(Icons.add),
@@ -79,22 +82,11 @@ class _StockScreenState extends ConsumerState<StockScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-            child: SearchBar(
+            child: SearchField(
               key: const Key('stock-search'),
               controller: _controller,
               focusNode: _focus,
               hintText: l10n.stockSearchHint,
-              leading: const Icon(Icons.search),
-              trailing: [
-                if (_controller.text.isNotEmpty)
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () {
-                      _controller.clear();
-                      _onChanged('');
-                    },
-                  ),
-              ],
               onChanged: _onChanged,
               onSubmitted: (v) {
                 if (v.trim().isNotEmpty) unawaited(_remember(v));

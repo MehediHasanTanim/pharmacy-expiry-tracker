@@ -30,6 +30,7 @@ void main() {
     expect(s.expirySort, 'soonest');
     expect(s.expiryCategory, isEmpty);
     expect(s.expiryHideHandled, isFalse);
+    expect(s.onboardingDone, isFalse);
   });
 
   test('save then load round trips every field', () async {
@@ -58,6 +59,8 @@ void main() {
       expiryCategory: 'Antibiotics',
       expiryForm: 'tablet',
       expiryHideHandled: true,
+      alertPermissionAsked: true,
+      onboardingDone: true,
     );
     await repo.save(custom);
     expect(await repo.load(), custom);

@@ -129,9 +129,28 @@ pass (database load + plan + diff) ≈ 300 ms.
   to build and verify.)
 * **Time-zone / clock changes** are noticed at the next launch, resume or
   12-hourly run, not the instant they happen (that needs a native receiver).
-* **Reorder and backup reminders** share the engine's structure (`AlertKind`)
-  but are not planned yet (Sprints 5–6). Payment reminders were added in
-  Sprint 4.
+* **Backup reminders** share the engine's structure (`AlertKind`) but are not
+  planned yet (Sprint 6). Payment reminders were added in Sprint 4 and reorder
+  reminders in Sprint 5 (below).
 * The only native code added is a small Android method channel for the health
   screen (`MainActivity.kt`): battery-optimisation state, device maker, and
   opening system settings. Scheduling stays in the plugin.
+
+---
+
+## Sprint 5 additions: reorder reminders and the badge
+
+* **Reorder reminders.** A medicine with a reorder level whose *usable* stock
+  (not expired, not discarded) is below the level gets a reminder at the daily
+  alert time **+ 15 minutes**. One notification per day covers all such
+  medicines (key `reorder:<date>`, `refs` = medicine ids). After a reminder is
+  delivered, the next one waits for the interval in Alert settings (default 3
+  days, `reorder_reminder_state.last_notified_on`). Snoozing a medicine skips
+  reminders before the snooze date but keeps the rhythm. Restocking cancels
+  pending reminders at the next replan; medicines without a level are never
+  reminded.
+* **Past-due recovery** (`recoverPastDue`) marks reorder reminders as notified
+  so the rhythm continues after the phone was off.
+* **Icon badge.** `AlertRuntime` sets the badge to expired + next-30-day
+  batches (`needsActionCount`) on every summary change and on resume, through
+  `app_badge_plus`. Launcher support varies on Android; failures are ignored.

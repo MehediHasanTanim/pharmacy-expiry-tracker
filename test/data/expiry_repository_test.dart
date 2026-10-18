@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pharmacy_expiry_tracker/core/date/expiry_date.dart';
 import 'package:pharmacy_expiry_tracker/core/money/money.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/reorder_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/domain/data_changes.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/batch.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/enums.dart';
@@ -404,6 +405,53 @@ void main() {
     });
   });
 
+  group('dashboard support (Sprint 5)', () {
+    test('value at risk is reported per bucket', () async {
+      final m = await env.medicine();
+      await add(m, 'E', -3, qty: 2, cost: 500); // expired: 10.00
+      await add(m, 'N1', 5, qty: 1, cost: 300); // ≤30: 3.00
+      await add(m, 'N2', 20, qty: 2); // ≤30: no price
+      await add(m, 'L', 60, qty: 1, cost: 100); // 31-60
+      final s = await env.expiry.watchSummary(query()).first;
+      expect(s.valueOf(ExpiryBucket.expired).total, const Money(1000));
+      expect(s.valueOf(ExpiryBucket.expired).isPartial, isFalse);
+      final soon = s.valueOf(ExpiryBucket.d30);
+      expect(soon.total, const Money(300));
+      expect(soon.missingCost, 1);
+      expect(s.valueOf(ExpiryBucket.d60).total, const Money(100));
+      expect(s.valueOf(ExpiryBucket.ok), const ValueAtRisk());
+      // The overall figure is the sum of the buckets.
+      expect(s.value.total, const Money(1400));
+      expect(s.value.missingCost, 1);
+    });
+
+    test('a day range limits the list: "expiring this week"', () async {
+      final m = await env.medicine();
+      await add(m, 'GONE', -1);
+      await add(m, 'TODAY', 0);
+      await add(m, 'D7', 7);
+      await add(m, 'D8', 8);
+      expect(
+        await numbers(
+          query(filter: const ExpiryFilter(fromDays: 0, toDays: 7)),
+        ),
+        ['TODAY', 'D7'],
+      );
+    });
+
+    test('the day range respects the per-medicine window', () async {
+      final narrow = await env.medicine(brand: 'Narrow', alertWindowDays: 3);
+      await add(narrow, 'N5', 5);
+      expect(
+        await numbers(
+          query(filter: const ExpiryFilter(fromDays: 0, toDays: 7)),
+        ),
+        isEmpty,
+        reason: "outside the medicine's own 3-day window",
+      );
+    });
+  });
+
   group('snooze / handled (EXP-5, S2-07)', () {
     late String batchId;
     setUp(() async {
@@ -592,6 +640,51 @@ void main() {
       // Sorts without a matching index scan the window; keep them bounded.
       expect(byValue, lessThan(500), reason: 'value sort ${byValue}ms');
       expect(byName, lessThan(500), reason: 'name sort ${byName}ms');
+    });
+
+    test('the Home queries stay fast (S5-12)', () async {
+      await env.db.customStatement('''
+        INSERT INTO medicines (id, brand_name, dosage_form, unit, reorder_level,
+          is_archived, search_text, created_at, updated_at)
+        WITH RECURSIVE n(i) AS (SELECT 1 UNION ALL SELECT i + 1 FROM n WHERE i < 5000)
+        SELECT 'med-' || i, 'Brand ' || i, 'tablet', 'strip', 20 + i % 30, 0,
+               'brand ' || i, 0, 0 FROM n
+      ''');
+      await env.db.customStatement('''
+        INSERT INTO batches (id, medicine_id, batch_number, expiry_date,
+          expiry_precision, quantity_received, quantity_on_hand, cost_price_minor,
+          received_date, status, created_at, updated_at)
+        WITH RECURSIVE n(i) AS (SELECT 1 UNION ALL SELECT i + 1 FROM n WHERE i < 50000)
+        SELECT 'b-' || i, 'med-' || (1 + i % 5000), 'L' || i,
+               date('2026-10-17', ((i * 7919) % 400 - 100) || ' days'),
+               'DAY', 10, 10, 100 + i % 900, '2026-10-17', 'ACTIVE', 0, 0 FROM n
+      ''');
+
+      Future<int> time(Future<Object?> Function() f) async {
+        final sw = Stopwatch()..start();
+        await f();
+        return sw.elapsedMilliseconds;
+      }
+
+      final week = query(filter: const ExpiryFilter(fromDays: 0, toDays: 7));
+      final reorder = ReorderRepositoryImpl(env.db);
+      // Warm up.
+      await env.expiry.watchSummary(query()).first;
+
+      final summary = await time(() => env.expiry.watchSummary(query()).first);
+      final thisWeek = await time(() => env.expiry.fetchPage(week, limit: 5));
+      final below = await time(
+        () => reorder.watchBelowLevel(today: today).first,
+      );
+      // The timings are the record of this test.
+      // ignore: avoid_print
+      print(
+        '50k rows, Home: summary ${summary}ms, this week ${thisWeek}ms, '
+        'reorder list ${below}ms',
+      );
+      expect(thisWeek, lessThan(100), reason: 'this week ${thisWeek}ms');
+      expect(summary, lessThan(500), reason: 'summary ${summary}ms');
+      expect(below, lessThan(500), reason: 'reorder ${below}ms');
     });
   });
 }

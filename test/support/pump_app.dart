@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pharmacy_expiry_tracker/app/app.dart';
+import 'package:pharmacy_expiry_tracker/app/onboarding_gate.dart';
 import 'package:pharmacy_expiry_tracker/app/providers.dart';
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
 
@@ -19,6 +20,7 @@ Widget wrap(TestEnv env) {
   return ProviderScope(
     overrides: [
       databaseProvider.overrideWithValue(env.db),
+      onboardingEnabledProvider.overrideWithValue(false),
       clockProvider.overrideWithValue(env.clock),
       dataChangeBusProvider.overrideWithValue(env.bus),
       // Screen tests do not need the alert engine running underneath them.
@@ -33,6 +35,18 @@ Widget wrap(TestEnv env) {
 /// when a stream is cancelled, so the test ends with no pending timers.
 Future<void> disposeApp(WidgetTester tester) async {
   await tester.pumpWidget(const SizedBox());
+  // Queries that a last change kicked off may still be in flight; closing the
+  // database waits for them, and the fake clock cannot move them along, so
+  // give them real time. Cancelling Drift streams schedules zero-duration
+  // timers, possibly one after another, which the pumps flush.
+  for (var round = 0; round < 2; round++) {
+    for (var i = 0; i < 5; i++) {
+      await tester.pump(Duration.zero);
+    }
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 50)),
+    );
+  }
   await tester.pump(Duration.zero);
 }
 

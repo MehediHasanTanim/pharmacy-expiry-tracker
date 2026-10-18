@@ -5,6 +5,9 @@ abstract final class Routes {
   static const expiry = '/expiry';
   static const suppliers = '/suppliers';
   static const more = '/more';
+  static const reorder = '/more/reorder';
+  static const settings = '/more/settings';
+  static const onboarding = '/onboarding';
   static const alertLab = '/more/alert-lab';
   static const alertSettings = '/more/alerts';
   static const alertHealth = '/more/alerts/health';

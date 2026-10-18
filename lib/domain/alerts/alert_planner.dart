@@ -21,6 +21,9 @@ const leadAlertOffsetMinutes = 5;
 /// Payment reminders follow the expiry alerts by a further few minutes.
 const paymentAlertOffsetMinutes = 10;
 
+/// Reorder reminders come last.
+const reorderAlertOffsetMinutes = 15;
+
 /// Calendar day as a whole number (days since 1970-01-01), immune to
 /// daylight-saving shifts. Planning does its arithmetic on these so scanning
 /// tens of thousands of batches stays fast.
@@ -89,12 +92,14 @@ List<PlannedAlert> planAlerts({
   required List<PlanBatch> batches,
   required AppLocalizations l10n,
   List<PlanInvoice> invoices = const [],
+  List<PlanReorder> reorders = const [],
   int maxPending = maxPendingAlerts,
 }) {
   final today = dateOnly(now);
   final out = <PlannedAlert>[
     ..._leadAlerts(now, today, settings, batches, l10n),
     ..._paymentAlerts(now, today, settings, invoices, l10n),
+    ..._reorderAlerts(now, today, settings, reorders, l10n),
     if (settings.digestEnabled)
       ..._digests(now, today, settings, batches, l10n),
   ];
@@ -123,6 +128,7 @@ PlannedAlert _withTime(PlannedAlert a, DateTime fireAt) {
     title: a.title,
     body: a.body,
     route: a.route,
+    refs: a.refs,
   );
 }
 
@@ -140,6 +146,30 @@ DateTime _applyQuietHours(DateTime t, AppSettings s) {
   final sameDay = !overnight || minute < end;
   final day = sameDay ? dateOnly(t) : DateTime(t.year, t.month, t.day + 1);
   return _at(day, end);
+}
+
+/// A medicine below its reorder level, as reorder reminders need it.
+@immutable
+class PlanReorder {
+  const PlanReorder({
+    required this.medicineId,
+    required this.name,
+    required this.usable,
+    this.lastNotifiedDay,
+    this.snoozeDay,
+  });
+
+  final String medicineId;
+  final String name;
+
+  /// Stock that has not expired.
+  final int usable;
+
+  /// Day number of the last reminder that was delivered for it.
+  final int? lastNotifiedDay;
+
+  /// Reminders stay silent until this day number.
+  final int? snoozeDay;
 }
 
 /// An unpaid invoice with a due date, as payment reminders need it.
@@ -478,6 +508,82 @@ class _PayGroup {
     }
     if (i < 3) {
       top.insert(i, inv);
+      if (top.length > 3) top.removeLast();
+    }
+  }
+}
+
+/// Reorder reminders (ROR-4, SET-7): for medicines below their level, one
+/// notification now and then every [AppSettings.reorderRefireDays] days until
+/// they are restocked. A medicine that was reminded recently waits out the
+/// interval; a snoozed one stays silent until its snooze ends. Every medicine
+/// reminding on the same day shares one notification.
+List<PlannedAlert> _reorderAlerts(
+  DateTime now,
+  DateTime today,
+  AppSettings settings,
+  List<PlanReorder> items,
+  AppLocalizations l10n,
+) {
+  if (items.isEmpty) return const [];
+  final every = settings.reorderRefireDays < 1 ? 1 : settings.reorderRefireDays;
+  final alertMinutes = settings.digestMinutes + reorderAlertOffsetMinutes;
+  final todayNumber = dayNumber(today);
+  final todayStillAhead = _at(today, alertMinutes).isAfter(now);
+  final lastDay = todayNumber + digestHorizonDays;
+
+  final groups = <int, _ReorderGroup>{};
+  for (final item in items) {
+    // The first reminder is due `every` days after the last one delivered, or
+    // right away if there never was one (or it was long ago).
+    var first = item.lastNotifiedDay == null
+        ? todayNumber
+        : item.lastNotifiedDay! + every;
+    if (first < todayNumber) first = todayNumber;
+    if (first == todayNumber && !todayStillAhead) first = todayNumber + 1;
+    for (var day = first; day <= lastDay; day += every) {
+      if (item.snoozeDay != null && day < item.snoozeDay!) continue;
+      (groups[day] ??= _ReorderGroup()).add(item);
+    }
+  }
+
+  return [
+    for (final e in groups.entries)
+      PlannedAlert(
+        key: 'reorder:${_iso(_fromDayNumber(e.key))}',
+        kind: AlertKind.reorder,
+        fireAt: _at(_fromDayNumber(e.key), alertMinutes),
+        title: l10n.alertReorderTitle(e.value.count),
+        body: l10n.alertReorderBody(
+          [for (final i in e.value.top) l10n.alertReorderItem(i.name, i.usable)]
+              .join(', '),
+          e.value.count > 3 ? e.value.count - 3 : 0,
+        ),
+        route: Routes.reorder,
+        refs: e.value.ids..sort(),
+      ),
+  ];
+}
+
+class _ReorderGroup {
+  int count = 0;
+  final ids = <String>[];
+  final top = <PlanReorder>[];
+
+  static int _compare(PlanReorder a, PlanReorder b) {
+    final byName = a.name.compareTo(b.name);
+    return byName != 0 ? byName : a.medicineId.compareTo(b.medicineId);
+  }
+
+  void add(PlanReorder item) {
+    count++;
+    ids.add(item.medicineId);
+    var i = top.length;
+    while (i > 0 && _compare(item, top[i - 1]) < 0) {
+      i--;
+    }
+    if (i < 3) {
+      top.insert(i, item);
       if (top.length > 3) top.removeLast();
     }
   }

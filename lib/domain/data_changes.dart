@@ -10,6 +10,7 @@ enum DataChangeKind {
   alertStateChanged,
   supplierChanged,
   ledgerChanged,
+  reorderChanged,
 }
 
 @immutable

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:pharmacy_expiry_tracker/app/providers.dart';
@@ -56,6 +59,11 @@ class ExpiryRow extends ConsumerWidget {
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Urgency first: icon, colour and words.
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: ExpiryChip(expiry: item.expiry),
+          ),
           Text(
             '${l10n.batchBy(b.batchNumber)} · '
             '${l10n.stockOnHand(b.quantityOnHand)}',
@@ -82,28 +90,47 @@ class ExpiryRow extends ConsumerWidget {
             ),
         ],
       ),
-      trailing: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          ExpiryChip(expiry: item.expiry),
-          if (!selecting)
-            InkResponse(
+      trailing: selecting
+          ? null
+          : IconButton(
               key: Key('row-menu-${b.id}'),
-              onTap: () => actions.showMenu(item),
-              radius: 20,
-              child: const Padding(
-                padding: EdgeInsets.only(top: 6),
-                child: Icon(Icons.more_horiz, size: 22),
-              ),
+              tooltip: l10n.rowActionsTooltip,
+              icon: const Icon(Icons.more_horiz),
+              onPressed: () => actions.showMenu(item),
             ),
-        ],
-      ),
       onTap: selecting ? onToggleSelected : () => actions.open(item),
       onLongPress: selecting ? null : () => actions.showMenu(item),
     );
 
     if (selecting) return tile;
+    // One focusable row for screen readers: the swipe actions are exposed as
+    // custom actions, and the Slidable's own gesture node takes the row's
+    // label instead of being an unlabelled button.
+    return Semantics(
+      customSemanticsActions: {
+        CustomSemanticsAction(label: l10n.actionSold): () =>
+            unawaited(actions.sold(item)),
+        CustomSemanticsAction(label: l10n.actionDiscardAll): () =>
+            unawaited(actions.discard(item)),
+        CustomSemanticsAction(label: l10n.actionSnooze): () =>
+            unawaited(actions.snooze(item)),
+        CustomSemanticsAction(
+          label: handled ? l10n.actionUnhandled : l10n.actionHandled,
+        ): () =>
+            unawaited(actions.toggleHandled(item)),
+      },
+      child: MergeSemantics(child: _slidable(context, l10n, theme, b.id, tile)),
+    );
+  }
+
+  Widget _slidable(
+    BuildContext context,
+    AppLocalizations l10n,
+    ThemeData theme,
+    String id,
+    Widget tile,
+  ) {
+    final b = item.batch;
     return Slidable(
       key: ValueKey('slidable-${b.id}'),
       endActionPane: ActionPane(

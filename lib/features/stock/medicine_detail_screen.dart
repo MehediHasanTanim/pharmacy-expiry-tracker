@@ -39,6 +39,8 @@ class MedicineDetailScreen extends ConsumerWidget {
       floatingActionButton: m == null || m.isArchived
           ? null
           : FloatingActionButton.extended(
+              // Tabs stay alive side by side; a shared default hero tag would clash.
+              heroTag: null,
               key: const Key('add-batch'),
               onPressed: () => context.push(
                 '${Routes.stock}/medicine/$medicineId/batch/new',

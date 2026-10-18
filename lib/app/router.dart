@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pharmacy_expiry_tracker/app/onboarding_gate.dart';
 import 'package:pharmacy_expiry_tracker/app/routes.dart';
 import 'package:pharmacy_expiry_tracker/app/shell_scaffold.dart';
 import 'package:pharmacy_expiry_tracker/features/alerts/alert_health_screen.dart';
@@ -11,6 +12,9 @@ import 'package:pharmacy_expiry_tracker/features/expiry/expiry_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/home/home_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/more/alert_lab_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/more/more_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/more/reorder_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/more/settings_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/onboarding/onboarding_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/batch_detail_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/batch_form_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/medicine_detail_screen.dart';
@@ -24,13 +28,33 @@ import 'package:pharmacy_expiry_tracker/features/suppliers/supplier_detail_scree
 import 'package:pharmacy_expiry_tracker/features/suppliers/supplier_form_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/suppliers_screen.dart';
 
-GoRouter buildRouter({String initialLocation = Routes.home}) {
+GoRouter buildRouter({
+  String initialLocation = Routes.home,
+  OnboardingState Function()? onboarding,
+  Listenable? refreshListenable,
+}) {
   // One key per router so several routers (e.g. in tests) never share it.
   final rootKey = GlobalKey<NavigatorState>(debugLabel: 'root');
   return GoRouter(
     navigatorKey: rootKey,
     initialLocation: initialLocation,
+    refreshListenable: refreshListenable,
+    // First run goes through onboarding; afterwards it is never shown again.
+    redirect: (context, state) {
+      final stage = onboarding?.call() ?? OnboardingState.done;
+      final atOnboarding = state.uri.path == Routes.onboarding;
+      if (stage == OnboardingState.needed && !atOnboarding) {
+        return Routes.onboarding;
+      }
+      if (stage == OnboardingState.done && atOnboarding) return Routes.home;
+      return null;
+    },
     routes: [
+      GoRoute(
+        path: Routes.onboarding,
+        parentNavigatorKey: rootKey,
+        builder: (_, _) => const OnboardingScreen(),
+      ),
       GoRoute(
         path: Routes.alertPermission,
         parentNavigatorKey: rootKey,
@@ -189,6 +213,16 @@ GoRouter buildRouter({String initialLocation = Routes.home}) {
                 builder: (_, _) => const MoreScreen(),
                 routes: [
                   GoRoute(
+                    path: 'reorder',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const ReorderScreen(),
+                  ),
+                  GoRoute(
+                    path: 'settings',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const SettingsScreen(),
+                  ),
+                  GoRoute(
                     path: 'alert-lab',
                     parentNavigatorKey: rootKey,
                     builder: (_, _) => const AlertLabScreen(),
@@ -221,7 +255,15 @@ GoRouter buildRouter({String initialLocation = Routes.home}) {
 }
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final router = buildRouter();
-  ref.onDispose(router.dispose);
+  final refresh = OnboardingRefresh();
+  ref.listen(onboardingStateProvider, (_, _) => refresh.poke());
+  final router = buildRouter(
+    onboarding: () => ref.read(onboardingStateProvider),
+    refreshListenable: refresh,
+  );
+  ref.onDispose(() {
+    router.dispose();
+    refresh.dispose();
+  });
   return router;
 });

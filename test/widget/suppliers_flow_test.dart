@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pharmacy_expiry_tracker/app/app.dart';
+import 'package:pharmacy_expiry_tracker/app/onboarding_gate.dart';
 import 'package:pharmacy_expiry_tracker/app/providers.dart';
 import 'package:pharmacy_expiry_tracker/app/router.dart';
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
@@ -38,6 +39,7 @@ void main() {
       ProviderScope(
         overrides: [
           databaseProvider.overrideWithValue(env.db),
+          onboardingEnabledProvider.overrideWithValue(false),
           clockProvider.overrideWithValue(env.clock),
           dataChangeBusProvider.overrideWithValue(env.bus),
           alertEngineEnabledProvider.overrideWithValue(false),
