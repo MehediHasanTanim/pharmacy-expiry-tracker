@@ -81,16 +81,18 @@ class PlannedAlert {
     refs: refs,
   );
 
-  ScheduledNotification toNotification() => ScheduledNotification(
-    id: osId,
-    fireAt: fireAt,
-    title: title,
-    body: body,
-    channel: kind.channel,
-    payload: route,
-    // Date-level alerts do not need minute precision (spike decision).
-    preferExact: false,
-  );
+  ScheduledNotification toNotification({String? snoozeLabel}) =>
+      ScheduledNotification(
+        id: osId,
+        fireAt: fireAt,
+        title: title,
+        body: body,
+        channel: kind.channel,
+        payload: route,
+        // Date-level alerts do not need minute precision (spike decision).
+        preferExact: false,
+        snoozeLabel: snoozeLabel,
+      );
 
   @override
   bool operator ==(Object other) =>

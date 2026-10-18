@@ -16,6 +16,7 @@ import 'package:pharmacy_expiry_tracker/features/more/more_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/more/reorder_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/more/settings_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/onboarding/onboarding_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/reports/reports_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/batch_detail_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/batch_form_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/medicine_detail_screen.dart';
@@ -244,6 +245,11 @@ GoRouter buildRouter({
                     path: 'reorder',
                     parentNavigatorKey: rootKey,
                     builder: (_, _) => const ReorderScreen(),
+                  ),
+                  GoRoute(
+                    path: 'reports',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const ReportsScreen(),
                   ),
                   GoRoute(
                     path: 'backup',

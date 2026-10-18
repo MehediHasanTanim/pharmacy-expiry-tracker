@@ -42,7 +42,10 @@ class FriendlyError extends StatelessWidget {
 /// Shown instead of the app when a database upgrade failed and the previous
 /// data was put back.
 class StartupFailedApp extends StatelessWidget {
-  const StartupFailedApp({super.key});
+  const StartupFailedApp({this.keyMissing = false, super.key});
+
+  /// The database is encrypted and its key is gone (not an upgrade problem).
+  final bool keyMissing;
 
   @override
   Widget build(BuildContext context) {
@@ -67,13 +70,20 @@ class StartupFailedApp extends StatelessWidget {
                     const Icon(Icons.shield_outlined, size: 56),
                     const SizedBox(height: 16),
                     Text(
-                      l10n.startupFailedTitle,
+                      keyMissing
+                          ? l10n.startupKeyMissingTitle
+                          : l10n.startupFailedTitle,
                       key: const Key('startup-failed'),
                       style: Theme.of(context).textTheme.headlineSmall,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 12),
-                    Text(l10n.startupFailedBody, textAlign: TextAlign.center),
+                    Text(
+                      keyMissing
+                          ? l10n.startupKeyMissingBody
+                          : l10n.startupFailedBody,
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
               ),

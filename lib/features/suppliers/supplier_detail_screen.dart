@@ -10,6 +10,7 @@ import 'package:pharmacy_expiry_tracker/features/common/labels.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/credit_dialog.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/ledger_widgets.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/return_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/suppliers/statement_action.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/suppliers_providers.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 
@@ -189,6 +190,18 @@ class SupplierDetailScreen extends ConsumerWidget {
                             context.push('${Routes.suppliers}/$supplierId/pay'),
                         icon: const Icon(Icons.payments_outlined),
                         label: Text(l10n.actionRecordPayment),
+                      ),
+                      OutlinedButton.icon(
+                        key: const Key('supplier-statement'),
+                        onPressed: () => unawaited(
+                          shareSupplierStatement(
+                            context,
+                            ref,
+                            supplierId: supplierId,
+                          ),
+                        ),
+                        icon: const Icon(Icons.description_outlined),
+                        label: Text(l10n.statementAction),
                       ),
                       OutlinedButton.icon(
                         key: const Key('return-stock'),

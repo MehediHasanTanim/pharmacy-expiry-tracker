@@ -70,6 +70,7 @@ class BackupController {
         live: live,
         preview: preview,
         closeDb: () => _ref.read(databaseProvider).close(),
+        hexKey: _ref.read(databaseKeyProvider),
       );
     } on BackupException {
       // The old data was put back; reopen it.

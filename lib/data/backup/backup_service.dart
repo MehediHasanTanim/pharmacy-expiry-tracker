@@ -7,6 +7,7 @@ import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
 import 'package:pharmacy_expiry_tracker/data/backup/backup_codec.dart';
 import 'package:pharmacy_expiry_tracker/data/backup/backup_failure.dart';
 import 'package:pharmacy_expiry_tracker/data/db/app_database.dart';
+import 'package:pharmacy_expiry_tracker/data/db/db_encryption.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/app_settings.dart';
 
 /// A backup file just written, ready to share.
@@ -71,7 +72,7 @@ class BackupService {
     );
     try {
       // A consistent snapshot, even while the app keeps writing.
-      await db.customStatement('VACUUM INTO ?', [snapshot]);
+      await exportPlainSnapshot(db, snapshot);
       final stamp = {SettingKey.lastBackupAt: now.toIso8601String()};
       const version = AppDatabase.currentSchemaVersion;
       final iters = iterations;
@@ -124,6 +125,7 @@ class BackupService {
     required File live,
     required BackupPreview preview,
     required Future<void> Function() closeDb,
+    String? hexKey,
   }) async {
     await closeDb();
     final stamp = _clock.now().millisecondsSinceEpoch;
@@ -141,6 +143,8 @@ class BackupService {
       // Copy beside the target first, then rename: the swap itself is atomic.
       final staged = File('${live.path}.incoming');
       await preview.databaseFile.copy(staged.path);
+      // Backups are plain files; the live database is encrypted.
+      if (hexKey != null) encryptInPlace(staged, hexKey);
       await staged.rename(live.path);
     } on Object catch (e) {
       await _delete(File('${live.path}.incoming'));

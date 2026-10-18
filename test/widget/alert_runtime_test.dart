@@ -48,6 +48,7 @@ void main() {
         overrides: [
           databaseProvider.overrideWithValue(env.db),
           onboardingEnabledProvider.overrideWithValue(false),
+          ...lockTestOverrides,
           clockProvider.overrideWithValue(env.clock),
           dataChangeBusProvider.overrideWithValue(env.bus),
           notificationPluginProvider.overrideWithValue(env.plugin),
@@ -135,6 +136,7 @@ void main() {
         overrides: [
           databaseProvider.overrideWithValue(env.db),
           onboardingEnabledProvider.overrideWithValue(false),
+          ...lockTestOverrides,
           alertEngineEnabledProvider.overrideWithValue(false),
           notificationPluginProvider.overrideWithValue(plugin),
         ],

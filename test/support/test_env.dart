@@ -9,6 +9,7 @@ import 'package:pharmacy_expiry_tracker/data/repositories/expiry_repository_impl
 import 'package:pharmacy_expiry_tracker/data/repositories/ledger_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/medicine_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/reorder_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/report_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/return_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/search_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/settings_repository_impl.dart';
@@ -145,6 +146,7 @@ class TestEnv {
       bus: bus,
     );
     drafts = DraftStoreImpl(db);
+    reports = ReportRepositoryImpl(db);
   }
 
   final AppDatabase db;
@@ -183,6 +185,7 @@ class TestEnv {
   late final OrderTracker orders;
   late final ReceiveDelivery receiveDelivery;
   late final DraftStoreImpl drafts;
+  late final ReportRepositoryImpl reports;
   late final RecentSearchesRepositoryImpl recent;
   late final SaveMedicine saveMedicine;
   late final SetMedicineArchived setArchived;

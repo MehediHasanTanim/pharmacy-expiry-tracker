@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:pharmacy_expiry_tracker/data/db/db_encryption.dart';
 import 'package:sqlite3/sqlite3.dart' as sql;
 
 /// A schema upgrade failed; the database was put back as it was before.
@@ -19,24 +20,20 @@ class MigrationFailedException implements Exception {
 ///
 /// [migrate] is whatever forces the upgrade to run (opening the Drift
 /// database and issuing a query). Nothing happens when the file is missing
-/// (fresh install) or already at [targetVersion].
+/// (fresh install) or already at [targetVersion]. With [hexKey] the file is
+/// an encrypted database (its copy is encrypted too).
 Future<bool> guardedMigrate({
   required File file,
   required int targetVersion,
   required Future<void> Function() migrate,
+  String? hexKey,
 }) async {
   final copy = File('${file.path}.premigrate');
-  final stored = _storedVersion(file);
+  final stored = _storedVersion(file, hexKey);
   final needsCopy = stored != null && stored > 0 && stored < targetVersion;
   if (needsCopy) {
     if (copy.existsSync()) copy.deleteSync();
-    final db = sql.sqlite3.open(file.path);
-    try {
-      // VACUUM INTO gives a consistent copy even with a write-ahead log.
-      db.execute('VACUUM INTO ?', [copy.path]);
-    } finally {
-      db.close();
-    }
+    _makeCopy(file, copy, hexKey);
   }
   try {
     await migrate();
@@ -49,10 +46,36 @@ Future<bool> guardedMigrate({
   return needsCopy;
 }
 
+sql.Database _open(File file, String? hexKey, {bool readOnly = false}) {
+  if (hexKey != null) {
+    return openEncrypted(file.path, hexKey, readOnly: readOnly);
+  }
+  return sql.sqlite3.open(
+    file.path,
+    mode: readOnly ? sql.OpenMode.readOnly : sql.OpenMode.readWrite,
+  );
+}
+
+void _makeCopy(File file, File copy, String? hexKey) {
+  final db = _open(file, hexKey);
+  try {
+    if (hexKey == null) {
+      // VACUUM INTO gives a consistent copy even with a write-ahead log.
+      db.execute('VACUUM INTO ?', [copy.path]);
+    } else {
+      // Fold the log into the file, then copy the encrypted bytes as they are.
+      db.select('PRAGMA wal_checkpoint(TRUNCATE)');
+    }
+  } finally {
+    db.close();
+  }
+  if (hexKey != null) file.copySync(copy.path);
+}
+
 /// Version stored in the file, or null if there is no file.
-int? _storedVersion(File file) {
+int? _storedVersion(File file, String? hexKey) {
   if (!file.existsSync()) return null;
-  final db = sql.sqlite3.open(file.path, mode: sql.OpenMode.readOnly);
+  final db = _open(file, hexKey, readOnly: true);
   try {
     return db.select('PRAGMA user_version').first.values.first! as int;
   } finally {

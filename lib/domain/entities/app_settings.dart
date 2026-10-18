@@ -32,6 +32,8 @@ class AppSettings {
     this.onboardingDone = false,
     this.lastBackupAt = '',
     this.firstRunOn = '',
+    this.appLockTimeoutSeconds = 30,
+    this.appLockBiometrics = true,
   });
 
   /// Rebuilds settings from stored key/value rows; missing or malformed values
@@ -80,6 +82,10 @@ class AppSettings {
       onboardingDone: _bool(m[SettingKey.onboardingDone]) ?? d.onboardingDone,
       lastBackupAt: m[SettingKey.lastBackupAt] ?? d.lastBackupAt,
       firstRunOn: m[SettingKey.firstRunOn] ?? d.firstRunOn,
+      appLockTimeoutSeconds:
+          _int(m[SettingKey.appLockTimeoutSeconds]) ?? d.appLockTimeoutSeconds,
+      appLockBiometrics:
+          _bool(m[SettingKey.appLockBiometrics]) ?? d.appLockBiometrics,
     );
   }
 
@@ -126,6 +132,13 @@ class AppSettings {
   /// SET-12.
   final bool appLockEnabled;
   final bool hideDetailsOnLockScreen;
+
+  /// How long the app may be in the background before it locks again
+  /// (0 = immediately).
+  final int appLockTimeoutSeconds;
+
+  /// Offer fingerprint / face / phone screen lock instead of typing the PIN.
+  final bool appLockBiometrics;
 
   /// Last-used Expiry tab selections (EXP-4): `soonest` | `value` | `name`;
   /// empty category/form mean "all".
@@ -177,6 +190,8 @@ class AppSettings {
     SettingKey.onboardingDone: '$onboardingDone',
     SettingKey.lastBackupAt: lastBackupAt,
     SettingKey.firstRunOn: firstRunOn,
+    SettingKey.appLockTimeoutSeconds: '$appLockTimeoutSeconds',
+    SettingKey.appLockBiometrics: '$appLockBiometrics',
   };
 
   AppSettings copyWith({
@@ -208,6 +223,8 @@ class AppSettings {
     bool? onboardingDone,
     String? lastBackupAt,
     String? firstRunOn,
+    int? appLockTimeoutSeconds,
+    bool? appLockBiometrics,
   }) {
     return AppSettings(
       pharmacyName: pharmacyName ?? this.pharmacyName,
@@ -239,6 +256,9 @@ class AppSettings {
       onboardingDone: onboardingDone ?? this.onboardingDone,
       lastBackupAt: lastBackupAt ?? this.lastBackupAt,
       firstRunOn: firstRunOn ?? this.firstRunOn,
+      appLockTimeoutSeconds:
+          appLockTimeoutSeconds ?? this.appLockTimeoutSeconds,
+      appLockBiometrics: appLockBiometrics ?? this.appLockBiometrics,
     );
   }
 
@@ -297,4 +317,6 @@ abstract final class SettingKey {
   static const onboardingDone = 'onboarding_done';
   static const lastBackupAt = 'last_backup_at';
   static const firstRunOn = 'first_run_on';
+  static const appLockTimeoutSeconds = 'app_lock_timeout_seconds';
+  static const appLockBiometrics = 'app_lock_biometrics';
 }

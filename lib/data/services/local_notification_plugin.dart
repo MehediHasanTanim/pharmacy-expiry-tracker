@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:pharmacy_expiry_tracker/data/services/notification_actions.dart';
+import 'package:pharmacy_expiry_tracker/domain/notifications/action_payload.dart';
 import 'package:pharmacy_expiry_tracker/domain/notifications/notification_plugin.dart';
 import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
@@ -47,7 +50,15 @@ class LocalNotificationPlugin implements NotificationPlugin {
           requestSoundPermission: false,
         ),
       ),
-      onDidReceiveNotificationResponse: (r) => onSelected(r.payload),
+      onDidReceiveNotificationResponse: (r) {
+        if (r.actionId == snoozeActionId) {
+          unawaited(handleNotificationAction(r, plugin: this));
+        } else {
+          onSelected(routeOf(r.payload));
+        }
+      },
+      // The "Snooze 1 day" button works with the app closed.
+      onDidReceiveBackgroundNotificationResponse: notificationActionBackground,
     );
     final android = _android;
     if (android != null) {
@@ -142,11 +153,22 @@ class LocalNotificationPlugin implements NotificationPlugin {
             _ => Importance.defaultImportance,
           },
           priority: Priority.high,
+          actions: [
+            if (n.snoozeLabel != null)
+              AndroidNotificationAction(snoozeActionId, n.snoozeLabel!),
+          ],
         ),
         iOS: const DarwinNotificationDetails(),
       ),
       androidScheduleMode: mode,
-      payload: n.payload,
+      payload: n.snoozeLabel == null
+          ? n.payload
+          : encodeActionPayload(
+              route: n.payload,
+              title: n.title,
+              body: n.body,
+              snoozeLabel: n.snoozeLabel!,
+            ),
     );
   }
 
@@ -180,6 +202,6 @@ class LocalNotificationPlugin implements NotificationPlugin {
     if (!isSupported) return null;
     final details = await _plugin.getNotificationAppLaunchDetails();
     if (details == null || !details.didNotificationLaunchApp) return null;
-    return details.notificationResponse?.payload;
+    return routeOf(details.notificationResponse?.payload);
   }
 }

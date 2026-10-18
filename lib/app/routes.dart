@@ -10,6 +10,7 @@ abstract final class Routes {
   static const supplierReturn = '/suppliers/return';
   static const receiveDelivery = '/stock/receive';
   static const backup = '/more/backup';
+  static const reports = '/more/reports';
   static const onboarding = '/onboarding';
   static const alertLab = '/more/alert-lab';
   static const alertSettings = '/more/alerts';

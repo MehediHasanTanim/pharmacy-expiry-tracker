@@ -40,6 +40,7 @@ void main() {
         overrides: [
           databaseProvider.overrideWithValue(env.db),
           onboardingEnabledProvider.overrideWithValue(false),
+          ...lockTestOverrides,
           clockProvider.overrideWithValue(env.clock),
           dataChangeBusProvider.overrideWithValue(env.bus),
           alertEngineEnabledProvider.overrideWithValue(false),

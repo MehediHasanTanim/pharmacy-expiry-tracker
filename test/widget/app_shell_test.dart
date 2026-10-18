@@ -17,6 +17,7 @@ void main() {
         overrides: [
           databaseProvider.overrideWithValue(db),
           onboardingEnabledProvider.overrideWithValue(false),
+          ...lockTestOverrides,
           // This test is about navigation, not the alert engine.
           alertEngineEnabledProvider.overrideWithValue(false),
         ],

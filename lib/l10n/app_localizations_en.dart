@@ -2327,4 +2327,383 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get startupKeyMissingTitle => 'Your data cannot be unlocked';
+
+  @override
+  String get startupKeyMissingBody =>
+      'The key that protects the data on this phone is missing, for example after the phone\'s security storage was reset. Nothing was deleted or changed. Reinstalling the app will not bring the data back; restore a backup file after reinstalling.';
+
+  @override
+  String get lockTitle => 'App locked';
+
+  @override
+  String get lockEnterPin => 'Enter your PIN';
+
+  @override
+  String get lockWrongPin => 'Wrong PIN.';
+
+  @override
+  String lockAttemptsLeft(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n tries',
+      one: '1 try',
+    );
+    return 'Wrong PIN. $_temp0 left before a short wait.';
+  }
+
+  @override
+  String lockWait(int seconds) {
+    String _temp0 = intl.Intl.pluralLogic(
+      seconds,
+      locale: localeName,
+      other: '$seconds seconds',
+      one: '1 second',
+    );
+    return 'Too many tries. Wait $_temp0.';
+  }
+
+  @override
+  String get lockUseDevice => 'Unlock with fingerprint, face or phone lock';
+
+  @override
+  String get lockBiometricReason => 'Unlock the pharmacy expiry tracker';
+
+  @override
+  String get lockForgot =>
+      'Forgot your PIN? Use the phone\'s own lock above. Your notifications keep working while the app is locked.';
+
+  @override
+  String get lockDelete => 'Delete digit';
+
+  @override
+  String lockDigit(String d) {
+    return 'Digit $d';
+  }
+
+  @override
+  String get settingsLockSection => 'App lock';
+
+  @override
+  String get settingsLockSwitch => 'Lock the app with a PIN';
+
+  @override
+  String get settingsLockHelp =>
+      'Asks for the PIN when you open the app and after it has been in the background. Alerts still arrive while it is locked.';
+
+  @override
+  String get settingsLockChange => 'Change PIN';
+
+  @override
+  String get settingsLockBiometrics =>
+      'Unlock with fingerprint, face or phone lock';
+
+  @override
+  String get settingsLockTimeout => 'Lock again after';
+
+  @override
+  String get settingsLockTimeoutNow => 'Right away';
+
+  @override
+  String settingsLockTimeoutSeconds(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n seconds',
+      one: '1 second',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String settingsLockTimeoutMinutes(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n minutes',
+      one: '1 minute',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get lockSetTitle => 'Choose a PIN';
+
+  @override
+  String get lockSetHint =>
+      '4 to 8 digits. It cannot be recovered; the phone\'s own lock can still open the app.';
+
+  @override
+  String get lockPin => 'PIN';
+
+  @override
+  String get lockPinConfirm => 'Repeat PIN';
+
+  @override
+  String get lockPinInvalid => 'Use 4 to 8 digits.';
+
+  @override
+  String get lockPinMismatch => 'The PINs do not match.';
+
+  @override
+  String get lockCurrentTitle => 'Enter your current PIN';
+
+  @override
+  String get lockEnabledSnack => 'App lock is on.';
+
+  @override
+  String get lockDisabledSnack => 'App lock is off.';
+
+  @override
+  String get lockChangedSnack => 'PIN changed.';
+
+  @override
+  String get alertActionSnooze => 'Snooze 1 day';
+
+  @override
+  String get healthLastFired => 'Last alert delivered';
+
+  @override
+  String get healthLastFiredNone => 'None yet';
+
+  @override
+  String healthLastFiredValue(String when, String title) {
+    return '$when: $title';
+  }
+
+  @override
+  String get healthHistoryLink => 'See alert history';
+
+  @override
+  String healthOemSteps(String family) {
+    String _temp0 = intl.Intl.selectLogic(family, {
+      'xiaomi': 'Steps: Settings → Apps → Manage apps → this app → turn on Autostart, and set Battery saver to No restrictions.',
+      'samsung': 'Steps: Settings → Battery → Background usage limits → Never sleeping apps → add this app.',
+      'oppo': 'Steps: Settings → Battery → this app → allow background activity, and turn on Auto-launch under App management.',
+      'vivo': 'Steps: iManager → App manager → Autostart → turn this app on; then Battery → High background power consumption → allow it.',
+      'huawei': 'Steps: Settings → Apps → App launch → this app → Manage manually, and turn on all three switches.',
+      'other': 'Steps: find the battery or app-launch settings for this app and allow it to run in the background and start automatically.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get reportsTitle => 'Reports';
+
+  @override
+  String get moreReportsTile => 'Reports';
+
+  @override
+  String get reportsLoss => 'Expiry loss';
+
+  @override
+  String get reportsStock => 'Stock value';
+
+  @override
+  String get reportsDues => 'Dues aging';
+
+  @override
+  String get reportsByMonth => 'By month';
+
+  @override
+  String get reportsBySupplier => 'By supplier';
+
+  @override
+  String get reportsByMedicine => 'By medicine';
+
+  @override
+  String get reportsByCategory => 'By category';
+
+  @override
+  String get reportsRangeMonth => 'This month';
+
+  @override
+  String get reportsRange90 => 'Last 90 days';
+
+  @override
+  String get reportsRangeYear => 'This year';
+
+  @override
+  String get reportsRangeCustom => 'Choose dates';
+
+  @override
+  String get reportsIncludeDamaged => 'Include damaged stock';
+
+  @override
+  String reportsPeriod(String from, String to) {
+    return '$from to $to';
+  }
+
+  @override
+  String get reportsTotalLoss => 'Total loss';
+
+  @override
+  String get reportsTotalValue => 'Total value';
+
+  @override
+  String get reportsTotalOwed => 'Total owed';
+
+  @override
+  String reportsUnpriced(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n batches have',
+      one: '1 batch has',
+    );
+    return '$_temp0 no cost price, so the real figure is higher.';
+  }
+
+  @override
+  String get reportsNothing => 'Nothing to show for this period.';
+
+  @override
+  String get reportsDetails => 'Details';
+
+  @override
+  String get reportsOpenSupplier => 'Open supplier';
+
+  @override
+  String reportsGeneratedOn(String date) {
+    return 'Made on $date';
+  }
+
+  @override
+  String get reportsShare => 'Share report';
+
+  @override
+  String get reportsShareCsv => 'Spreadsheet (CSV)';
+
+  @override
+  String get reportsSharePdf => 'PDF';
+
+  @override
+  String reportsLossTitle(String group) {
+    return 'Expiry loss, $group';
+  }
+
+  @override
+  String reportsStockTitle(String group) {
+    return 'Stock value, $group';
+  }
+
+  @override
+  String get reportsDuesTitle => 'Dues aging';
+
+  @override
+  String reportsStockAsOf(String date) {
+    return 'Stock on hand, valued at cost, as of $date';
+  }
+
+  @override
+  String reportsDuesAsOf(String date) {
+    return 'Unpaid supplier invoices as of $date';
+  }
+
+  @override
+  String get colMonth => 'Month';
+
+  @override
+  String get colSupplier => 'Supplier';
+
+  @override
+  String get colMedicine => 'Medicine';
+
+  @override
+  String get colCategory => 'Category';
+
+  @override
+  String get colQuantity => 'Quantity';
+
+  @override
+  String get colBatches => 'Batches';
+
+  @override
+  String get colValue => 'Value';
+
+  @override
+  String get colBatch => 'Batch';
+
+  @override
+  String get colExpiry => 'Expiry';
+
+  @override
+  String get colDate => 'Date';
+
+  @override
+  String get colType => 'Type';
+
+  @override
+  String get colReference => 'Reference';
+
+  @override
+  String get colInvoiced => 'Invoiced';
+
+  @override
+  String get colPaidCredited => 'Paid / credited';
+
+  @override
+  String get colBalance => 'Balance';
+
+  @override
+  String get colTotal => 'Total';
+
+  @override
+  String get colNoCategory => 'No category';
+
+  @override
+  String get colNoSupplier => 'No supplier';
+
+  @override
+  String get agingCurrent => 'Not yet due';
+
+  @override
+  String get aging1to30 => '1-30 days late';
+
+  @override
+  String get aging31to60 => '31-60 days late';
+
+  @override
+  String get aging61to90 => '61-90 days late';
+
+  @override
+  String get agingOver90 => 'Over 90 days late';
+
+  @override
+  String get statementAction => 'Statement';
+
+  @override
+  String statementTitle(String supplier) {
+    return 'Statement: $supplier';
+  }
+
+  @override
+  String get statementInvoice => 'Invoice';
+
+  @override
+  String get statementPayment => 'Payment';
+
+  @override
+  String get statementCredit => 'Credit';
+
+  @override
+  String get statementOpening => 'Opening balance';
+
+  @override
+  String get statementClosing => 'Closing balance';
+
+  @override
+  String statementTotals(String invoiced, String paid, String credited) {
+    return 'Invoiced $invoiced, paid $paid, credited $credited';
+  }
+
+  @override
+  String get statementPickRange => 'Statement period';
+
+  @override
+  String get reportsPdfNote =>
+      'The PDF cannot show some scripts (such as Bengali); the spreadsheet keeps all text.';
 }

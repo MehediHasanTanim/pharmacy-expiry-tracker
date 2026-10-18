@@ -7,6 +7,7 @@ import 'package:pharmacy_expiry_tracker/app/providers.dart';
 import 'package:pharmacy_expiry_tracker/app/router.dart';
 import 'package:pharmacy_expiry_tracker/app/theme.dart';
 import 'package:pharmacy_expiry_tracker/features/common/labels.dart';
+import 'package:pharmacy_expiry_tracker/features/lock/lock_screen.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 
 class App extends ConsumerWidget {
@@ -35,11 +36,13 @@ class App extends ConsumerWidget {
             // Settings are a moment from loading; showing a screen now could
             // flash Home before first-run onboarding.
             ? const ColoredBox(color: Colors.transparent)
-            : FormatScope(
-                datePattern: ref.watch(
-                  settingsProvider.select((s) => s.value?.dateFormat ?? ''),
+            : LockGate(
+                child: FormatScope(
+                  datePattern: ref.watch(
+                    settingsProvider.select((s) => s.value?.dateFormat ?? ''),
+                  ),
+                  child: child ?? const SizedBox.shrink(),
                 ),
-                child: child ?? const SizedBox.shrink(),
               ),
         localizationsDelegates: const [
           AppLocalizations.delegate,

@@ -14,7 +14,9 @@ import 'package:pharmacy_expiry_tracker/core/logging/error_log.dart';
 import 'package:pharmacy_expiry_tracker/data/backup/backup_service.dart';
 import 'package:pharmacy_expiry_tracker/data/db/app_database.dart';
 import 'package:pharmacy_expiry_tracker/data/db/database_bootstrap.dart';
+import 'package:pharmacy_expiry_tracker/data/db/db_encryption.dart';
 import 'package:pharmacy_expiry_tracker/data/db/migration_guard.dart';
+import 'package:pharmacy_expiry_tracker/data/security/db_key_store.dart';
 
 /// Flavor is chosen with `--flavor dev|prod` and read from `appFlavor`.
 Future<void> main() async {
@@ -36,8 +38,16 @@ Future<void> main() async {
 
   final file = await AppDatabase.defaultFile();
   await _housekeeping(file);
+  String? dbKey;
   try {
-    await prepareDatabase(file);
+    dbKey = await prepareDatabase(
+      keys: const SecureDatabaseKeyStore(),
+      file: file,
+    );
+  } on DatabaseKeyMissingException catch (e) {
+    log.record('database-key', e);
+    runApp(const StartupFailedApp(keyMissing: true));
+    return;
   } on MigrationFailedException catch (e) {
     // The old data is back in place; do not open it with a half-working app.
     log.record('migration', e.cause);
@@ -53,6 +63,7 @@ Future<void> main() async {
           '${info.version}+${info.buildNumber}',
         ),
         databaseFileProvider.overrideWithValue(file),
+        databaseKeyProvider.overrideWithValue(dbKey),
         errorLogProvider.overrideWithValue(log),
       ],
       child: const App(),

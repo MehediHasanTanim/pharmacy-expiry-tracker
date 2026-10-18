@@ -6,7 +6,10 @@ import 'package:pharmacy_expiry_tracker/app/app.dart';
 import 'package:pharmacy_expiry_tracker/app/onboarding_gate.dart';
 import 'package:pharmacy_expiry_tracker/app/providers.dart';
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
+import 'package:pharmacy_expiry_tracker/data/security/secure_pin_store.dart';
+import 'package:pharmacy_expiry_tracker/features/lock/app_lock_controller.dart';
 
+import 'fake_biometrics.dart';
 import 'test_env.dart';
 
 /// Pumps the whole app on top of a [TestEnv]'s in-memory database, with the
@@ -15,13 +18,32 @@ Future<void> pumpApp(
   WidgetTester tester,
   TestEnv env, {
   List<Override> overrides = const [],
+  bool defaultLock = true,
 }) async {
-  await tester.pumpWidget(wrap(env, overrides: overrides));
+  await tester.pumpWidget(
+    wrap(env, overrides: overrides, defaultLock: defaultLock),
+  );
   await settle(tester);
 }
 
+/// For tests that build their own `ProviderScope`: no secure storage and no
+/// fingerprint sensor, so the app lock gate resolves at once (a real platform
+/// call would never complete under the fake clock).
+List<Override> get lockTestOverrides => [
+  pinStoreProvider.overrideWithValue(
+    SecurePinStore(MemorySecretStore(), iterations: 50),
+  ),
+  biometricAuthProvider.overrideWithValue(FakeBiometrics()),
+];
+
 /// The app wrapped with overrides for [env].
-Widget wrap(TestEnv env, {List<Override> overrides = const []}) {
+Widget wrap(
+  TestEnv env, {
+  List<Override> overrides = const [],
+
+  /// False when the test supplies its own PIN store and fingerprint fake.
+  bool defaultLock = true,
+}) {
   return ProviderScope(
     overrides: [
       databaseProvider.overrideWithValue(env.db),
@@ -31,6 +53,8 @@ Widget wrap(TestEnv env, {List<Override> overrides = const []}) {
       // Screen tests do not need the alert engine running underneath them.
       alertEngineEnabledProvider.overrideWithValue(false),
       notificationPluginProvider.overrideWithValue(env.plugin),
+      // No real secure storage or fingerprint sensor under test.
+      if (defaultLock) ...lockTestOverrides,
       ...overrides,
     ],
     child: const App(),

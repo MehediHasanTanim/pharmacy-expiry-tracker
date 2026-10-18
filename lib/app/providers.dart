@@ -15,6 +15,7 @@ import 'package:pharmacy_expiry_tracker/data/repositories/expiry_repository_impl
 import 'package:pharmacy_expiry_tracker/data/repositories/ledger_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/medicine_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/reorder_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/report_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/return_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/search_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/settings_repository_impl.dart';
@@ -43,6 +44,7 @@ import 'package:pharmacy_expiry_tracker/domain/repositories/expiry_repository.da
 import 'package:pharmacy_expiry_tracker/domain/repositories/ledger_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/medicine_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/reorder_repository.dart';
+import 'package:pharmacy_expiry_tracker/domain/repositories/report_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/return_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/search_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/settings_repository.dart';
@@ -58,8 +60,12 @@ import 'package:pharmacy_expiry_tracker/domain/usecases/reorder_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/return_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/supplier_usecases.dart';
 
+/// The key the on-device database is opened with; null while it is still
+/// unencrypted. Set in `main` after `prepareDatabase`.
+final databaseKeyProvider = Provider<String?>((ref) => null);
+
 final databaseProvider = Provider<AppDatabase>((ref) {
-  final db = AppDatabase.open();
+  final db = AppDatabase.open(hexKey: ref.watch(databaseKeyProvider));
   ref.onDispose(db.close);
   return db;
 });
@@ -404,3 +410,7 @@ final medicineBarcodesProvider = StreamProvider.autoDispose
       (ref, medicineId) =>
           ref.watch(barcodeRepositoryProvider).watchForMedicine(medicineId),
     );
+
+final reportRepositoryProvider = Provider<ReportRepository>(
+  (ref) => ReportRepositoryImpl(ref.watch(databaseProvider)),
+);

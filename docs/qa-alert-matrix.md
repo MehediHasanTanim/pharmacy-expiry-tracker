@@ -269,3 +269,26 @@ checks must be on **at least three different devices**, one of them low-end.
 | D2 | Enter two lines, leave the app (swipe it away), reopen the same screen | "Continuing an unfinished delivery" with everything typed | ☐ | ☐ | ☐ | ☐ |
 | D3 | Make one line wrong (duplicate batch) and Save | Errors on the lines; nothing saved | ☐ | ☐ | ☐ | ☐ |
 | W1 | Edit a medicine, set *Alert window* to 15 days; add a batch expiring in 40 days | Lead-time alerts only at 14, 7 and 1 days and on the day itself (the 30/60/90-day ones are outside its window) | ☐ | ☐ | ☐ | ☐ |
+
+---
+
+## Sprint 8 additions: security, reports, alert actions
+
+| # | Steps | Expect | P | S | X | I |
+|---|---|---|---|---|---|---|
+| E1 | **Upgrade from 1.0 with data** (see `docs/release-checklist.md`, release 1.1) | Opens; all records present; alerts unchanged | ☐ | ☐ | ☐ | ☐ |
+| E2 | Fresh install of 1.1, add data, force-stop, reopen | Data present (the key persists) | ☐ | ☐ | ☐ | ☐ |
+| E3 | Wait for / trigger the background re-plan with the app closed | Alerts still scheduled (background task opens the encrypted file) | ☐ | ☐ | ☐ | ☐ |
+| E4 | Back up (no passphrase), restore on a second phone | Works; second phone is encrypted too | ☐ | ☐ | ☐ | ☐ |
+| L1 | Settings → *Lock the app with a PIN*; set a PIN | No immediate lock | ☐ | ☐ | ☐ | ☐ |
+| L2 | Leave the app for longer than the chosen time, return | PIN pad over the app; content not visible in the app switcher thumbnail (note what you see) | ☐ | ☐ | ☐ | ☐ |
+| L3 | Five wrong PINs | Waiting period grows | ☐ | ☐ | ☐ | ☐ |
+| L4 | Fingerprint / face / phone lock unlock; cancel it and use the PIN | Both work | ☐ | ☐ | ☐ | ☐ |
+| L5 | With the app locked, wait for a scheduled alert; tap it | Alert arrives; after unlocking the target screen opens | ☐ | ☐ | ☐ | ☐ |
+| L6 | Turn the lock off | Needs the PIN; afterwards no lock | ☐ | ☐ | ☐ | ☐ |
+| N1 | Press **Snooze 1 day** on an alert (app open, then app swiped away) | Notification returns ~24 h later with the same text | ☐ | ☐ | ☐ | ☐ |
+| N2 | Alert health on Xiaomi / Samsung / OPPO / vivo / Huawei phones | The right steps are shown; following them keeps alerts arriving overnight | ☐ | ☐ | ☐ | ☐ |
+| N3 | Alert health → *Last alert delivered* after one arrives | Shows its time and title | ☐ | ☐ | ☐ | ☐ |
+| X1 | Reports → Expiry loss (month / supplier / medicine), Stock value, Dues aging | Totals match the lists; drill-down rows add up | ☐ | ☐ | ☐ | ☐ |
+| X2 | Share each report as CSV and as PDF | CSV opens in Excel/Sheets with numbers as numbers; PDF is readable, no blank pages | ☐ | ☐ | ☐ | ☐ |
+| X3 | Supplier page → Statement → this year → CSV/PDF; compare with the supplier's own statement | Opening, invoices, payments, closing agree | ☐ | ☐ | ☐ | ☐ |

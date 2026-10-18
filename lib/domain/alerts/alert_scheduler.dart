@@ -70,7 +70,10 @@ class AlertScheduler {
     return fired.length;
   }
 
-  Future<ApplySummary> apply(ReconcileResult diff) async {
+  Future<ApplySummary> apply(
+    ReconcileResult diff, {
+    String? snoozeLabel,
+  }) async {
     final scheduledIds = <int>[];
     try {
       await _tx.run(() async {
@@ -83,7 +86,7 @@ class AlertScheduler {
           ], ScheduledState.cancelled);
         }
         for (final a in diff.toSchedule) {
-          await _plugin.schedule(a.toNotification());
+          await _plugin.schedule(a.toNotification(snoozeLabel: snoozeLabel));
           scheduledIds.add(a.osId);
           await _store.upsertPending(a);
         }

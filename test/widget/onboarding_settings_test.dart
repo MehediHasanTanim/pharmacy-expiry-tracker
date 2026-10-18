@@ -41,6 +41,7 @@ void main() {
           clockProvider.overrideWithValue(env.clock),
           dataChangeBusProvider.overrideWithValue(env.bus),
           alertEngineEnabledProvider.overrideWithValue(false),
+          ...lockTestOverrides,
           notificationPluginProvider.overrideWithValue(plugin ?? env.plugin),
           alertCoordinatorProvider.overrideWith((ref) {
             final c = AlertCoordinator(StubAlertEngine(env));

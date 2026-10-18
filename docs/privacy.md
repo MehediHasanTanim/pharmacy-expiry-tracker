@@ -11,6 +11,7 @@ what the code does today and how it was checked.
 | Does the app need the internet? | No. | `INTERNET` is not declared in the main or release manifest. `tool/check_manifest.sh` fails the build if it appears, and checks the merged release manifests. |
 | Where is data stored? | In one SQLite file in the app's private storage on the phone. | Drift/SQLite via `path_provider` documents directory. |
 | Is data sent to a server, analytics or crash service? | No. There is no analytics or crash SDK. | No such dependency in `pubspec.yaml`; no network permission. |
+| Is the data on the phone encrypted? | Yes, from 1.1: the database file is encrypted with SQLCipher (AES-256) under a random key held in the Android Keystore / iOS Keychain. | `lib/data/db/db_encryption.dart`; tests in `test/data/encryption_test.dart`. |
 | Is data copied to the cloud automatically? | No. | Android `allowBackup="false"`. The user can make a backup file themselves and choose where it goes. |
 | Who can read a backup file? | Whoever has the file, unless it is passphrase-protected. | Optional AES-256-GCM encryption (key from PBKDF2-HMAC-SHA256, random salt and nonce per file). A wrong passphrase or a modified file fails the authentication check. |
 | What is in notifications? | Medicine and supplier names, by default. | Settings → Alert settings → *Hide details on the lock screen* replaces the text with "Open the app to see details." |
@@ -22,6 +23,7 @@ what the code does today and how it was checked.
 | Permission | Why | Notes |
 |---|---|---|
 | `CAMERA` | Scan medicine barcodes (Sprint 7). | Asked the first time the scanner opens; typing the number works without it. Nothing is recorded or sent; frames are read on the phone and discarded. Declared with `required="false"` so the app installs on devices without a camera. |
+| `USE_BIOMETRIC`, `USE_FINGERPRINT` | Fingerprint / face unlock for the optional app lock (1.1); the second is the older name some devices need. | Added by the local-authentication library. Nothing is stored; the system answers yes or no. |
 | `POST_NOTIFICATIONS` | Show expiry, payment, reorder and backup reminders. | Asked in context during onboarding or from the Alerts banner. |
 | `SCHEDULE_EXACT_ALARM` | Deliver alerts at the chosen time. | The user can revoke it; alerts then arrive inexactly. |
 | `RECEIVE_BOOT_COMPLETED` | Re-register scheduled alerts after a reboot or update. | Used by the notification plugin's receiver only. |
@@ -57,8 +59,6 @@ system picker and share sheet, which need no permission.
 
 ## Known limits (state these honestly in the listing)
 
-* **No app lock yet.** Anyone who can unlock the phone can open the app. The
-  `appLockEnabled` setting exists but is not wired to a screen lock.
 * **Backups are only as private as where you keep them.** Without a
   passphrase, the file is readable by anyone who gets it. A forgotten
   passphrase cannot be recovered.
@@ -68,8 +68,24 @@ system picker and share sheet, which need no permission.
   determined offline attacks.
 * **Notification text** that includes names can be read on the lock screen
   unless the privacy option is on.
-* **Device storage** is protected by the phone's own encryption and lock; the
-  database file itself is not encrypted separately.
+* **Device storage.** From 1.1 the database file is encrypted with a key that
+  never leaves the secure storage. Backups and shared reports are *not* tied to
+  that key: a backup is only as private as its passphrase (or the place you
+  keep it), and a shared CSV/PDF is plain.
+* **The app switcher** (recent apps) may still show a snapshot of the last
+  screen seen before the app went to the background; the lock screen covers
+  the app only when it comes back. Blocking snapshots (Android `FLAG_SECURE`)
+  is not done.
+* **Encryption does not protect an unlocked, running app**, or someone who
+  knows the PIN or can unlock the phone.
+* **App lock** (1.1) uses a salted PBKDF2 hash of the PIN in secure storage,
+  with growing waits after five wrong tries. A short PIN can still be guessed
+  by someone who can copy the stored hash off the phone; the phone's own lock
+  is the stronger protection and is accepted as a way in.
+* **Crash risk of encryption**: if the secure storage is wiped while the
+  database file remains, the data cannot be opened (`DatabaseKeyMissingException`).
+  Nothing is deleted; restore a backup after reinstalling. Android auto-backup
+  is off so the key and the data stay together.
 * **iOS** (which now also has an `NSCameraUsageDescription`) has not been built or reviewed; its Info.plist, background modes and
   sharing entitlements need the same review on a Mac with Xcode.
 

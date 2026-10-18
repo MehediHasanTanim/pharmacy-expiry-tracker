@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:pharmacy_expiry_tracker/app/providers.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/app_settings.dart';
 import 'package:pharmacy_expiry_tracker/features/common/labels.dart';
+import 'package:pharmacy_expiry_tracker/features/lock/lock_settings.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 
 /// Pharmacy, expiry and display settings in one place (SET-1, 2, 8, 9, 11).
@@ -244,6 +245,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ],
             ),
           ),
+          header(l10n.settingsLockSection),
+          const LockSettings(),
         ],
       ),
     );

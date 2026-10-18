@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pharmacy_expiry_tracker/app/providers.dart';
+import 'package:pharmacy_expiry_tracker/app/routes.dart';
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
+import 'package:pharmacy_expiry_tracker/domain/alerts/alert_records.dart';
 import 'package:pharmacy_expiry_tracker/domain/notifications/notification_plugin.dart';
 import 'package:pharmacy_expiry_tracker/features/common/labels.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
@@ -26,6 +29,24 @@ final osPendingCountProvider = FutureProvider.autoDispose<int>((ref) async {
   ref.watch(replanResultsProvider);
   return (await ref.watch(notificationPluginProvider).pending()).length;
 });
+
+/// The most recent alert that was delivered (from the alert history).
+final lastFiredAlertProvider = StreamProvider.autoDispose<AlertLogEntry?>(
+  (ref) => ref
+      .watch(alertStoreProvider)
+      .watchLog(limit: 1)
+      .map((l) => l.isEmpty ? null : l.first),
+);
+
+/// Groups phone makers that share a battery manager, for the right steps.
+String oemFamily(String? maker) => switch (maker) {
+  'xiaomi' || 'redmi' || 'poco' => 'xiaomi',
+  'samsung' => 'samsung',
+  'oppo' || 'realme' || 'oneplus' => 'oppo',
+  'vivo' || 'iqoo' => 'vivo',
+  'huawei' || 'honor' => 'huawei',
+  _ => 'other',
+};
 
 /// Shows whether alerts can reach the user and lets them test the real path
 /// (ALR-7, ALR-8).
@@ -71,6 +92,7 @@ class AlertHealthScreen extends ConsumerWidget {
         ref.watch(replanResultsProvider).value ??
         ref.watch(alertCoordinatorProvider).last;
     final platform = ref.watch(platformAlertSettingsProvider);
+    final lastFired = ref.watch(lastFiredAlertProvider).value;
 
     Widget row({
       required String label,
@@ -147,7 +169,8 @@ class AlertHealthScreen extends ConsumerWidget {
                   : l10n.healthRestricted,
               ok: batteryOk,
               note: conditions!.hasAggressiveBatteryManager
-                  ? l10n.healthOemTip(conditions.manufacturer ?? '')
+                  ? '${l10n.healthOemTip(conditions.manufacturer ?? '')}\n'
+                        '${l10n.healthOemSteps(oemFamily(conditions.manufacturer))}'
                   : null,
               action: batteryOk
                   ? null
@@ -185,6 +208,22 @@ class AlertHealthScreen extends ConsumerWidget {
                 : formatDateTime(context, last.at),
             ok: last?.ok,
             note: last != null && !last.ok ? l10n.healthLastError : null,
+          ),
+          row(
+            key: const Key('health-last-fired'),
+            label: l10n.healthLastFired,
+            value: lastFired == null
+                ? l10n.healthLastFiredNone
+                : l10n.healthLastFiredValue(
+                    formatDateTime(context, lastFired.firedAt),
+                    lastFired.title,
+                  ),
+            ok: null,
+            action: TextButton(
+              key: const Key('health-history'),
+              onPressed: () => unawaited(context.push(Routes.alertHistory)),
+              child: Text(l10n.healthHistoryLink),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(16),

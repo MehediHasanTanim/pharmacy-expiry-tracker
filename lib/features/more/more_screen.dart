@@ -35,6 +35,13 @@ class MoreScreen extends ConsumerWidget {
             ),
             onTap: () => context.push(Routes.reorder),
           ),
+          ListTile(
+            key: const Key('more-reports'),
+            leading: const Icon(Icons.bar_chart_outlined),
+            title: Text(l10n.moreReportsTile),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push(Routes.reports),
+          ),
           _Section(l10n.moreSectionAlerts),
           ListTile(
             key: const Key('more-alerts'),

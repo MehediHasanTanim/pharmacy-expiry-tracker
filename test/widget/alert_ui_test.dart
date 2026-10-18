@@ -49,6 +49,7 @@ void main() {
         overrides: [
           databaseProvider.overrideWithValue(env.db),
           onboardingEnabledProvider.overrideWithValue(false),
+          ...lockTestOverrides,
           clockProvider.overrideWithValue(env.clock),
           dataChangeBusProvider.overrideWithValue(env.bus),
           alertEngineEnabledProvider.overrideWithValue(false),
@@ -288,6 +289,9 @@ void main() {
       expect(find.byKey(const Key('health-battery')), findsOneWidget);
       expect(find.textContaining('Restricted'), findsOneWidget);
       expect(find.textContaining('On xiaomi phones'), findsOneWidget);
+      expect(find.textContaining('turn on Autostart'), findsOneWidget);
+      expect(find.text('None yet'), findsOneWidget);
+      expect(find.byKey(const Key('health-history')), findsOneWidget);
       expect(find.byKey(const Key('health-open-battery')), findsOneWidget);
       await tapKey(t, 'health-open-battery');
       expect(platform.opened, ['battery']);

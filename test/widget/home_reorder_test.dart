@@ -54,6 +54,7 @@ void main() {
           dataChangeBusProvider.overrideWithValue(env.bus),
           alertEngineEnabledProvider.overrideWithValue(false),
           onboardingEnabledProvider.overrideWithValue(false),
+          ...lockTestOverrides,
           notificationPluginProvider.overrideWithValue(plugin ?? env.plugin),
           platformAlertSettingsProvider.overrideWithValue(platform),
           alertCoordinatorProvider.overrideWith((ref) {

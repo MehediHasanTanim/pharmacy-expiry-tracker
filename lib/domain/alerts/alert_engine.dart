@@ -171,7 +171,10 @@ class AlertEngine {
         ],
         osPendingIds: osPending,
       );
-      final applied = await _scheduler.apply(diff);
+      final applied = await _scheduler.apply(
+        diff,
+        snoozeLabel: l10n.alertActionSnooze,
+      );
 
       return ReplanSummary(
         at: now,

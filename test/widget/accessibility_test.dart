@@ -127,6 +127,7 @@ void main() {
           dataChangeBusProvider.overrideWithValue(env.bus),
           alertEngineEnabledProvider.overrideWithValue(false),
           onboardingEnabledProvider.overrideWithValue(false),
+          ...lockTestOverrides,
           notificationPluginProvider.overrideWithValue(env.plugin),
           platformAlertSettingsProvider.overrideWithValue(
             FakePlatformAlertSettings(),

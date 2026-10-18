@@ -26,6 +26,7 @@ class ScheduledNotification {
     this.channel = NotificationChannel.expiryCritical,
     this.payload,
     this.preferExact = true,
+    this.snoozeLabel,
   });
 
   /// 31-bit id; scheduling the same id again replaces the earlier one.
@@ -37,6 +38,10 @@ class ScheduledNotification {
 
   /// Route opened when the user taps the notification.
   final String? payload;
+
+  /// When set, the notification offers a button with this label that shows it
+  /// again a day later (ALR-11).
+  final String? snoozeLabel;
 
   /// Ask for exact delivery (Android exact alarms) where permitted; falls
   /// back to inexact delivery otherwise.

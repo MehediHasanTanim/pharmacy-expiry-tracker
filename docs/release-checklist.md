@@ -55,3 +55,41 @@ device. Items marked **needs you** cannot be completed from the code alone.
 - [ ] Backup → restore round trip on a real phone with real-sized data.
 - [ ] Install over the previous build (upgrade path) and confirm data and
       alerts survive.
+
+## Release 1.1 (S8-09)
+
+Version is `1.1.0+2`. Changelog: `CHANGELOG.md`.
+
+### Upgrade verification from 1.0 (do this on a real phone before submitting)
+
+The database is encrypted in place on the first launch of 1.1. This is the
+riskiest step of the release; the automated tests cover it with generated
+plaintext databases, but it needs a real 1.0 install.
+
+1. Install the **1.0 beta** build and enter real-sized data (or seed 5 000
+   medicines / 10 000 batches from the dev flavor). Make a backup file as well.
+2. Note: number of medicines, batches, suppliers, invoices and the *Scheduled
+   alerts* count on *Alert health*.
+3. Install 1.1 **over** it (do not uninstall).
+4. First launch: it should open normally (a few seconds longer with big data).
+5. Check the same numbers match, a test alert arrives, and the *next alert* time
+   is unchanged.
+6. *More → Export diagnostics* shows no errors from `database` or `migration`.
+7. Force-stop, reopen, and swipe the app away; the background re-plan must still
+   work (wait for the next alert or use *Alert health → Check again*).
+8. Restore the 1.0 backup file made in step 1 onto this phone; data returns and
+   the database stays encrypted (the app still opens after a restart).
+9. Uninstall/reinstall and restore the backup on the same phone.
+
+If step 4 or 5 fails: the original data is kept beside the new file until the
+conversion is verified, and the app falls back to the unencrypted file. Collect
+*Export diagnostics* before reinstalling anything.
+
+### Store submission
+
+- [ ] **needs you:** upload the `1.1.0+2` bundle to the internal track and
+      promote after the upgrade check above.
+- [ ] **needs you:** update the Play data-safety form: camera is used on-device
+      only; no data collected or shared (unchanged).
+- [ ] Update screenshots (Reports, Receive delivery).
+- [ ] Publish the reviewed `docs/privacy.md`.

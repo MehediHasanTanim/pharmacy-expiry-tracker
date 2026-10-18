@@ -3896,6 +3896,612 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{qty, plural, =1{1 item} other{{qty} items}}'**
   String returnTileQty(int qty);
+
+  /// No description provided for @startupKeyMissingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data cannot be unlocked'**
+  String get startupKeyMissingTitle;
+
+  /// No description provided for @startupKeyMissingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The key that protects the data on this phone is missing, for example after the phone\'s security storage was reset. Nothing was deleted or changed. Reinstalling the app will not bring the data back; restore a backup file after reinstalling.'**
+  String get startupKeyMissingBody;
+
+  /// No description provided for @lockTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'App locked'**
+  String get lockTitle;
+
+  /// No description provided for @lockEnterPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your PIN'**
+  String get lockEnterPin;
+
+  /// No description provided for @lockWrongPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong PIN.'**
+  String get lockWrongPin;
+
+  /// No description provided for @lockAttemptsLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong PIN. {n, plural, =1{1 try} other{{n} tries}} left before a short wait.'**
+  String lockAttemptsLeft(int n);
+
+  /// No description provided for @lockWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many tries. Wait {seconds, plural, =1{1 second} other{{seconds} seconds}}.'**
+  String lockWait(int seconds);
+
+  /// No description provided for @lockUseDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock with fingerprint, face or phone lock'**
+  String get lockUseDevice;
+
+  /// No description provided for @lockBiometricReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock the pharmacy expiry tracker'**
+  String get lockBiometricReason;
+
+  /// No description provided for @lockForgot.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your PIN? Use the phone\'s own lock above. Your notifications keep working while the app is locked.'**
+  String get lockForgot;
+
+  /// No description provided for @lockDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete digit'**
+  String get lockDelete;
+
+  /// No description provided for @lockDigit.
+  ///
+  /// In en, this message translates to:
+  /// **'Digit {d}'**
+  String lockDigit(String d);
+
+  /// No description provided for @settingsLockSection.
+  ///
+  /// In en, this message translates to:
+  /// **'App lock'**
+  String get settingsLockSection;
+
+  /// No description provided for @settingsLockSwitch.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock the app with a PIN'**
+  String get settingsLockSwitch;
+
+  /// No description provided for @settingsLockHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Asks for the PIN when you open the app and after it has been in the background. Alerts still arrive while it is locked.'**
+  String get settingsLockHelp;
+
+  /// No description provided for @settingsLockChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change PIN'**
+  String get settingsLockChange;
+
+  /// No description provided for @settingsLockBiometrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock with fingerprint, face or phone lock'**
+  String get settingsLockBiometrics;
+
+  /// No description provided for @settingsLockTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock again after'**
+  String get settingsLockTimeout;
+
+  /// No description provided for @settingsLockTimeoutNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Right away'**
+  String get settingsLockTimeoutNow;
+
+  /// No description provided for @settingsLockTimeoutSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =1{1 second} other{{n} seconds}}'**
+  String settingsLockTimeoutSeconds(int n);
+
+  /// No description provided for @settingsLockTimeoutMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =1{1 minute} other{{n} minutes}}'**
+  String settingsLockTimeoutMinutes(int n);
+
+  /// No description provided for @lockSetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a PIN'**
+  String get lockSetTitle;
+
+  /// No description provided for @lockSetHint.
+  ///
+  /// In en, this message translates to:
+  /// **'4 to 8 digits. It cannot be recovered; the phone\'s own lock can still open the app.'**
+  String get lockSetHint;
+
+  /// No description provided for @lockPin.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN'**
+  String get lockPin;
+
+  /// No description provided for @lockPinConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat PIN'**
+  String get lockPinConfirm;
+
+  /// No description provided for @lockPinInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Use 4 to 8 digits.'**
+  String get lockPinInvalid;
+
+  /// No description provided for @lockPinMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The PINs do not match.'**
+  String get lockPinMismatch;
+
+  /// No description provided for @lockCurrentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current PIN'**
+  String get lockCurrentTitle;
+
+  /// No description provided for @lockEnabledSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'App lock is on.'**
+  String get lockEnabledSnack;
+
+  /// No description provided for @lockDisabledSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'App lock is off.'**
+  String get lockDisabledSnack;
+
+  /// No description provided for @lockChangedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN changed.'**
+  String get lockChangedSnack;
+
+  /// No description provided for @alertActionSnooze.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze 1 day'**
+  String get alertActionSnooze;
+
+  /// No description provided for @healthLastFired.
+  ///
+  /// In en, this message translates to:
+  /// **'Last alert delivered'**
+  String get healthLastFired;
+
+  /// No description provided for @healthLastFiredNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None yet'**
+  String get healthLastFiredNone;
+
+  /// No description provided for @healthLastFiredValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{when}: {title}'**
+  String healthLastFiredValue(String when, String title);
+
+  /// No description provided for @healthHistoryLink.
+  ///
+  /// In en, this message translates to:
+  /// **'See alert history'**
+  String get healthHistoryLink;
+
+  /// No description provided for @healthOemSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'{family, select, xiaomi{Steps: Settings → Apps → Manage apps → this app → turn on Autostart, and set Battery saver to No restrictions.} samsung{Steps: Settings → Battery → Background usage limits → Never sleeping apps → add this app.} oppo{Steps: Settings → Battery → this app → allow background activity, and turn on Auto-launch under App management.} vivo{Steps: iManager → App manager → Autostart → turn this app on; then Battery → High background power consumption → allow it.} huawei{Steps: Settings → Apps → App launch → this app → Manage manually, and turn on all three switches.} other{Steps: find the battery or app-launch settings for this app and allow it to run in the background and start automatically.}}'**
+  String healthOemSteps(String family);
+
+  /// No description provided for @reportsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get reportsTitle;
+
+  /// No description provided for @moreReportsTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get moreReportsTile;
+
+  /// No description provided for @reportsLoss.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry loss'**
+  String get reportsLoss;
+
+  /// No description provided for @reportsStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock value'**
+  String get reportsStock;
+
+  /// No description provided for @reportsDues.
+  ///
+  /// In en, this message translates to:
+  /// **'Dues aging'**
+  String get reportsDues;
+
+  /// No description provided for @reportsByMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'By month'**
+  String get reportsByMonth;
+
+  /// No description provided for @reportsBySupplier.
+  ///
+  /// In en, this message translates to:
+  /// **'By supplier'**
+  String get reportsBySupplier;
+
+  /// No description provided for @reportsByMedicine.
+  ///
+  /// In en, this message translates to:
+  /// **'By medicine'**
+  String get reportsByMedicine;
+
+  /// No description provided for @reportsByCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'By category'**
+  String get reportsByCategory;
+
+  /// No description provided for @reportsRangeMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get reportsRangeMonth;
+
+  /// No description provided for @reportsRange90.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 90 days'**
+  String get reportsRange90;
+
+  /// No description provided for @reportsRangeYear.
+  ///
+  /// In en, this message translates to:
+  /// **'This year'**
+  String get reportsRangeYear;
+
+  /// No description provided for @reportsRangeCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose dates'**
+  String get reportsRangeCustom;
+
+  /// No description provided for @reportsIncludeDamaged.
+  ///
+  /// In en, this message translates to:
+  /// **'Include damaged stock'**
+  String get reportsIncludeDamaged;
+
+  /// No description provided for @reportsPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} to {to}'**
+  String reportsPeriod(String from, String to);
+
+  /// No description provided for @reportsTotalLoss.
+  ///
+  /// In en, this message translates to:
+  /// **'Total loss'**
+  String get reportsTotalLoss;
+
+  /// No description provided for @reportsTotalValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Total value'**
+  String get reportsTotalValue;
+
+  /// No description provided for @reportsTotalOwed.
+  ///
+  /// In en, this message translates to:
+  /// **'Total owed'**
+  String get reportsTotalOwed;
+
+  /// No description provided for @reportsUnpriced.
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =1{1 batch has} other{{n} batches have}} no cost price, so the real figure is higher.'**
+  String reportsUnpriced(int n);
+
+  /// No description provided for @reportsNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to show for this period.'**
+  String get reportsNothing;
+
+  /// No description provided for @reportsDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get reportsDetails;
+
+  /// No description provided for @reportsOpenSupplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Open supplier'**
+  String get reportsOpenSupplier;
+
+  /// No description provided for @reportsGeneratedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Made on {date}'**
+  String reportsGeneratedOn(String date);
+
+  /// No description provided for @reportsShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share report'**
+  String get reportsShare;
+
+  /// No description provided for @reportsShareCsv.
+  ///
+  /// In en, this message translates to:
+  /// **'Spreadsheet (CSV)'**
+  String get reportsShareCsv;
+
+  /// No description provided for @reportsSharePdf.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF'**
+  String get reportsSharePdf;
+
+  /// No description provided for @reportsLossTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry loss, {group}'**
+  String reportsLossTitle(String group);
+
+  /// No description provided for @reportsStockTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock value, {group}'**
+  String reportsStockTitle(String group);
+
+  /// No description provided for @reportsDuesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Dues aging'**
+  String get reportsDuesTitle;
+
+  /// No description provided for @reportsStockAsOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock on hand, valued at cost, as of {date}'**
+  String reportsStockAsOf(String date);
+
+  /// No description provided for @reportsDuesAsOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid supplier invoices as of {date}'**
+  String reportsDuesAsOf(String date);
+
+  /// No description provided for @colMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get colMonth;
+
+  /// No description provided for @colSupplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplier'**
+  String get colSupplier;
+
+  /// No description provided for @colMedicine.
+  ///
+  /// In en, this message translates to:
+  /// **'Medicine'**
+  String get colMedicine;
+
+  /// No description provided for @colCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get colCategory;
+
+  /// No description provided for @colQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get colQuantity;
+
+  /// No description provided for @colBatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Batches'**
+  String get colBatches;
+
+  /// No description provided for @colValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Value'**
+  String get colValue;
+
+  /// No description provided for @colBatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch'**
+  String get colBatch;
+
+  /// No description provided for @colExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry'**
+  String get colExpiry;
+
+  /// No description provided for @colDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get colDate;
+
+  /// No description provided for @colType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get colType;
+
+  /// No description provided for @colReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get colReference;
+
+  /// No description provided for @colInvoiced.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoiced'**
+  String get colInvoiced;
+
+  /// No description provided for @colPaidCredited.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid / credited'**
+  String get colPaidCredited;
+
+  /// No description provided for @colBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance'**
+  String get colBalance;
+
+  /// No description provided for @colTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get colTotal;
+
+  /// No description provided for @colNoCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'No category'**
+  String get colNoCategory;
+
+  /// No description provided for @colNoSupplier.
+  ///
+  /// In en, this message translates to:
+  /// **'No supplier'**
+  String get colNoSupplier;
+
+  /// No description provided for @agingCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet due'**
+  String get agingCurrent;
+
+  /// No description provided for @aging1to30.
+  ///
+  /// In en, this message translates to:
+  /// **'1-30 days late'**
+  String get aging1to30;
+
+  /// No description provided for @aging31to60.
+  ///
+  /// In en, this message translates to:
+  /// **'31-60 days late'**
+  String get aging31to60;
+
+  /// No description provided for @aging61to90.
+  ///
+  /// In en, this message translates to:
+  /// **'61-90 days late'**
+  String get aging61to90;
+
+  /// No description provided for @agingOver90.
+  ///
+  /// In en, this message translates to:
+  /// **'Over 90 days late'**
+  String get agingOver90;
+
+  /// No description provided for @statementAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Statement'**
+  String get statementAction;
+
+  /// No description provided for @statementTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Statement: {supplier}'**
+  String statementTitle(String supplier);
+
+  /// No description provided for @statementInvoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice'**
+  String get statementInvoice;
+
+  /// No description provided for @statementPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get statementPayment;
+
+  /// No description provided for @statementCredit.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit'**
+  String get statementCredit;
+
+  /// No description provided for @statementOpening.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening balance'**
+  String get statementOpening;
+
+  /// No description provided for @statementClosing.
+  ///
+  /// In en, this message translates to:
+  /// **'Closing balance'**
+  String get statementClosing;
+
+  /// No description provided for @statementTotals.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoiced {invoiced}, paid {paid}, credited {credited}'**
+  String statementTotals(String invoiced, String paid, String credited);
+
+  /// No description provided for @statementPickRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Statement period'**
+  String get statementPickRange;
+
+  /// No description provided for @reportsPdfNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The PDF cannot show some scripts (such as Bengali); the spreadsheet keeps all text.'**
+  String get reportsPdfNote;
 }
 
 class _AppLocalizationsDelegate
