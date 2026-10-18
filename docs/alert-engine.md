@@ -36,6 +36,16 @@ idempotent: running it again changes nothing.
   when it is due within 24 h of planning; further out it is generic, because the
   data may change before it is delivered. With "skip empty digests" on, days
   whose projected counts are zero are omitted.
+* **Payment reminders** — for every unpaid invoice with a due date: a reminder
+  N days before (default 3) and on the due date, then every N days while
+  overdue (default 3), anchored on the due date so the same days come out
+  however often we plan. Overdue repeats are scheduled 14 days ahead. One
+  notification per day per kind (`pay:`, `paydue:`, `overdue:`) covers every
+  invoice reminding that day, 10 minutes after the digest; it links to the
+  supplier when only one is involved. A per-invoice snooze silences reminders
+  until its date. Paying (or crediting) an invoice in full removes it from the
+  plan, so its reminders are cancelled on the next pass; a part payment changes
+  the amount in the text, so the reminders are replaced, not duplicated.
 * **Quiet hours** — an alert inside the window moves to its end (handles
   overnight windows).
 * **Cap** — the earliest 60 alerts across all kinds (iOS keeps 64).
@@ -119,8 +129,9 @@ pass (database load + plan + diff) ≈ 300 ms.
   to build and verify.)
 * **Time-zone / clock changes** are noticed at the next launch, resume or
   12-hourly run, not the instant they happen (that needs a native receiver).
-* **Payments, reorder and backup reminders** share the engine's structure
-  (`AlertKind`) but are not planned yet (Sprints 4–6).
+* **Reorder and backup reminders** share the engine's structure (`AlertKind`)
+  but are not planned yet (Sprints 5–6). Payment reminders were added in
+  Sprint 4.
 * The only native code added is a small Android method channel for the health
   screen (`MainActivity.kt`): battery-optimisation state, device maker, and
   opening system settings. Scheduling stays in the plugin.

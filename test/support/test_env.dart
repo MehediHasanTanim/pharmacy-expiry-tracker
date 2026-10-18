@@ -4,19 +4,24 @@ import 'package:pharmacy_expiry_tracker/data/db/app_database.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/alert_store_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/batch_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/expiry_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/ledger_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/medicine_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/search_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/settings_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/supplier_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/domain/alerts/alert_engine.dart';
 import 'package:pharmacy_expiry_tracker/domain/alerts/alert_scheduler.dart';
 import 'package:pharmacy_expiry_tracker/domain/data_changes.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/batch.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/enums.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/medicine.dart';
+import 'package:pharmacy_expiry_tracker/domain/entities/supplier.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/batch_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/batch_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/expiry_usecases.dart';
+import 'package:pharmacy_expiry_tracker/domain/usecases/ledger_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/medicine_usecases.dart';
+import 'package:pharmacy_expiry_tracker/domain/usecases/supplier_usecases.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations_en.dart';
 
 import 'fake_clock.dart';
@@ -27,6 +32,7 @@ class TestEnv {
   TestEnv({
     BatchRepository Function(BatchRepository real)? wrapBatches,
     FakeNotificationPlugin? plugin,
+    LedgerRepositoryImpl Function(AppDatabase db)? ledgerFactory,
   }) : db = AppDatabase.forTesting(),
        clock = FakeClock(DateTime(2026, 10, 17, 9)),
        plugin = plugin ?? FakeNotificationPlugin(),
@@ -60,6 +66,26 @@ class TestEnv {
       bus: bus,
     );
     settings = SettingsRepositoryImpl(db);
+    suppliers = SupplierRepositoryImpl(db, clock);
+    ledger = ledgerFactory?.call(db) ?? LedgerRepositoryImpl(db);
+    final deps = LedgerDeps(
+      suppliers: suppliers,
+      ledger: ledger,
+      batches: batches,
+      transaction: tx,
+      clock: clock,
+      bus: bus,
+    );
+    saveSupplier = SaveSupplier(suppliers, bus);
+    setSupplierArchived = SetSupplierArchived(suppliers, bus);
+    addInvoice = AddInvoice(deps);
+    editInvoice = EditInvoice(deps);
+    deleteInvoice = DeleteInvoice(deps);
+    recordPayment = RecordPayment(deps);
+    deletePayment = DeletePayment(deps);
+    recordCredit = RecordCredit(deps);
+    deleteCredit = DeleteCredit(deps);
+    reminderSnooze = UpdateReminderSnooze(deps);
     alertStore = AlertStoreImpl(db);
     alertSource = AlertSourceImpl(db);
     alertScheduler = AlertScheduler(
@@ -94,6 +120,18 @@ class TestEnv {
   late final SearchRepositoryImpl search;
   late final ExpiryRepositoryImpl expiry;
   late final SettingsRepositoryImpl settings;
+  late final SupplierRepositoryImpl suppliers;
+  late final LedgerRepositoryImpl ledger;
+  late final SaveSupplier saveSupplier;
+  late final SetSupplierArchived setSupplierArchived;
+  late final AddInvoice addInvoice;
+  late final EditInvoice editInvoice;
+  late final DeleteInvoice deleteInvoice;
+  late final RecordPayment recordPayment;
+  late final DeletePayment deletePayment;
+  late final RecordCredit recordCredit;
+  late final DeleteCredit deleteCredit;
+  late final UpdateReminderSnooze reminderSnooze;
   late final AlertStoreImpl alertStore;
   late final AlertSourceImpl alertSource;
   late final AlertScheduler alertScheduler;
@@ -148,6 +186,54 @@ class TestEnv {
       quantity: quantity,
       receivedDate: DateTime(2026, 10, 17),
       costPrice: costMinor == null ? null : Money(costMinor),
+    );
+  }
+
+  /// Creates a supplier and returns its id.
+  Future<String> supplier({
+    String name = 'ABC Pharma',
+    int? terms,
+    String? phone,
+  }) {
+    return saveSupplier(
+      SupplierInput(name: name, paymentTermsDays: terms, phone: phone),
+    );
+  }
+
+  /// Adds an invoice of [totalMinor] for [supplierId].
+  Future<Invoice> invoice(
+    String supplierId, {
+    int totalMinor = 10000,
+    DateTime? date,
+    DateTime? due,
+    String? number,
+    List<String> batchIds = const [],
+  }) {
+    return addInvoice(
+      InvoiceInput(
+        supplierId: supplierId,
+        invoiceDate: date ?? DateTime(2026, 10, 1),
+        dueDate: due,
+        total: Money(totalMinor),
+        invoiceNumber: number,
+        batchIds: batchIds,
+      ),
+    );
+  }
+
+  /// Like [batchInput] but received from [supplierId].
+  BatchInput batchInputFrom(
+    String medicineId,
+    String number,
+    String supplierId,
+  ) {
+    return BatchInput(
+      medicineId: medicineId,
+      batchNumber: number,
+      expiry: ExpiryDate.monthYear(2027, 8),
+      quantity: 10,
+      receivedDate: DateTime(2026, 10, 17),
+      supplierId: supplierId,
     );
   }
 }

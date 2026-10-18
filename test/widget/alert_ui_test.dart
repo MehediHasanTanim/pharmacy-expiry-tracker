@@ -150,7 +150,13 @@ void main() {
       final c = await open(t);
       await go(t, c, '/more/alerts');
       expect(find.byKey(const Key('lead-chip-90')), findsOneWidget);
-      expect(find.text('On expiry day'), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('lead-chip-0')),
+          matching: find.text('On expiry day'),
+        ),
+        findsOneWidget,
+      );
 
       final chip = t.widget<InputChip>(find.byKey(const Key('lead-chip-90')));
       chip.onDeleted!();
@@ -199,6 +205,35 @@ void main() {
         1,
         0,
       ]);
+      await disposeApp(t);
+    });
+
+    testWidgets('payment reminder lead times and overdue repeat (SET-6)', (
+      t,
+    ) async {
+      final c = await open(t);
+      await go(t, c, '/more/alerts');
+      await t.scrollUntilVisible(
+        find.byKey(const Key('pay-lead-add')),
+        300,
+        scrollable: find.byType(Scrollable).first,
+      );
+      expect(find.byKey(const Key('pay-lead-chip-3')), findsOneWidget);
+      t
+          .widget<InputChip>(find.byKey(const Key('pay-lead-chip-3')))
+          .onDeleted!();
+      await settle(t);
+      expect((await db(t, () => env.settings.load())).paymentLeadDays, [0]);
+
+      await tapKey(t, 'pay-lead-add');
+      await t.enterText(find.byKey(const Key('lead-days-field')), '7');
+      await tapKey(t, 'lead-days-add');
+      expect((await db(t, () => env.settings.load())).paymentLeadDays, [7, 0]);
+
+      await tapKey(t, 'overdue-repeat');
+      await t.tap(find.text('Every 5 days').last);
+      await settle(t);
+      expect((await db(t, () => env.settings.load())).overdueRepeatDays, 5);
       await disposeApp(t);
     });
 

@@ -173,3 +173,26 @@ the **real app** (any flavor), using real data. Record results the same way.
 * No duplicate notifications after repeated re-plans (K1–K4 + `Check again`
   several times: count stays equal to the system's).
 * ALR-15 verified in airplane mode (B1, B2, K7).
+
+---
+
+## Sprint 4 additions: payment reminders
+
+Run on a real device with real data (any flavor). Reminders arrive **10 minutes
+after the daily alert time** (default 09:10).
+
+| # | Steps | Expect | P | S | X | I |
+|---|---|---|---|---|---|---|
+| P1 | Add a supplier, then an invoice due **tomorrow** (More → *Alert health*) | *Scheduled alerts* rises by 3+ (3-day lead is past; due day and overdue repeats) | ☐ | ☐ | ☐ | ☐ |
+| P2 | Set the alert time ~3 min ahead with an invoice due **today** | "Payment due today" arrives ~13 min later (alert time + 10), body names the supplier and amount | ☐ | ☐ | ☐ | ☐ |
+| P3 | Same with **airplane mode** on and the app swiped away | Still arrives | ☐ | ☐ | ☐ | ☐ |
+| P4 | Tap the payment notification | Opens that supplier's page (or the Suppliers tab for several) | ☐ | ☐ | ☐ | ☐ |
+| P5 | Record a **partial** payment, then *Check again* in Alert health | Count unchanged; the next notification's text shows the smaller amount | ☐ | ☐ | ☐ | ☐ |
+| P6 | Pay the invoice **in full**, *Check again* | Its reminders are gone from *Scheduled alerts*; nothing arrives later | ☐ | ☐ | ☐ | ☐ |
+| P7 | Delete the payment | Reminders come back | ☐ | ☐ | ☐ | ☐ |
+| P8 | Invoice → *Snooze reminders* → tomorrow | No reminder today; resumes on the snooze date | ☐ | ☐ | ☐ | ☐ |
+| P9 | Overdue invoice, repeat every 3 days | "Payment overdue" arrives every 3 days from the due date until paid | ☐ | ☐ | ☐ | ☐ |
+| P10 | More → Alert settings → *Supplier payments*: remove "3 days", set repeat to *Never* | Only due-day reminder remains | ☐ | ☐ | ☐ | ☐ |
+
+Exit criteria (Sprint 4): a due-date reminder fires on the device; paying cancels
+the remaining reminders (P6) with no duplicates after repeated *Check again*.

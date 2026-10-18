@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:pharmacy_expiry_tracker/app/routes.dart';
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
+import 'package:pharmacy_expiry_tracker/core/money/money.dart';
 import 'package:pharmacy_expiry_tracker/domain/alerts/planned_alert.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/app_settings.dart';
 import 'package:pharmacy_expiry_tracker/domain/rules/expiry_bucket.dart';
@@ -16,6 +17,9 @@ const digestHorizonDays = 14;
 /// Lead-time alerts are sent a few minutes after the digest so the two never
 /// arrive at the same instant.
 const leadAlertOffsetMinutes = 5;
+
+/// Payment reminders follow the expiry alerts by a further few minutes.
+const paymentAlertOffsetMinutes = 10;
 
 /// Calendar day as a whole number (days since 1970-01-01), immune to
 /// daylight-saving shifts. Planning does its arithmetic on these so scanning
@@ -84,11 +88,13 @@ List<PlannedAlert> planAlerts({
   required AppSettings settings,
   required List<PlanBatch> batches,
   required AppLocalizations l10n,
+  List<PlanInvoice> invoices = const [],
   int maxPending = maxPendingAlerts,
 }) {
   final today = dateOnly(now);
   final out = <PlannedAlert>[
     ..._leadAlerts(now, today, settings, batches, l10n),
+    ..._paymentAlerts(now, today, settings, invoices, l10n),
     if (settings.digestEnabled)
       ..._digests(now, today, settings, batches, l10n),
   ];
@@ -134,6 +140,34 @@ DateTime _applyQuietHours(DateTime t, AppSettings s) {
   final sameDay = !overnight || minute < end;
   final day = sameDay ? dateOnly(t) : DateTime(t.year, t.month, t.day + 1);
   return _at(day, end);
+}
+
+/// An unpaid invoice with a due date, as payment reminders need it.
+@immutable
+class PlanInvoice {
+  const PlanInvoice({
+    required this.id,
+    required this.supplierId,
+    required this.supplierName,
+    required this.dueDay,
+    required this.balanceMinor,
+    this.invoiceNumber,
+    this.snoozeDay,
+  });
+
+  final String id;
+  final String supplierId;
+  final String supplierName;
+  final String? invoiceNumber;
+
+  /// Due date as a day number (see [dayNumber]).
+  final int dueDay;
+
+  /// What is still owed, in minor units.
+  final int balanceMinor;
+
+  /// Reminders stay silent until this day number.
+  final int? snoozeDay;
 }
 
 /// Running summary of the batches reaching an alert on one day: how many, the
@@ -307,4 +341,144 @@ List<PlannedAlert> _digests(
     );
   }
   return alerts;
+}
+
+/// Reminders about unpaid invoices (ALR-14, SUP-9): before the due date, on it,
+/// and then every [AppSettings.overdueRepeatDays] days until it is paid. All
+/// invoices reminding on the same day share one notification per kind.
+List<PlannedAlert> _paymentAlerts(
+  DateTime now,
+  DateTime today,
+  AppSettings settings,
+  List<PlanInvoice> invoices,
+  AppLocalizations l10n,
+) {
+  if (invoices.isEmpty) return const [];
+  final leads = settings.paymentLeadDays.toSet().where((l) => l >= 0).toList()
+    ..sort((a, b) => b.compareTo(a));
+  final repeat = settings.overdueRepeatDays;
+  final alertMinutes = settings.digestMinutes + paymentAlertOffsetMinutes;
+  final todayNumber = dayNumber(today);
+  final todayStillAhead = _at(today, alertMinutes).isAfter(now);
+  final lastOverdueDay = todayNumber + digestHorizonDays;
+
+  final ahead = <int, _PayGroup>{};
+  final due = <int, _PayGroup>{};
+  final overdue = <int, _PayGroup>{};
+
+  bool allowed(PlanInvoice inv, int day) {
+    if (day < todayNumber) return false;
+    if (inv.snoozeDay != null && day < inv.snoozeDay!) return false;
+    return day != todayNumber || todayStillAhead;
+  }
+
+  for (final inv in invoices) {
+    if (inv.balanceMinor <= 0) continue;
+    for (final lead in leads) {
+      final day = inv.dueDay - lead;
+      if (allowed(inv, day)) {
+        ((lead == 0 ? due : ahead)[day] ??= _PayGroup()).add(inv, lead);
+      }
+    }
+    if (repeat > 0) {
+      // Repeats are anchored on the due date, so the same days come out
+      // however often we plan.
+      final sinceDue = todayNumber - inv.dueDay;
+      var k = sinceDue <= 0 ? 1 : (sinceDue + repeat - 1) ~/ repeat;
+      if (k < 1) k = 1;
+      for (
+        var day = inv.dueDay + k * repeat;
+        day <= lastOverdueDay;
+        day += repeat
+      ) {
+        if (allowed(inv, day)) (overdue[day] ??= _PayGroup()).add(inv, 0);
+      }
+    }
+  }
+
+  String money(int minor) => Money(minor)
+      .format(locale: settings.languageCode, symbol: settings.currencySymbol);
+
+  PlannedAlert build(String prefix, int day, _PayGroup g, String title) {
+    final iso = _iso(_fromDayNumber(day));
+    final items = [
+      for (final i in g.top)
+        l10n.alertPayItem(i.supplierName, money(i.balanceMinor)),
+    ].join(', ');
+    return PlannedAlert(
+      key: '$prefix:$iso',
+      kind: AlertKind.payment,
+      fireAt: _at(_fromDayNumber(day), alertMinutes),
+      title: title,
+      body: l10n.alertPayBody(
+        g.count,
+        items,
+        g.count > 3 ? g.count - 3 : 0,
+        money(g.totalMinor),
+      ),
+      route: g.singleSupplier == null
+          ? Routes.suppliers
+          : '${Routes.suppliers}/${g.singleSupplier}',
+    );
+  }
+
+  return [
+    for (final e in ahead.entries)
+      build(
+        'pay',
+        e.key,
+        e.value,
+        e.value.mixed || e.value.lead == null
+            ? l10n.alertPayMixedTitle
+            : l10n.alertPayTitle(e.value.lead!),
+      ),
+    for (final e in due.entries)
+      build('paydue', e.key, e.value, l10n.alertPayTitle(0)),
+    for (final e in overdue.entries)
+      build('overdue', e.key, e.value, l10n.alertOverdueTitle(e.value.count)),
+  ];
+}
+
+/// Running summary of the invoices reminding on one day.
+class _PayGroup {
+  int count = 0;
+  int totalMinor = 0;
+  int? lead;
+  bool mixed = false;
+  String? _supplier;
+  bool _manySuppliers = false;
+  final top = <PlanInvoice>[];
+
+  /// The supplier id when every invoice in the group is theirs.
+  String? get singleSupplier => _manySuppliers ? null : _supplier;
+
+  static int _compare(PlanInvoice a, PlanInvoice b) {
+    final byDue = a.dueDay.compareTo(b.dueDay);
+    if (byDue != 0) return byDue;
+    final byName = a.supplierName.compareTo(b.supplierName);
+    return byName != 0 ? byName : a.id.compareTo(b.id);
+  }
+
+  void add(PlanInvoice inv, int invoiceLead) {
+    count++;
+    totalMinor += inv.balanceMinor;
+    if (lead == null) {
+      lead = invoiceLead;
+    } else if (lead != invoiceLead) {
+      mixed = true;
+    }
+    if (_supplier == null) {
+      _supplier = inv.supplierId;
+    } else if (_supplier != inv.supplierId) {
+      _manySuppliers = true;
+    }
+    var i = top.length;
+    while (i > 0 && _compare(inv, top[i - 1]) < 0) {
+      i--;
+    }
+    if (i < 3) {
+      top.insert(i, inv);
+      if (top.length > 3) top.removeLast();
+    }
+  }
 }

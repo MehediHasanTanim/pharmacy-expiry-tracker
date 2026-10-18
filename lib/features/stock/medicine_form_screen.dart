@@ -8,8 +8,10 @@ import 'package:pharmacy_expiry_tracker/app/providers.dart';
 import 'package:pharmacy_expiry_tracker/app/routes.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/enums.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/medicine.dart';
+import 'package:pharmacy_expiry_tracker/domain/entities/supplier.dart';
 import 'package:pharmacy_expiry_tracker/domain/errors.dart';
 import 'package:pharmacy_expiry_tracker/features/common/labels.dart';
+import 'package:pharmacy_expiry_tracker/features/suppliers/suppliers_providers.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 
 /// Create ([medicineId] null) or edit a medicine (MED-1, MED-2, MED-5, MED-6).
@@ -36,6 +38,9 @@ class _MedicineFormScreenState extends ConsumerState<MedicineFormScreen> {
   DosageForm _form = DosageForm.tablet;
   StockUnit _unit = StockUnit.strip;
   Medicine? _existing;
+  String? _preferredSupplierId;
+  // The saved preferred supplier, which may be archived and so not listed.
+  Supplier? _preferredSaved;
   bool _loading = false;
   bool _saving = false;
 
@@ -66,6 +71,12 @@ class _MedicineFormScreenState extends ConsumerState<MedicineFormScreen> {
       _notes.text = m.notes ?? '';
       _form = m.dosageForm;
       _unit = m.unit;
+      _preferredSupplierId = m.preferredSupplierId;
+      if (_preferredSupplierId != null) {
+        _preferredSaved = await ref
+            .read(supplierRepositoryProvider)
+            .getById(_preferredSupplierId!);
+      }
     }
     setState(() {
       _existing = m;
@@ -103,7 +114,7 @@ class _MedicineFormScreenState extends ConsumerState<MedicineFormScreen> {
       category: _category.text,
       reorderLevel: int.tryParse(_reorder.text.trim()) ?? 0,
       // Fields without a form control yet are carried over unchanged.
-      preferredSupplierId: base?.preferredSupplierId,
+      preferredSupplierId: _preferredSupplierId,
       alertWindowDays: base?.alertWindowDays,
       storageCondition: base?.storageCondition,
       notes: _notes.text,
@@ -355,6 +366,12 @@ class _MedicineFormScreenState extends ConsumerState<MedicineFormScreen> {
                     ],
                   ),
                   const SizedBox(height: 12),
+                  _PreferredSupplierField(
+                    selectedId: _preferredSupplierId,
+                    saved: _preferredSaved,
+                    onChanged: (v) => setState(() => _preferredSupplierId = v),
+                  ),
+                  const SizedBox(height: 12),
                   TextFormField(
                     controller: _manufacturer,
                     textCapitalization: TextCapitalization.words,
@@ -398,3 +415,44 @@ class _MedicineFormScreenState extends ConsumerState<MedicineFormScreen> {
 }
 
 enum _DuplicateChoice { cancel, view, saveAnyway }
+
+/// Dropdown of suppliers; includes the saved choice even if archived.
+class _PreferredSupplierField extends ConsumerWidget {
+  const _PreferredSupplierField({
+    required this.selectedId,
+    required this.saved,
+    required this.onChanged,
+  });
+
+  final String? selectedId;
+  final Supplier? saved;
+  final ValueChanged<String?> onChanged;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final active = ref.watch(activeSuppliersProvider).value ?? const [];
+    final options = [
+      ...active,
+      if (saved != null && !active.any((s) => s.id == saved!.id)) saved!,
+    ];
+    return DropdownButtonFormField<String?>(
+      key: ValueKey('preferred-$selectedId-${options.length}'),
+      initialValue: options.any((s) => s.id == selectedId) ? selectedId : null,
+      isExpanded: true,
+      decoration: InputDecoration(
+        labelText: l10n.fieldPreferredSupplier,
+        border: const OutlineInputBorder(),
+      ),
+      items: [
+        DropdownMenuItem<String?>(child: Text(l10n.supplierNone)),
+        for (final s in options)
+          DropdownMenuItem<String?>(
+            value: s.id,
+            child: Text(s.name, overflow: TextOverflow.ellipsis),
+          ),
+      ],
+      onChanged: onChanged,
+    );
+  }
+}

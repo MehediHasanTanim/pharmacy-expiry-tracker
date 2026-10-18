@@ -76,6 +76,19 @@ class FlakyBatchRepository implements BatchRepository {
     at: at,
   );
   @override
+  Future<void> linkInvoice(
+    List<String> batchIds,
+    String invoiceId,
+    String supplierId,
+    DateTime at,
+  ) => _real.linkInvoice(batchIds, invoiceId, supplierId, at);
+  @override
+  Future<void> unlinkInvoice(String invoiceId, DateTime at) =>
+      _real.unlinkInvoice(invoiceId, at);
+  @override
+  Future<int> countLinkedBatches(String invoiceId) =>
+      _real.countLinkedBatches(invoiceId);
+  @override
   Stream<List<StockAdjustment>> watchAdjustments(String id) =>
       _real.watchAdjustments(id);
 }

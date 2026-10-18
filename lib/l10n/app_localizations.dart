@@ -1659,6 +1659,780 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Digest and lead-time alerts arrive around this time.'**
   String get alertTimeHelp;
+
+  /// No description provided for @alertPayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Payment due today} =1{Payment due tomorrow} other{Payment due in {count} days}}'**
+  String alertPayTitle(int count);
+
+  /// No description provided for @alertPayMixedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments coming due'**
+  String get alertPayMixedTitle;
+
+  /// No description provided for @alertOverdueTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Payment overdue} other{Payments overdue}}'**
+  String alertOverdueTitle(int count);
+
+  /// No description provided for @alertPayBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 invoice} other{{count} invoices}}: {items}{more, plural, =0{} other{ and {more} more}} · {total}'**
+  String alertPayBody(int count, String items, int more, String total);
+
+  /// No description provided for @alertPayItem.
+  ///
+  /// In en, this message translates to:
+  /// **'{supplier} {amount}'**
+  String alertPayItem(String supplier, String amount);
+
+  /// No description provided for @supplierSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search suppliers'**
+  String get supplierSearchHint;
+
+  /// No description provided for @supplierSortName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get supplierSortName;
+
+  /// No description provided for @supplierSortBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount owed'**
+  String get supplierSortBalance;
+
+  /// No description provided for @supplierSortDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Next due'**
+  String get supplierSortDue;
+
+  /// No description provided for @supplierAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add supplier'**
+  String get supplierAdd;
+
+  /// No description provided for @supplierEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the suppliers you buy from to track what you owe them.'**
+  String get supplierEmptyBody;
+
+  /// No description provided for @supplierEmptyCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your first supplier'**
+  String get supplierEmptyCta;
+
+  /// No description provided for @supplierNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New supplier'**
+  String get supplierNew;
+
+  /// No description provided for @supplierEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit supplier'**
+  String get supplierEdit;
+
+  /// No description provided for @supplierShowArchived.
+  ///
+  /// In en, this message translates to:
+  /// **'Show archived'**
+  String get supplierShowArchived;
+
+  /// No description provided for @fieldSupplierName.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplier name'**
+  String get fieldSupplierName;
+
+  /// No description provided for @fieldContactPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact person'**
+  String get fieldContactPerson;
+
+  /// No description provided for @fieldPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get fieldPhone;
+
+  /// No description provided for @fieldEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get fieldEmail;
+
+  /// No description provided for @fieldAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get fieldAddress;
+
+  /// No description provided for @fieldTaxId.
+  ///
+  /// In en, this message translates to:
+  /// **'Tax / licence ID'**
+  String get fieldTaxId;
+
+  /// No description provided for @fieldPaymentTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment terms (days)'**
+  String get fieldPaymentTerms;
+
+  /// No description provided for @fieldPaymentTermsHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Used to suggest a due date on new invoices'**
+  String get fieldPaymentTermsHelp;
+
+  /// No description provided for @errSupplierRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplier name is required'**
+  String get errSupplierRequired;
+
+  /// No description provided for @errEmailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get errEmailInvalid;
+
+  /// No description provided for @errTermsInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a whole number of days, 0 or more'**
+  String get errTermsInvalid;
+
+  /// No description provided for @supplierArchiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive this supplier?'**
+  String get supplierArchiveTitle;
+
+  /// No description provided for @supplierArchiveBody.
+  ///
+  /// In en, this message translates to:
+  /// **'They will disappear from lists and pickers. What you owe them and its reminders stay.'**
+  String get supplierArchiveBody;
+
+  /// No description provided for @duesOwed.
+  ///
+  /// In en, this message translates to:
+  /// **'Owed'**
+  String get duesOwed;
+
+  /// No description provided for @duesOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get duesOverdue;
+
+  /// No description provided for @duesNextDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Next due'**
+  String get duesNextDue;
+
+  /// No description provided for @duesNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing owed'**
+  String get duesNone;
+
+  /// No description provided for @duesAllClear.
+  ///
+  /// In en, this message translates to:
+  /// **'All paid up'**
+  String get duesAllClear;
+
+  /// No description provided for @badgeOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get badgeOverdue;
+
+  /// No description provided for @contactCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get contactCall;
+
+  /// No description provided for @contactSms.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get contactSms;
+
+  /// No description provided for @contactWhatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get contactWhatsapp;
+
+  /// No description provided for @contactEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get contactEmail;
+
+  /// No description provided for @contactFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open that app on this device.'**
+  String get contactFailed;
+
+  /// No description provided for @contactCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied to the clipboard'**
+  String get contactCopied;
+
+  /// No description provided for @ledgerInvoices.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoices'**
+  String get ledgerInvoices;
+
+  /// No description provided for @ledgerPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments'**
+  String get ledgerPayments;
+
+  /// No description provided for @ledgerCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'Credits'**
+  String get ledgerCredits;
+
+  /// No description provided for @ledgerNoInvoices.
+  ///
+  /// In en, this message translates to:
+  /// **'No invoices yet'**
+  String get ledgerNoInvoices;
+
+  /// No description provided for @ledgerNoPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'No payments yet'**
+  String get ledgerNoPayments;
+
+  /// No description provided for @ledgerNoCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'No credits yet'**
+  String get ledgerNoCredits;
+
+  /// No description provided for @actionAddInvoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Add invoice'**
+  String get actionAddInvoice;
+
+  /// No description provided for @actionRecordPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Record payment'**
+  String get actionRecordPayment;
+
+  /// No description provided for @actionRecordCredit.
+  ///
+  /// In en, this message translates to:
+  /// **'Record credit'**
+  String get actionRecordCredit;
+
+  /// No description provided for @actionSnoozeReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze reminders'**
+  String get actionSnoozeReminders;
+
+  /// No description provided for @actionClearSnooze.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume reminders'**
+  String get actionClearSnooze;
+
+  /// No description provided for @actionDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get actionDelete;
+
+  /// No description provided for @statusUnpaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid'**
+  String get statusUnpaid;
+
+  /// No description provided for @statusPartial.
+  ///
+  /// In en, this message translates to:
+  /// **'Part paid'**
+  String get statusPartial;
+
+  /// No description provided for @statusPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get statusPaid;
+
+  /// No description provided for @statusOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get statusOverdue;
+
+  /// No description provided for @invoiceNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New invoice'**
+  String get invoiceNew;
+
+  /// No description provided for @invoiceEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit invoice'**
+  String get invoiceEdit;
+
+  /// No description provided for @fieldInvoiceNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice number (optional)'**
+  String get fieldInvoiceNumber;
+
+  /// No description provided for @fieldInvoiceDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice date'**
+  String get fieldInvoiceDate;
+
+  /// No description provided for @fieldDueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date'**
+  String get fieldDueDate;
+
+  /// No description provided for @fieldInvoiceTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total amount'**
+  String get fieldInvoiceTotal;
+
+  /// No description provided for @fieldInvoiceNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get fieldInvoiceNotes;
+
+  /// No description provided for @noDueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'No due date'**
+  String get noDueDate;
+
+  /// No description provided for @clearDueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clearDueDate;
+
+  /// No description provided for @errAmountInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an amount above 0, like 185.50'**
+  String get errAmountInvalid;
+
+  /// No description provided for @errDueBeforeInvoice.
+  ///
+  /// In en, this message translates to:
+  /// **'The due date cannot be before the invoice date'**
+  String get errDueBeforeInvoice;
+
+  /// No description provided for @invoiceDueFromTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date set from the supplier\'s payment terms'**
+  String get invoiceDueFromTerms;
+
+  /// No description provided for @invoiceDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice'**
+  String get invoiceDetailTitle;
+
+  /// No description provided for @invoiceTotalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get invoiceTotalLabel;
+
+  /// No description provided for @invoicePaidLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get invoicePaidLabel;
+
+  /// No description provided for @invoiceCreditedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Credited'**
+  String get invoiceCreditedLabel;
+
+  /// No description provided for @invoiceBalanceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Still owed'**
+  String get invoiceBalanceLabel;
+
+  /// No description provided for @invoiceDueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get invoiceDueLabel;
+
+  /// No description provided for @invoiceDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Dated'**
+  String get invoiceDateLabel;
+
+  /// No description provided for @invoiceDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this invoice?'**
+  String get invoiceDeleteTitle;
+
+  /// No description provided for @invoiceDeleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It has no payments. Received batches stay but are no longer linked to it.'**
+  String get invoiceDeleteBody;
+
+  /// No description provided for @invoiceHasPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete its payments and credits first.'**
+  String get invoiceHasPayments;
+
+  /// No description provided for @paymentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Record payment'**
+  String get paymentTitle;
+
+  /// No description provided for @fieldPaymentAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount paid'**
+  String get fieldPaymentAmount;
+
+  /// No description provided for @fieldPaymentDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid on'**
+  String get fieldPaymentDate;
+
+  /// No description provided for @fieldPaymentReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference (optional)'**
+  String get fieldPaymentReference;
+
+  /// No description provided for @fieldPaymentApplyTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply to'**
+  String get fieldPaymentApplyTo;
+
+  /// No description provided for @paymentOldestFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Oldest due first'**
+  String get paymentOldestFirst;
+
+  /// No description provided for @paymentMethodCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get paymentMethodCash;
+
+  /// No description provided for @paymentMethodBank.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank'**
+  String get paymentMethodBank;
+
+  /// No description provided for @paymentMethodMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile wallet'**
+  String get paymentMethodMobile;
+
+  /// No description provided for @paymentMethodCheque.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheque'**
+  String get paymentMethodCheque;
+
+  /// No description provided for @paymentMethodOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get paymentMethodOther;
+
+  /// No description provided for @paymentSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment recorded'**
+  String get paymentSaved;
+
+  /// No description provided for @paymentOverTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'More than is owed'**
+  String get paymentOverTitle;
+
+  /// No description provided for @paymentOverCredit.
+  ///
+  /// In en, this message translates to:
+  /// **'Record the extra as a credit'**
+  String get paymentOverCredit;
+
+  /// No description provided for @paymentDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this payment?'**
+  String get paymentDelete;
+
+  /// No description provided for @creditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Record credit'**
+  String get creditTitle;
+
+  /// No description provided for @fieldCreditAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit amount'**
+  String get fieldCreditAmount;
+
+  /// No description provided for @fieldCreditNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get fieldCreditNote;
+
+  /// No description provided for @creditSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit recorded'**
+  String get creditSaved;
+
+  /// No description provided for @creditGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General credit'**
+  String get creditGeneral;
+
+  /// No description provided for @snoozeRemindersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze payment reminders'**
+  String get snoozeRemindersTitle;
+
+  /// No description provided for @dueDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a due for this delivery?'**
+  String get dueDialogTitle;
+
+  /// No description provided for @dueDialogYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Add invoice'**
+  String get dueDialogYes;
+
+  /// No description provided for @dueDialogNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get dueDialogNo;
+
+  /// No description provided for @fieldSupplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplier'**
+  String get fieldSupplier;
+
+  /// No description provided for @supplierNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get supplierNone;
+
+  /// No description provided for @fieldPreferredSupplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred supplier'**
+  String get fieldPreferredSupplier;
+
+  /// No description provided for @alertSettingsPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplier payments'**
+  String get alertSettingsPayments;
+
+  /// No description provided for @alertSettingsPayLead.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind before the due date'**
+  String get alertSettingsPayLead;
+
+  /// No description provided for @alertSettingsOverdueEvery.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind when overdue'**
+  String get alertSettingsOverdueEvery;
+
+  /// No description provided for @overdueEveryOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get overdueEveryOff;
+
+  /// No description provided for @snackReminderSnoozed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders snoozed until {date}'**
+  String snackReminderSnoozed(Object date);
+
+  /// No description provided for @snackReminderResumed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders resumed'**
+  String get snackReminderResumed;
+
+  /// No description provided for @supplierOwedLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Owed {amount}'**
+  String supplierOwedLine(String amount);
+
+  /// No description provided for @supplierOverdueLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} overdue'**
+  String supplierOverdueLine(String amount);
+
+  /// No description provided for @supplierNextDueLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Next due {date}'**
+  String supplierNextDueLine(String date);
+
+  /// No description provided for @duesOverdueCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 invoice} other{{count} invoices}}'**
+  String duesOverdueCount(int count);
+
+  /// No description provided for @invoiceListTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{number}'**
+  String invoiceListTitle(String number);
+
+  /// No description provided for @invoiceNumberLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice {number}'**
+  String invoiceNumberLabel(String number);
+
+  /// No description provided for @invoiceNoNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice dated {date}'**
+  String invoiceNoNumber(String date);
+
+  /// No description provided for @invoiceBatchesLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No batches linked} =1{1 batch linked} other{{count} batches linked}}'**
+  String invoiceBatchesLinked(int count);
+
+  /// No description provided for @invoiceDueIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Due {date}'**
+  String invoiceDueIn(String date);
+
+  /// No description provided for @paymentLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} on {date}'**
+  String paymentLine(String amount, String date);
+
+  /// No description provided for @paymentOverBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You entered {entered} but only {owed} is owed. Record the extra {extra} as a credit on this supplier\'s account?'**
+  String paymentOverBody(String entered, String owed, String extra);
+
+  /// No description provided for @paymentSpread.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Applied to 1 invoice} other{Applied to {count} invoices}}'**
+  String paymentSpread(int count);
+
+  /// No description provided for @overdueEveryDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Every day} other{Every {count} days}}'**
+  String overdueEveryDays(int count);
+
+  /// label
+  ///
+  /// In en, this message translates to:
+  /// **'Credit on invoice'**
+  String get creditForInvoice;
+
+  /// No description provided for @contactCopyAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get contactCopyAction;
+
+  /// No description provided for @creditTooMuch.
+  ///
+  /// In en, this message translates to:
+  /// **'That is more than the {owed} still owed on this invoice.'**
+  String creditTooMuch(String owed);
+
+  /// No description provided for @batchDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get batchDone;
+
+  /// No description provided for @dueDialogBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Record what you owe {supplier} for this delivery so you are reminded to pay.'**
+  String dueDialogBody(String supplier);
 }
 
 class _AppLocalizationsDelegate

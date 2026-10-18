@@ -1,3 +1,4 @@
+import 'package:pharmacy_expiry_tracker/core/money/money.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/batch.dart';
 
 /// Input failed validation; [field] names the offending input.
@@ -49,4 +50,28 @@ class NotFoundException implements Exception {
 
   @override
   String toString() => 'NotFoundException($what $id)';
+}
+
+/// A payment or credit is larger than what is owed.
+class OverpaymentException implements Exception {
+  const OverpaymentException({required this.owed, required this.excess});
+
+  /// What can still be paid.
+  final Money owed;
+
+  /// The part that cannot be applied; offer to record it as a credit.
+  final Money excess;
+
+  @override
+  String toString() => 'OverpaymentException(owed: $owed, excess: $excess)';
+}
+
+/// An invoice cannot be deleted while payments or credits are recorded on it.
+class InvoiceHasPaymentsException implements Exception {
+  const InvoiceHasPaymentsException(this.invoiceId);
+
+  final String invoiceId;
+
+  @override
+  String toString() => 'InvoiceHasPaymentsException($invoiceId)';
 }

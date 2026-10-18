@@ -1,5 +1,27 @@
 import 'tables/stock.dart';
+import 'tables/suppliers.dart';
 
 -- Partial index: the near-expiry query only ever looks at batches that still
 -- hold stock, so depleted/discarded rows are kept out of the index.
 CREATE INDEX idx_batch_expiry ON batches (expiry_date) WHERE quantity_on_hand > 0;
+
+-- What each supplier invoice still owes: total minus the payments and credits
+-- applied to it. Soft-deleted rows do not count. Statuses (unpaid, partial,
+-- paid, overdue) are derived from this plus the due date in Dart.
+CREATE VIEW v_invoice_balance AS
+SELECT *, total_minor - paid_minor - credit_minor AS balance_minor
+FROM (
+  SELECT i.id AS invoice_id,
+         i.supplier_id AS supplier_id,
+         i.invoice_date AS invoice_date,
+         i.due_date AS due_date,
+         i.total_minor AS total_minor,
+         COALESCE((SELECT SUM(p.amount_minor) FROM supplier_payments p
+                   WHERE p.invoice_id = i.id AND p.deleted_at IS NULL), 0)
+           AS paid_minor,
+         COALESCE((SELECT SUM(c.amount_minor) FROM supplier_credits c
+                   WHERE c.invoice_id = i.id AND c.deleted_at IS NULL), 0)
+           AS credit_minor
+  FROM supplier_invoices i
+  WHERE i.deleted_at IS NULL
+);

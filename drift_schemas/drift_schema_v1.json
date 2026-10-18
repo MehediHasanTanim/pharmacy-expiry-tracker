@@ -815,363 +815,6 @@
     {
       "id": 5,
       "references": [
-        0
-      ],
-      "type": "table",
-      "data": {
-        "name": "supplier_returns",
-        "was_declared_in_moor": false,
-        "columns": [
-          {
-            "name": "id",
-            "getter_name": "id",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "supplier_id",
-            "getter_name": "supplierId",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "defaultConstraints": "REFERENCES suppliers (id)",
-            "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES suppliers (id)"
-            },
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [
-              {
-                "foreign_key": {
-                  "to": {
-                    "table": "suppliers",
-                    "column": "id"
-                  },
-                  "initially_deferred": false,
-                  "on_update": null,
-                  "on_delete": null
-                }
-              }
-            ]
-          },
-          {
-            "name": "returned_on",
-            "getter_name": "returnedOn",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "note",
-            "getter_name": "note",
-            "moor_type": "string",
-            "nullable": true,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "created_at",
-            "getter_name": "createdAt",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          }
-        ],
-        "is_virtual": false,
-        "without_rowid": false,
-        "constraints": [],
-        "explicit_pk": [
-          "id"
-        ]
-      }
-    },
-    {
-      "id": 6,
-      "references": [
-        3,
-        5
-      ],
-      "type": "table",
-      "data": {
-        "name": "stock_adjustments",
-        "was_declared_in_moor": false,
-        "columns": [
-          {
-            "name": "id",
-            "getter_name": "id",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "batch_id",
-            "getter_name": "batchId",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "defaultConstraints": "REFERENCES batches (id)",
-            "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES batches (id)"
-            },
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [
-              {
-                "foreign_key": {
-                  "to": {
-                    "table": "batches",
-                    "column": "id"
-                  },
-                  "initially_deferred": false,
-                  "on_update": null,
-                  "on_delete": null
-                }
-              }
-            ]
-          },
-          {
-            "name": "delta_qty",
-            "getter_name": "deltaQty",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "reason",
-            "getter_name": "reason",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "note",
-            "getter_name": "note",
-            "moor_type": "string",
-            "nullable": true,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "value_impact_minor",
-            "getter_name": "valueImpactMinor",
-            "moor_type": "int",
-            "nullable": true,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "return_id",
-            "getter_name": "returnId",
-            "moor_type": "string",
-            "nullable": true,
-            "customConstraints": null,
-            "defaultConstraints": "REFERENCES supplier_returns (id)",
-            "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES supplier_returns (id)"
-            },
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [
-              {
-                "foreign_key": {
-                  "to": {
-                    "table": "supplier_returns",
-                    "column": "id"
-                  },
-                  "initially_deferred": false,
-                  "on_update": null,
-                  "on_delete": null
-                }
-              }
-            ]
-          },
-          {
-            "name": "created_at",
-            "getter_name": "createdAt",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          }
-        ],
-        "is_virtual": false,
-        "without_rowid": false,
-        "constraints": [],
-        "explicit_pk": [
-          "id"
-        ]
-      }
-    },
-    {
-      "id": 7,
-      "references": [
-        5,
-        3
-      ],
-      "type": "table",
-      "data": {
-        "name": "supplier_return_lines",
-        "was_declared_in_moor": false,
-        "columns": [
-          {
-            "name": "id",
-            "getter_name": "id",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "return_id",
-            "getter_name": "returnId",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "defaultConstraints": "REFERENCES supplier_returns (id)",
-            "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES supplier_returns (id)"
-            },
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [
-              {
-                "foreign_key": {
-                  "to": {
-                    "table": "supplier_returns",
-                    "column": "id"
-                  },
-                  "initially_deferred": false,
-                  "on_update": null,
-                  "on_delete": null
-                }
-              }
-            ]
-          },
-          {
-            "name": "batch_id",
-            "getter_name": "batchId",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "defaultConstraints": "REFERENCES batches (id)",
-            "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES batches (id)"
-            },
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [
-              {
-                "foreign_key": {
-                  "to": {
-                    "table": "batches",
-                    "column": "id"
-                  },
-                  "initially_deferred": false,
-                  "on_update": null,
-                  "on_delete": null
-                }
-              }
-            ]
-          },
-          {
-            "name": "quantity",
-            "getter_name": "quantity",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "value_minor",
-            "getter_name": "valueMinor",
-            "moor_type": "int",
-            "nullable": true,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          }
-        ],
-        "is_virtual": false,
-        "without_rowid": false,
-        "constraints": [],
-        "explicit_pk": [
-          "id"
-        ]
-      }
-    },
-    {
-      "id": 8,
-      "references": [
-        3
-      ],
-      "type": "index",
-      "data": {
-        "on": 3,
-        "name": "idx_batch_med",
-        "sql": null,
-        "unique": false,
-        "columns": [
-          {
-            "column": "medicine_id",
-            "order_by": null
-          }
-        ]
-      }
-    },
-    {
-      "id": 9,
-      "references": [
-        3
-      ],
-      "type": "index",
-      "data": {
-        "on": 3,
-        "name": "idx_batch_supplier",
-        "sql": null,
-        "unique": false,
-        "columns": [
-          {
-            "column": "supplier_id",
-            "order_by": null
-          }
-        ]
-      }
-    },
-    {
-      "id": 10,
-      "references": [
         0,
         2
       ],
@@ -1312,11 +955,96 @@
       }
     },
     {
-      "id": 11,
+      "id": 6,
+      "references": [
+        0
+      ],
+      "type": "table",
+      "data": {
+        "name": "supplier_returns",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "supplier_id",
+            "getter_name": "supplierId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES suppliers (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES suppliers (id)"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "suppliers",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "returned_on",
+            "getter_name": "returnedOn",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "note",
+            "getter_name": "note",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "created_at",
+            "getter_name": "createdAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": 7,
       "references": [
         0,
         2,
-        5
+        6
       ],
       "type": "table",
       "data": {
@@ -1471,7 +1199,103 @@
       }
     },
     {
-      "id": 12,
+      "id": 8,
+      "references": [
+        2,
+        5,
+        7
+      ],
+      "type": "view",
+      "data": {
+        "name": "v_invoice_balance",
+        "sql": "CREATE VIEW v_invoice_balance AS SELECT *, total_minor - paid_minor - credit_minor AS balance_minor FROM (SELECT i.id AS invoice_id, i.supplier_id AS supplier_id, i.invoice_date AS invoice_date, i.due_date AS due_date, i.total_minor AS total_minor, COALESCE((SELECT SUM(p.amount_minor) FROM supplier_payments AS p WHERE p.invoice_id = i.id AND p.deleted_at IS NULL), 0) AS paid_minor, COALESCE((SELECT SUM(c.amount_minor) FROM supplier_credits AS c WHERE c.invoice_id = i.id AND c.deleted_at IS NULL), 0) AS credit_minor FROM supplier_invoices AS i WHERE i.deleted_at IS NULL)",
+        "dart_info_name": "VInvoiceBalance",
+        "columns": [
+          {
+            "name": "invoice_id",
+            "getter_name": "invoiceId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "supplier_id",
+            "getter_name": "supplierId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "invoice_date",
+            "getter_name": "invoiceDate",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "due_date",
+            "getter_name": "dueDate",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "total_minor",
+            "getter_name": "totalMinor",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "paid_minor",
+            "getter_name": "paidMinor",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "credit_minor",
+            "getter_name": "creditMinor",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "balance_minor",
+            "getter_name": "balanceMinor",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ]
+      }
+    },
+    {
+      "id": 9,
       "references": [
         2
       ],
@@ -1490,7 +1314,279 @@
       }
     },
     {
+      "id": 10,
+      "references": [
+        3,
+        6
+      ],
+      "type": "table",
+      "data": {
+        "name": "stock_adjustments",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "batch_id",
+            "getter_name": "batchId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES batches (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES batches (id)"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "batches",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "delta_qty",
+            "getter_name": "deltaQty",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "reason",
+            "getter_name": "reason",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "note",
+            "getter_name": "note",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "value_impact_minor",
+            "getter_name": "valueImpactMinor",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "return_id",
+            "getter_name": "returnId",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES supplier_returns (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES supplier_returns (id)"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "supplier_returns",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "created_at",
+            "getter_name": "createdAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "references": [
+        6,
+        3
+      ],
+      "type": "table",
+      "data": {
+        "name": "supplier_return_lines",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "return_id",
+            "getter_name": "returnId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES supplier_returns (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES supplier_returns (id)"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "supplier_returns",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "batch_id",
+            "getter_name": "batchId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES batches (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES batches (id)"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "batches",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "quantity",
+            "getter_name": "quantity",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "value_minor",
+            "getter_name": "valueMinor",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "references": [
+        3
+      ],
+      "type": "index",
+      "data": {
+        "on": 3,
+        "name": "idx_batch_med",
+        "sql": null,
+        "unique": false,
+        "columns": [
+          {
+            "column": "medicine_id",
+            "order_by": null
+          }
+        ]
+      }
+    },
+    {
       "id": 13,
+      "references": [
+        3
+      ],
+      "type": "index",
+      "data": {
+        "on": 3,
+        "name": "idx_batch_supplier",
+        "sql": null,
+        "unique": false,
+        "columns": [
+          {
+            "column": "supplier_id",
+            "order_by": null
+          }
+        ]
+      }
+    },
+    {
+      "id": 14,
       "references": [
         1
       ],
@@ -1571,7 +1667,7 @@
       }
     },
     {
-      "id": 14,
+      "id": 15,
       "references": [
         1
       ],
@@ -1590,7 +1686,7 @@
       }
     },
     {
-      "id": 15,
+      "id": 16,
       "references": [
         1,
         0
@@ -1722,7 +1818,7 @@
       }
     },
     {
-      "id": 16,
+      "id": 17,
       "references": [
         1
       ],
@@ -1787,7 +1883,7 @@
       }
     },
     {
-      "id": 17,
+      "id": 18,
       "references": [],
       "type": "table",
       "data": {
@@ -1880,7 +1976,7 @@
       }
     },
     {
-      "id": 18,
+      "id": 19,
       "references": [],
       "type": "table",
       "data": {
@@ -1967,7 +2063,7 @@
       }
     },
     {
-      "id": 19,
+      "id": 20,
       "references": [],
       "type": "table",
       "data": {
@@ -2004,13 +2100,13 @@
       }
     },
     {
-      "id": 20,
+      "id": 21,
       "references": [
-        17
+        18
       ],
       "type": "index",
       "data": {
-        "on": 17,
+        "on": 18,
         "name": "idx_alert_fire",
         "sql": null,
         "unique": false,
@@ -2070,11 +2166,47 @@
       ]
     },
     {
+      "name": "supplier_payments",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"supplier_payments\" (\"id\" TEXT NOT NULL, \"supplier_id\" TEXT NOT NULL REFERENCES suppliers (id), \"invoice_id\" TEXT NULL REFERENCES supplier_invoices (id), \"amount_minor\" INTEGER NOT NULL, \"paid_on\" TEXT NOT NULL, \"method\" TEXT NULL, \"reference\" TEXT NULL, \"created_at\" INTEGER NOT NULL, \"deleted_at\" INTEGER NULL, PRIMARY KEY (\"id\"));"
+        }
+      ]
+    },
+    {
       "name": "supplier_returns",
       "sql": [
         {
           "dialect": "sqlite",
           "sql": "CREATE TABLE IF NOT EXISTS \"supplier_returns\" (\"id\" TEXT NOT NULL, \"supplier_id\" TEXT NOT NULL REFERENCES suppliers (id), \"returned_on\" TEXT NOT NULL, \"note\" TEXT NULL, \"created_at\" INTEGER NOT NULL, PRIMARY KEY (\"id\"));"
+        }
+      ]
+    },
+    {
+      "name": "supplier_credits",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"supplier_credits\" (\"id\" TEXT NOT NULL, \"supplier_id\" TEXT NOT NULL REFERENCES suppliers (id), \"invoice_id\" TEXT NULL REFERENCES supplier_invoices (id), \"return_id\" TEXT NULL REFERENCES supplier_returns (id), \"amount_minor\" INTEGER NOT NULL, \"issued_on\" TEXT NOT NULL, \"note\" TEXT NULL, \"created_at\" INTEGER NOT NULL, \"deleted_at\" INTEGER NULL, PRIMARY KEY (\"id\"));"
+        }
+      ]
+    },
+    {
+      "name": "v_invoice_balance",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE VIEW v_invoice_balance AS SELECT *, total_minor - paid_minor - credit_minor AS balance_minor FROM (SELECT i.id AS invoice_id, i.supplier_id AS supplier_id, i.invoice_date AS invoice_date, i.due_date AS due_date, i.total_minor AS total_minor, COALESCE((SELECT SUM(p.amount_minor) FROM supplier_payments AS p WHERE p.invoice_id = i.id AND p.deleted_at IS NULL), 0) AS paid_minor, COALESCE((SELECT SUM(c.amount_minor) FROM supplier_credits AS c WHERE c.invoice_id = i.id AND c.deleted_at IS NULL), 0) AS credit_minor FROM supplier_invoices AS i WHERE i.deleted_at IS NULL)"
+        }
+      ]
+    },
+    {
+      "name": "idx_inv_due",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX idx_inv_due ON supplier_invoices (due_date)"
         }
       ]
     },
@@ -2111,33 +2243,6 @@
         {
           "dialect": "sqlite",
           "sql": "CREATE INDEX idx_batch_supplier ON batches (supplier_id)"
-        }
-      ]
-    },
-    {
-      "name": "supplier_payments",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"supplier_payments\" (\"id\" TEXT NOT NULL, \"supplier_id\" TEXT NOT NULL REFERENCES suppliers (id), \"invoice_id\" TEXT NULL REFERENCES supplier_invoices (id), \"amount_minor\" INTEGER NOT NULL, \"paid_on\" TEXT NOT NULL, \"method\" TEXT NULL, \"reference\" TEXT NULL, \"created_at\" INTEGER NOT NULL, \"deleted_at\" INTEGER NULL, PRIMARY KEY (\"id\"));"
-        }
-      ]
-    },
-    {
-      "name": "supplier_credits",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"supplier_credits\" (\"id\" TEXT NOT NULL, \"supplier_id\" TEXT NOT NULL REFERENCES suppliers (id), \"invoice_id\" TEXT NULL REFERENCES supplier_invoices (id), \"return_id\" TEXT NULL REFERENCES supplier_returns (id), \"amount_minor\" INTEGER NOT NULL, \"issued_on\" TEXT NOT NULL, \"note\" TEXT NULL, \"created_at\" INTEGER NOT NULL, \"deleted_at\" INTEGER NULL, PRIMARY KEY (\"id\"));"
-        }
-      ]
-    },
-    {
-      "name": "idx_inv_due",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE INDEX idx_inv_due ON supplier_invoices (due_date)"
         }
       ]
     },

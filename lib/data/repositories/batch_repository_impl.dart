@@ -168,6 +168,45 @@ class BatchRepositoryImpl implements BatchRepository {
   }
 
   @override
+  Future<void> linkInvoice(
+    List<String> batchIds,
+    String invoiceId,
+    String supplierId,
+    DateTime at,
+  ) async {
+    if (batchIds.isEmpty) return;
+    final ms = at.millisecondsSinceEpoch;
+    await (_db.update(_b)..where((b) => b.id.isIn(batchIds))).write(
+      BatchesCompanion(invoiceId: Value(invoiceId), updatedAt: Value(ms)),
+    );
+    // Batches received without a supplier now have one.
+    await (_db.update(_b)
+          ..where((b) => b.id.isIn(batchIds) & b.supplierId.isNull()))
+        .write(BatchesCompanion(supplierId: Value(supplierId)));
+  }
+
+  @override
+  Future<void> unlinkInvoice(String invoiceId, DateTime at) async {
+    await (_db.update(_b)..where((b) => b.invoiceId.equals(invoiceId))).write(
+      BatchesCompanion(
+        invoiceId: const Value(null),
+        updatedAt: Value(at.millisecondsSinceEpoch),
+      ),
+    );
+  }
+
+  @override
+  Future<int> countLinkedBatches(String invoiceId) async {
+    final count = _b.id.count();
+    final row =
+        await (_db.selectOnly(_b)
+              ..addColumns([count])
+              ..where(_b.invoiceId.equals(invoiceId) & _b.deletedAt.isNull()))
+            .getSingle();
+    return row.read(count) ?? 0;
+  }
+
+  @override
   Future<void> insertAdjustment(StockAdjustment adjustment) =>
       _db.into(_db.stockAdjustments).insert(adjustmentCompanion(adjustment));
 

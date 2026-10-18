@@ -8,6 +8,8 @@ enum DataChangeKind {
   batchEdited,
   stockAdjusted,
   alertStateChanged,
+  supplierChanged,
+  ledgerChanged,
 }
 
 @immutable

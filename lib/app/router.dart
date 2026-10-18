@@ -17,6 +17,11 @@ import 'package:pharmacy_expiry_tracker/features/stock/medicine_detail_screen.da
 import 'package:pharmacy_expiry_tracker/features/stock/medicine_form_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/medicine_picker_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/stock_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/suppliers/invoice_detail_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/suppliers/invoice_form_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/suppliers/payment_form_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/suppliers/supplier_detail_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/suppliers/supplier_form_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/suppliers_screen.dart';
 
 GoRouter buildRouter({String initialLocation = Routes.home}) {
@@ -115,6 +120,65 @@ GoRouter buildRouter({String initialLocation = Routes.home}) {
               GoRoute(
                 path: Routes.suppliers,
                 builder: (_, _) => const SuppliersScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'new',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const SupplierFormScreen(),
+                  ),
+                  GoRoute(
+                    path: ':id',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, state) => SupplierDetailScreen(
+                      supplierId: state.pathParameters['id']!,
+                    ),
+                    routes: [
+                      GoRoute(
+                        path: 'edit',
+                        parentNavigatorKey: rootKey,
+                        builder: (_, state) => SupplierFormScreen(
+                          supplierId: state.pathParameters['id'],
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'pay',
+                        parentNavigatorKey: rootKey,
+                        builder: (_, state) => PaymentFormScreen(
+                          supplierId: state.pathParameters['id']!,
+                          invoiceId: state.uri.queryParameters['invoice'],
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'invoice/new',
+                        parentNavigatorKey: rootKey,
+                        builder: (_, state) => InvoiceFormScreen(
+                          supplierId: state.pathParameters['id']!,
+                          args: state.extra is InvoiceFormArgs
+                              ? state.extra! as InvoiceFormArgs
+                              : const InvoiceFormArgs(),
+                        ),
+                      ),
+                      GoRoute(
+                        path: 'invoice/:iid',
+                        parentNavigatorKey: rootKey,
+                        builder: (_, state) => InvoiceDetailScreen(
+                          supplierId: state.pathParameters['id']!,
+                          invoiceId: state.pathParameters['iid']!,
+                        ),
+                        routes: [
+                          GoRoute(
+                            path: 'edit',
+                            parentNavigatorKey: rootKey,
+                            builder: (_, state) => InvoiceFormScreen(
+                              supplierId: state.pathParameters['id']!,
+                              invoiceId: state.pathParameters['iid'],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),

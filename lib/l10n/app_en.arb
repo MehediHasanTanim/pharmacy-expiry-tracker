@@ -470,5 +470,291 @@
   },
   "alertSettingsNoLeads": "No lead-time alerts. Add at least one to be warned before expiry.",
   "alertCenterOpenHint": "Tap to review",
-  "alertTimeHelp": "Digest and lead-time alerts arrive around this time."
+  "alertTimeHelp": "Digest and lead-time alerts arrive around this time.",
+  "alertPayTitle": "{count, plural, =0{Payment due today} =1{Payment due tomorrow} other{Payment due in {count} days}}",
+  "@alertPayTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "alertPayMixedTitle": "Payments coming due",
+  "alertOverdueTitle": "{count, plural, =1{Payment overdue} other{Payments overdue}}",
+  "@alertOverdueTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "alertPayBody": "{count, plural, =1{1 invoice} other{{count} invoices}}: {items}{more, plural, =0{} other{ and {more} more}} · {total}",
+  "@alertPayBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "items": {
+        "type": "String"
+      },
+      "more": {
+        "type": "int"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "alertPayItem": "{supplier} {amount}",
+  "@alertPayItem": {
+    "placeholders": {
+      "supplier": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "supplierSearchHint": "Search suppliers",
+  "supplierSortName": "Name",
+  "supplierSortBalance": "Amount owed",
+  "supplierSortDue": "Next due",
+  "supplierAdd": "Add supplier",
+  "supplierEmptyBody": "Add the suppliers you buy from to track what you owe them.",
+  "supplierEmptyCta": "Add your first supplier",
+  "supplierNew": "New supplier",
+  "supplierEdit": "Edit supplier",
+  "supplierShowArchived": "Show archived",
+  "fieldSupplierName": "Supplier name",
+  "fieldContactPerson": "Contact person",
+  "fieldPhone": "Phone",
+  "fieldEmail": "Email",
+  "fieldAddress": "Address",
+  "fieldTaxId": "Tax / licence ID",
+  "fieldPaymentTerms": "Payment terms (days)",
+  "fieldPaymentTermsHelp": "Used to suggest a due date on new invoices",
+  "errSupplierRequired": "Supplier name is required",
+  "errEmailInvalid": "Enter a valid email address",
+  "errTermsInvalid": "Enter a whole number of days, 0 or more",
+  "supplierArchiveTitle": "Archive this supplier?",
+  "supplierArchiveBody": "They will disappear from lists and pickers. What you owe them and its reminders stay.",
+  "duesOwed": "Owed",
+  "duesOverdue": "Overdue",
+  "duesNextDue": "Next due",
+  "duesNone": "Nothing owed",
+  "duesAllClear": "All paid up",
+  "badgeOverdue": "Overdue",
+  "contactCall": "Call",
+  "contactSms": "Message",
+  "contactWhatsapp": "WhatsApp",
+  "contactEmail": "Email",
+  "contactFailed": "Could not open that app on this device.",
+  "contactCopied": "Copied to the clipboard",
+  "ledgerInvoices": "Invoices",
+  "ledgerPayments": "Payments",
+  "ledgerCredits": "Credits",
+  "ledgerNoInvoices": "No invoices yet",
+  "ledgerNoPayments": "No payments yet",
+  "ledgerNoCredits": "No credits yet",
+  "actionAddInvoice": "Add invoice",
+  "actionRecordPayment": "Record payment",
+  "actionRecordCredit": "Record credit",
+  "actionSnoozeReminders": "Snooze reminders",
+  "actionClearSnooze": "Resume reminders",
+  "actionDelete": "Delete",
+  "statusUnpaid": "Unpaid",
+  "statusPartial": "Part paid",
+  "statusPaid": "Paid",
+  "statusOverdue": "Overdue",
+  "invoiceNew": "New invoice",
+  "invoiceEdit": "Edit invoice",
+  "fieldInvoiceNumber": "Invoice number (optional)",
+  "fieldInvoiceDate": "Invoice date",
+  "fieldDueDate": "Due date",
+  "fieldInvoiceTotal": "Total amount",
+  "fieldInvoiceNotes": "Notes",
+  "noDueDate": "No due date",
+  "clearDueDate": "Clear",
+  "errAmountInvalid": "Enter an amount above 0, like 185.50",
+  "errDueBeforeInvoice": "The due date cannot be before the invoice date",
+  "invoiceDueFromTerms": "Due date set from the supplier's payment terms",
+  "invoiceDetailTitle": "Invoice",
+  "invoiceTotalLabel": "Total",
+  "invoicePaidLabel": "Paid",
+  "invoiceCreditedLabel": "Credited",
+  "invoiceBalanceLabel": "Still owed",
+  "invoiceDueLabel": "Due",
+  "invoiceDateLabel": "Dated",
+  "invoiceDeleteTitle": "Delete this invoice?",
+  "invoiceDeleteBody": "It has no payments. Received batches stay but are no longer linked to it.",
+  "invoiceHasPayments": "Delete its payments and credits first.",
+  "paymentTitle": "Record payment",
+  "fieldPaymentAmount": "Amount paid",
+  "fieldPaymentDate": "Paid on",
+  "fieldPaymentReference": "Reference (optional)",
+  "fieldPaymentApplyTo": "Apply to",
+  "paymentOldestFirst": "Oldest due first",
+  "paymentMethodCash": "Cash",
+  "paymentMethodBank": "Bank",
+  "paymentMethodMobile": "Mobile wallet",
+  "paymentMethodCheque": "Cheque",
+  "paymentMethodOther": "Other",
+  "paymentSaved": "Payment recorded",
+  "paymentOverTitle": "More than is owed",
+  "paymentOverCredit": "Record the extra as a credit",
+  "paymentDelete": "Delete this payment?",
+  "creditTitle": "Record credit",
+  "fieldCreditAmount": "Credit amount",
+  "fieldCreditNote": "Note (optional)",
+  "creditSaved": "Credit recorded",
+  "creditGeneral": "General credit",
+  "snoozeRemindersTitle": "Snooze payment reminders",
+  "dueDialogTitle": "Add a due for this delivery?",
+  "dueDialogYes": "Add invoice",
+  "dueDialogNo": "Not now",
+  "fieldSupplier": "Supplier",
+  "supplierNone": "None",
+  "fieldPreferredSupplier": "Preferred supplier",
+  "alertSettingsPayments": "Supplier payments",
+  "alertSettingsPayLead": "Remind before the due date",
+  "alertSettingsOverdueEvery": "Remind when overdue",
+  "overdueEveryOff": "Never",
+  "snackReminderSnoozed": "Reminders snoozed until {date}",
+  "snackReminderResumed": "Reminders resumed",
+  "supplierOwedLine": "Owed {amount}",
+  "@supplierOwedLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "supplierOverdueLine": "{amount} overdue",
+  "@supplierOverdueLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "supplierNextDueLine": "Next due {date}",
+  "@supplierNextDueLine": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "duesOverdueCount": "{count, plural, =1{1 invoice} other{{count} invoices}}",
+  "@duesOverdueCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "invoiceListTitle": "{number}",
+  "@invoiceListTitle": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "invoiceNumberLabel": "Invoice {number}",
+  "@invoiceNumberLabel": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "invoiceNoNumber": "Invoice dated {date}",
+  "@invoiceNoNumber": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "invoiceBatchesLinked": "{count, plural, =0{No batches linked} =1{1 batch linked} other{{count} batches linked}}",
+  "@invoiceBatchesLinked": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "invoiceDueIn": "Due {date}",
+  "@invoiceDueIn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentLine": "{amount} on {date}",
+  "@paymentLine": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentOverBody": "You entered {entered} but only {owed} is owed. Record the extra {extra} as a credit on this supplier's account?",
+  "@paymentOverBody": {
+    "placeholders": {
+      "entered": {
+        "type": "String"
+      },
+      "owed": {
+        "type": "String"
+      },
+      "extra": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentSpread": "{count, plural, =1{Applied to 1 invoice} other{Applied to {count} invoices}}",
+  "@paymentSpread": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "overdueEveryDays": "{count, plural, =1{Every day} other{Every {count} days}}",
+  "@overdueEveryDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "creditForInvoice": "Credit on invoice",
+  "@creditForInvoice": {
+    "description": "label"
+  },
+  "contactCopyAction": "Copy",
+  "creditTooMuch": "That is more than the {owed} still owed on this invoice.",
+  "@creditTooMuch": {
+    "placeholders": {
+      "owed": {
+        "type": "String"
+      }
+    }
+  },
+  "batchDone": "Done",
+  "dueDialogBody": "Record what you owe {supplier} for this delivery so you are reminded to pay.",
+  "@dueDialogBody": {
+    "placeholders": {
+      "supplier": {
+        "type": "String"
+      }
+    }
+  }
 }

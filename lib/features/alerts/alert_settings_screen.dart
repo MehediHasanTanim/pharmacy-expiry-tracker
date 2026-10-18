@@ -56,6 +56,21 @@ class AlertSettingsScreen extends ConsumerWidget {
     );
   }
 
+  Future<void> _addPaymentLead(BuildContext context, WidgetRef ref) async {
+    final days = await showDialog<int>(
+      context: context,
+      builder: (_) => const _LeadDaysDialog(),
+    );
+    if (days == null) return;
+    await _update(
+      ref,
+      (s) => s.copyWith(
+        paymentLeadDays: ({...s.paymentLeadDays, days}.toList()
+          ..sort((a, b) => b.compareTo(a))),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
@@ -172,6 +187,79 @@ class AlertSettingsScreen extends ConsumerWidget {
               ref,
               s.quietEndMinutes,
               (s, m) => s.copyWith(quietEndMinutes: m),
+            ),
+          ),
+          const Divider(height: 32),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+            child: Text(
+              l10n.alertSettingsPayments,
+              style: theme.textTheme.titleMedium,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+            child: Text(
+              l10n.alertSettingsPayLead,
+              style: theme.textTheme.bodySmall,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              children: [
+                for (final lead in ([
+                  ...s.paymentLeadDays,
+                ]..sort((a, b) => b.compareTo(a))))
+                  InputChip(
+                    key: Key('pay-lead-chip-$lead'),
+                    label: Text(l10n.leadChip(lead)),
+                    onDeleted: () => unawaited(
+                      _update(
+                        ref,
+                        (s) => s.copyWith(
+                          paymentLeadDays: [
+                            for (final l in s.paymentLeadDays)
+                              if (l != lead) l,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ActionChip(
+                  key: const Key('pay-lead-add'),
+                  avatar: const Icon(Icons.add, size: 18),
+                  label: Text(l10n.alertSettingsAddLead),
+                  onPressed: () => _addPaymentLead(context, ref),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            title: Text(l10n.alertSettingsOverdueEvery),
+            trailing: DropdownButton<int>(
+              key: const Key('overdue-repeat'),
+              value: const [0, 1, 2, 3, 5, 7].contains(s.overdueRepeatDays)
+                  ? s.overdueRepeatDays
+                  : 3,
+              items: [
+                for (final n in const [0, 1, 2, 3, 5, 7])
+                  DropdownMenuItem(
+                    value: n,
+                    child: Text(
+                      n == 0 ? l10n.overdueEveryOff : l10n.overdueEveryDays(n),
+                    ),
+                  ),
+              ],
+              onChanged: (v) {
+                if (v != null) {
+                  unawaited(
+                    _update(ref, (s) => s.copyWith(overdueRepeatDays: v)),
+                  );
+                }
+              },
             ),
           ),
           const Divider(height: 32),

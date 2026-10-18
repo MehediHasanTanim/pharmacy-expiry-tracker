@@ -55,3 +55,16 @@ class LastReceivedDate extends Notifier<DateTime?> {
 final lastReceivedDateProvider = NotifierProvider<LastReceivedDate, DateTime?>(
   LastReceivedDate.new,
 );
+
+/// Remembers the supplier of the last batch received, so consecutive entries
+/// from one delivery don't ask again (BAT-7).
+class LastSupplier extends Notifier<String?> {
+  @override
+  String? build() => null;
+
+  void remember(String? id) => state = id;
+}
+
+final lastSupplierProvider = NotifierProvider<LastSupplier, String?>(
+  LastSupplier.new,
+);

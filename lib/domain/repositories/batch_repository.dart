@@ -49,6 +49,21 @@ abstract interface class BatchRepository {
     required DateTime at,
   });
 
+  /// Marks the batches as paid for by [invoiceId]; a batch without a supplier
+  /// takes [supplierId].
+  Future<void> linkInvoice(
+    List<String> batchIds,
+    String invoiceId,
+    String supplierId,
+    DateTime at,
+  );
+
+  /// Detaches every batch from [invoiceId].
+  Future<void> unlinkInvoice(String invoiceId, DateTime at);
+
+  /// Batches currently linked to [invoiceId].
+  Future<int> countLinkedBatches(String invoiceId);
+
   Future<void> insertAdjustment(StockAdjustment adjustment);
 
   /// Newest first.

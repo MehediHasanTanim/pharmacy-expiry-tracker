@@ -942,4 +942,487 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get alertTimeHelp =>
       'Digest and lead-time alerts arrive around this time.';
+
+  @override
+  String alertPayTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Payment due in $count days',
+      one: 'Payment due tomorrow',
+      zero: 'Payment due today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get alertPayMixedTitle => 'Payments coming due';
+
+  @override
+  String alertOverdueTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Payments overdue',
+      one: 'Payment overdue',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String alertPayBody(int count, String items, int more, String total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count invoices',
+      one: '1 invoice',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      more,
+      locale: localeName,
+      other: ' and $more more',
+      zero: '',
+    );
+    return '$_temp0: $items$_temp1 · $total';
+  }
+
+  @override
+  String alertPayItem(String supplier, String amount) {
+    return '$supplier $amount';
+  }
+
+  @override
+  String get supplierSearchHint => 'Search suppliers';
+
+  @override
+  String get supplierSortName => 'Name';
+
+  @override
+  String get supplierSortBalance => 'Amount owed';
+
+  @override
+  String get supplierSortDue => 'Next due';
+
+  @override
+  String get supplierAdd => 'Add supplier';
+
+  @override
+  String get supplierEmptyBody =>
+      'Add the suppliers you buy from to track what you owe them.';
+
+  @override
+  String get supplierEmptyCta => 'Add your first supplier';
+
+  @override
+  String get supplierNew => 'New supplier';
+
+  @override
+  String get supplierEdit => 'Edit supplier';
+
+  @override
+  String get supplierShowArchived => 'Show archived';
+
+  @override
+  String get fieldSupplierName => 'Supplier name';
+
+  @override
+  String get fieldContactPerson => 'Contact person';
+
+  @override
+  String get fieldPhone => 'Phone';
+
+  @override
+  String get fieldEmail => 'Email';
+
+  @override
+  String get fieldAddress => 'Address';
+
+  @override
+  String get fieldTaxId => 'Tax / licence ID';
+
+  @override
+  String get fieldPaymentTerms => 'Payment terms (days)';
+
+  @override
+  String get fieldPaymentTermsHelp =>
+      'Used to suggest a due date on new invoices';
+
+  @override
+  String get errSupplierRequired => 'Supplier name is required';
+
+  @override
+  String get errEmailInvalid => 'Enter a valid email address';
+
+  @override
+  String get errTermsInvalid => 'Enter a whole number of days, 0 or more';
+
+  @override
+  String get supplierArchiveTitle => 'Archive this supplier?';
+
+  @override
+  String get supplierArchiveBody =>
+      'They will disappear from lists and pickers. What you owe them and its reminders stay.';
+
+  @override
+  String get duesOwed => 'Owed';
+
+  @override
+  String get duesOverdue => 'Overdue';
+
+  @override
+  String get duesNextDue => 'Next due';
+
+  @override
+  String get duesNone => 'Nothing owed';
+
+  @override
+  String get duesAllClear => 'All paid up';
+
+  @override
+  String get badgeOverdue => 'Overdue';
+
+  @override
+  String get contactCall => 'Call';
+
+  @override
+  String get contactSms => 'Message';
+
+  @override
+  String get contactWhatsapp => 'WhatsApp';
+
+  @override
+  String get contactEmail => 'Email';
+
+  @override
+  String get contactFailed => 'Could not open that app on this device.';
+
+  @override
+  String get contactCopied => 'Copied to the clipboard';
+
+  @override
+  String get ledgerInvoices => 'Invoices';
+
+  @override
+  String get ledgerPayments => 'Payments';
+
+  @override
+  String get ledgerCredits => 'Credits';
+
+  @override
+  String get ledgerNoInvoices => 'No invoices yet';
+
+  @override
+  String get ledgerNoPayments => 'No payments yet';
+
+  @override
+  String get ledgerNoCredits => 'No credits yet';
+
+  @override
+  String get actionAddInvoice => 'Add invoice';
+
+  @override
+  String get actionRecordPayment => 'Record payment';
+
+  @override
+  String get actionRecordCredit => 'Record credit';
+
+  @override
+  String get actionSnoozeReminders => 'Snooze reminders';
+
+  @override
+  String get actionClearSnooze => 'Resume reminders';
+
+  @override
+  String get actionDelete => 'Delete';
+
+  @override
+  String get statusUnpaid => 'Unpaid';
+
+  @override
+  String get statusPartial => 'Part paid';
+
+  @override
+  String get statusPaid => 'Paid';
+
+  @override
+  String get statusOverdue => 'Overdue';
+
+  @override
+  String get invoiceNew => 'New invoice';
+
+  @override
+  String get invoiceEdit => 'Edit invoice';
+
+  @override
+  String get fieldInvoiceNumber => 'Invoice number (optional)';
+
+  @override
+  String get fieldInvoiceDate => 'Invoice date';
+
+  @override
+  String get fieldDueDate => 'Due date';
+
+  @override
+  String get fieldInvoiceTotal => 'Total amount';
+
+  @override
+  String get fieldInvoiceNotes => 'Notes';
+
+  @override
+  String get noDueDate => 'No due date';
+
+  @override
+  String get clearDueDate => 'Clear';
+
+  @override
+  String get errAmountInvalid => 'Enter an amount above 0, like 185.50';
+
+  @override
+  String get errDueBeforeInvoice =>
+      'The due date cannot be before the invoice date';
+
+  @override
+  String get invoiceDueFromTerms =>
+      'Due date set from the supplier\'s payment terms';
+
+  @override
+  String get invoiceDetailTitle => 'Invoice';
+
+  @override
+  String get invoiceTotalLabel => 'Total';
+
+  @override
+  String get invoicePaidLabel => 'Paid';
+
+  @override
+  String get invoiceCreditedLabel => 'Credited';
+
+  @override
+  String get invoiceBalanceLabel => 'Still owed';
+
+  @override
+  String get invoiceDueLabel => 'Due';
+
+  @override
+  String get invoiceDateLabel => 'Dated';
+
+  @override
+  String get invoiceDeleteTitle => 'Delete this invoice?';
+
+  @override
+  String get invoiceDeleteBody =>
+      'It has no payments. Received batches stay but are no longer linked to it.';
+
+  @override
+  String get invoiceHasPayments => 'Delete its payments and credits first.';
+
+  @override
+  String get paymentTitle => 'Record payment';
+
+  @override
+  String get fieldPaymentAmount => 'Amount paid';
+
+  @override
+  String get fieldPaymentDate => 'Paid on';
+
+  @override
+  String get fieldPaymentReference => 'Reference (optional)';
+
+  @override
+  String get fieldPaymentApplyTo => 'Apply to';
+
+  @override
+  String get paymentOldestFirst => 'Oldest due first';
+
+  @override
+  String get paymentMethodCash => 'Cash';
+
+  @override
+  String get paymentMethodBank => 'Bank';
+
+  @override
+  String get paymentMethodMobile => 'Mobile wallet';
+
+  @override
+  String get paymentMethodCheque => 'Cheque';
+
+  @override
+  String get paymentMethodOther => 'Other';
+
+  @override
+  String get paymentSaved => 'Payment recorded';
+
+  @override
+  String get paymentOverTitle => 'More than is owed';
+
+  @override
+  String get paymentOverCredit => 'Record the extra as a credit';
+
+  @override
+  String get paymentDelete => 'Delete this payment?';
+
+  @override
+  String get creditTitle => 'Record credit';
+
+  @override
+  String get fieldCreditAmount => 'Credit amount';
+
+  @override
+  String get fieldCreditNote => 'Note (optional)';
+
+  @override
+  String get creditSaved => 'Credit recorded';
+
+  @override
+  String get creditGeneral => 'General credit';
+
+  @override
+  String get snoozeRemindersTitle => 'Snooze payment reminders';
+
+  @override
+  String get dueDialogTitle => 'Add a due for this delivery?';
+
+  @override
+  String get dueDialogYes => 'Add invoice';
+
+  @override
+  String get dueDialogNo => 'Not now';
+
+  @override
+  String get fieldSupplier => 'Supplier';
+
+  @override
+  String get supplierNone => 'None';
+
+  @override
+  String get fieldPreferredSupplier => 'Preferred supplier';
+
+  @override
+  String get alertSettingsPayments => 'Supplier payments';
+
+  @override
+  String get alertSettingsPayLead => 'Remind before the due date';
+
+  @override
+  String get alertSettingsOverdueEvery => 'Remind when overdue';
+
+  @override
+  String get overdueEveryOff => 'Never';
+
+  @override
+  String snackReminderSnoozed(Object date) {
+    return 'Reminders snoozed until $date';
+  }
+
+  @override
+  String get snackReminderResumed => 'Reminders resumed';
+
+  @override
+  String supplierOwedLine(String amount) {
+    return 'Owed $amount';
+  }
+
+  @override
+  String supplierOverdueLine(String amount) {
+    return '$amount overdue';
+  }
+
+  @override
+  String supplierNextDueLine(String date) {
+    return 'Next due $date';
+  }
+
+  @override
+  String duesOverdueCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count invoices',
+      one: '1 invoice',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String invoiceListTitle(String number) {
+    return '$number';
+  }
+
+  @override
+  String invoiceNumberLabel(String number) {
+    return 'Invoice $number';
+  }
+
+  @override
+  String invoiceNoNumber(String date) {
+    return 'Invoice dated $date';
+  }
+
+  @override
+  String invoiceBatchesLinked(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count batches linked',
+      one: '1 batch linked',
+      zero: 'No batches linked',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String invoiceDueIn(String date) {
+    return 'Due $date';
+  }
+
+  @override
+  String paymentLine(String amount, String date) {
+    return '$amount on $date';
+  }
+
+  @override
+  String paymentOverBody(String entered, String owed, String extra) {
+    return 'You entered $entered but only $owed is owed. Record the extra $extra as a credit on this supplier\'s account?';
+  }
+
+  @override
+  String paymentSpread(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Applied to $count invoices',
+      one: 'Applied to 1 invoice',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String overdueEveryDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Every $count days',
+      one: 'Every day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get creditForInvoice => 'Credit on invoice';
+
+  @override
+  String get contactCopyAction => 'Copy';
+
+  @override
+  String creditTooMuch(String owed) {
+    return 'That is more than the $owed still owed on this invoice.';
+  }
+
+  @override
+  String get batchDone => 'Done';
+
+  @override
+  String dueDialogBody(String supplier) {
+    return 'Record what you owe $supplier for this delivery so you are reminded to pay.';
+  }
 }

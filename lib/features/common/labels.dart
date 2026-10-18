@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/enums.dart';
+import 'package:pharmacy_expiry_tracker/domain/entities/supplier.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 
 String dosageFormLabel(AppLocalizations l, DosageForm f) => switch (f) {
@@ -45,3 +46,18 @@ String formatDateTime(BuildContext context, DateTime d) {
   final locale = Localizations.localeOf(context).toString();
   return '${DateFormat.yMMMd(locale).format(d)} ${DateFormat.jm(locale).format(d)}';
 }
+
+String invoiceStatusLabel(AppLocalizations l, InvoiceStatus s) => switch (s) {
+  InvoiceStatus.unpaid => l.statusUnpaid,
+  InvoiceStatus.partial => l.statusPartial,
+  InvoiceStatus.paid => l.statusPaid,
+  InvoiceStatus.overdue => l.statusOverdue,
+};
+
+String paymentMethodLabel(AppLocalizations l, PaymentMethod m) => switch (m) {
+  PaymentMethod.cash => l.paymentMethodCash,
+  PaymentMethod.bank => l.paymentMethodBank,
+  PaymentMethod.mobile => l.paymentMethodMobile,
+  PaymentMethod.cheque => l.paymentMethodCheque,
+  PaymentMethod.other => l.paymentMethodOther,
+};

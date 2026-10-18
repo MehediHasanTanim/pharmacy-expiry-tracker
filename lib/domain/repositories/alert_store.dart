@@ -41,4 +41,7 @@ abstract interface class AlertSource {
     required int globalWindowDays,
     int? horizonDays,
   });
+
+  /// Unpaid invoices that have a due date, from any supplier.
+  Future<List<PlanInvoice>> loadPlanInvoices();
 }

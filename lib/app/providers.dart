@@ -7,14 +7,18 @@ import 'package:pharmacy_expiry_tracker/data/db/app_database.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/alert_store_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/batch_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/expiry_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/ledger_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/medicine_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/search_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/settings_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/supplier_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/services/alert_engine_factory.dart';
 import 'package:pharmacy_expiry_tracker/data/services/local_notification_plugin.dart';
 import 'package:pharmacy_expiry_tracker/data/services/platform_alert_settings_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/services/url_contact_launcher.dart';
 import 'package:pharmacy_expiry_tracker/domain/alerts/alert_engine.dart';
 import 'package:pharmacy_expiry_tracker/domain/alerts/alert_records.dart';
+import 'package:pharmacy_expiry_tracker/domain/contact_launcher.dart';
 import 'package:pharmacy_expiry_tracker/domain/data_changes.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/app_settings.dart';
 import 'package:pharmacy_expiry_tracker/domain/notifications/notification_plugin.dart';
@@ -22,13 +26,17 @@ import 'package:pharmacy_expiry_tracker/domain/notifications/platform_alert_sett
 import 'package:pharmacy_expiry_tracker/domain/repositories/alert_store.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/batch_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/expiry_repository.dart';
+import 'package:pharmacy_expiry_tracker/domain/repositories/ledger_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/medicine_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/search_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/settings_repository.dart';
+import 'package:pharmacy_expiry_tracker/domain/repositories/supplier_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/transaction_runner.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/batch_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/expiry_usecases.dart';
+import 'package:pharmacy_expiry_tracker/domain/usecases/ledger_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/medicine_usecases.dart';
+import 'package:pharmacy_expiry_tracker/domain/usecases/supplier_usecases.dart';
 
 final databaseProvider = Provider<AppDatabase>((ref) {
   final db = AppDatabase.open();
@@ -214,4 +222,70 @@ final alertLogProvider = StreamProvider.autoDispose<List<AlertLogEntry>>(
 
 final pendingAlertCountProvider = StreamProvider.autoDispose<int>(
   (ref) => ref.watch(alertStoreProvider).watchPendingCount(),
+);
+
+final supplierRepositoryProvider = Provider<SupplierRepository>(
+  (ref) => SupplierRepositoryImpl(
+    ref.watch(databaseProvider),
+    ref.watch(clockProvider),
+  ),
+);
+
+final ledgerRepositoryProvider = Provider<LedgerRepository>(
+  (ref) => LedgerRepositoryImpl(ref.watch(databaseProvider)),
+);
+
+final ledgerDepsProvider = Provider<LedgerDeps>(
+  (ref) => LedgerDeps(
+    suppliers: ref.watch(supplierRepositoryProvider),
+    ledger: ref.watch(ledgerRepositoryProvider),
+    batches: ref.watch(batchRepositoryProvider),
+    transaction: ref.watch(transactionRunnerProvider),
+    clock: ref.watch(clockProvider),
+    bus: ref.watch(dataChangeBusProvider),
+  ),
+);
+
+final saveSupplierProvider = Provider<SaveSupplier>(
+  (ref) => SaveSupplier(
+    ref.watch(supplierRepositoryProvider),
+    ref.watch(dataChangeBusProvider),
+  ),
+);
+
+final setSupplierArchivedProvider = Provider<SetSupplierArchived>(
+  (ref) => SetSupplierArchived(
+    ref.watch(supplierRepositoryProvider),
+    ref.watch(dataChangeBusProvider),
+  ),
+);
+
+final addInvoiceProvider = Provider<AddInvoice>(
+  (ref) => AddInvoice(ref.watch(ledgerDepsProvider)),
+);
+final editInvoiceProvider = Provider<EditInvoice>(
+  (ref) => EditInvoice(ref.watch(ledgerDepsProvider)),
+);
+final deleteInvoiceProvider = Provider<DeleteInvoice>(
+  (ref) => DeleteInvoice(ref.watch(ledgerDepsProvider)),
+);
+final recordPaymentProvider = Provider<RecordPayment>(
+  (ref) => RecordPayment(ref.watch(ledgerDepsProvider)),
+);
+final deletePaymentProvider = Provider<DeletePayment>(
+  (ref) => DeletePayment(ref.watch(ledgerDepsProvider)),
+);
+final recordCreditProvider = Provider<RecordCredit>(
+  (ref) => RecordCredit(ref.watch(ledgerDepsProvider)),
+);
+final deleteCreditProvider = Provider<DeleteCredit>(
+  (ref) => DeleteCredit(ref.watch(ledgerDepsProvider)),
+);
+final reminderSnoozeProvider = Provider<UpdateReminderSnooze>(
+  (ref) => UpdateReminderSnooze(ref.watch(ledgerDepsProvider)),
+);
+
+/// Opens phone, messaging and mail apps. Replaced in tests.
+final contactLauncherProvider = Provider<ContactLauncher>(
+  (ref) => const UrlContactLauncher(),
 );

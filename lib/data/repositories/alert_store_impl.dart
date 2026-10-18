@@ -236,6 +236,45 @@ class AlertSourceImpl implements AlertSource {
     ];
   }
 
+  @override
+  Future<List<PlanInvoice>> loadPlanInvoices() async {
+    final rows = await _db
+        .customSelect(
+          '''
+      SELECT i.id AS id, i.supplier_id AS supplier_id,
+             i.invoice_number AS invoice_number,
+             s.name AS supplier_name,
+             CAST(strftime('%s', v.due_date) AS INTEGER) / 86400 AS due_day,
+             v.balance_minor AS balance,
+             CASE WHEN i.reminders_snoozed_until IS NULL THEN NULL
+                  ELSE CAST(strftime('%s', i.reminders_snoozed_until) AS INTEGER) / 86400
+             END AS snooze_day
+      FROM v_invoice_balance v
+      JOIN supplier_invoices i ON i.id = v.invoice_id
+      JOIN suppliers s ON s.id = v.supplier_id AND s.deleted_at IS NULL
+      WHERE v.balance_minor > 0 AND v.due_date IS NOT NULL
+      ''',
+          readsFrom: {
+            _db.supplierInvoices,
+            _db.supplierPayments,
+            _db.supplierCredits,
+          },
+        )
+        .get();
+    return [
+      for (final r in rows)
+        PlanInvoice(
+          id: r.data['id']! as String,
+          supplierId: r.data['supplier_id']! as String,
+          supplierName: r.data['supplier_name']! as String,
+          invoiceNumber: r.data['invoice_number'] as String?,
+          dueDay: r.data['due_day']! as int,
+          balanceMinor: r.data['balance']! as int,
+          snoozeDay: r.data['snooze_day'] as int?,
+        ),
+    ];
+  }
+
   static String _name(String brand, String? strength) =>
       strength == null || strength.isEmpty ? brand : '$brand $strength';
 }
