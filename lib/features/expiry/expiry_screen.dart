@@ -12,6 +12,7 @@ import 'package:pharmacy_expiry_tracker/features/expiry/expiry_actions.dart';
 import 'package:pharmacy_expiry_tracker/features/expiry/expiry_filter_sheet.dart';
 import 'package:pharmacy_expiry_tracker/features/expiry/expiry_providers.dart';
 import 'package:pharmacy_expiry_tracker/features/expiry/expiry_row.dart';
+import 'package:pharmacy_expiry_tracker/features/expiry/expiry_share.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 
 /// The main workflow screen: batches that are near expiry or already expired,
@@ -112,6 +113,25 @@ class _ExpiryScreenState extends ConsumerState<ExpiryScreen> {
                       ref.read(expirySearchProvider.notifier).set('');
                     }
                   },
+                ),
+                PopupMenuButton<ExpiryShareFormat>(
+                  key: const Key('expiry-share'),
+                  tooltip: l10n.shareListAction,
+                  icon: const Icon(Icons.ios_share),
+                  onSelected: (f) =>
+                      unawaited(shareExpiryList(context, ref, f)),
+                  itemBuilder: (_) => [
+                    PopupMenuItem(
+                      key: const Key('expiry-share-csv'),
+                      value: ExpiryShareFormat.csv,
+                      child: Text(l10n.shareListCsv),
+                    ),
+                    PopupMenuItem(
+                      key: const Key('expiry-share-text'),
+                      value: ExpiryShareFormat.text,
+                      child: Text(l10n.shareListText),
+                    ),
+                  ],
                 ),
                 IconButton(
                   key: const Key('expiry-select'),

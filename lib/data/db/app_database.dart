@@ -39,15 +39,25 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting() : super(NativeDatabase.memory());
 
   /// Opens the on-device database in a background isolate.
-  factory AppDatabase.open({String fileName = 'pharmacy_expiry.sqlite'}) {
+  factory AppDatabase.open({String fileName = defaultFileName}) {
     return AppDatabase(
       LazyDatabase(() async {
-        final dir = await getApplicationDocumentsDirectory();
-        final file = File(p.join(dir.path, fileName));
+        final file = await defaultFile(fileName: fileName);
         return NativeDatabase.createInBackground(file, setup: _configure);
       }),
     );
   }
+
+  /// Bump with every schema change (and add a migration step).
+  static const currentSchemaVersion = 1;
+
+  /// The on-device database file.
+  static Future<File> defaultFile({String fileName = defaultFileName}) async {
+    final dir = await getApplicationDocumentsDirectory();
+    return File(p.join(dir.path, fileName));
+  }
+
+  static const defaultFileName = 'pharmacy_expiry.sqlite';
 
   static void _configure(Database rawDb) {
     rawDb
@@ -56,7 +66,7 @@ class AppDatabase extends _$AppDatabase {
   }
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => currentSchemaVersion;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(

@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path/path.dart' as p;
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
+import 'package:pharmacy_expiry_tracker/core/logging/error_log.dart';
 import 'package:pharmacy_expiry_tracker/data/background/alert_background.dart';
 import 'package:pharmacy_expiry_tracker/data/db/app_database.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/alert_store_impl.dart';
@@ -17,12 +20,14 @@ import 'package:pharmacy_expiry_tracker/data/services/alert_engine_factory.dart'
 import 'package:pharmacy_expiry_tracker/data/services/app_badge_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/services/local_notification_plugin.dart';
 import 'package:pharmacy_expiry_tracker/data/services/platform_alert_settings_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/services/share_file_exchange.dart';
 import 'package:pharmacy_expiry_tracker/data/services/url_contact_launcher.dart';
 import 'package:pharmacy_expiry_tracker/domain/alerts/alert_engine.dart';
 import 'package:pharmacy_expiry_tracker/domain/alerts/alert_records.dart';
 import 'package:pharmacy_expiry_tracker/domain/contact_launcher.dart';
 import 'package:pharmacy_expiry_tracker/domain/data_changes.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/app_settings.dart';
+import 'package:pharmacy_expiry_tracker/domain/file_exchange.dart';
 import 'package:pharmacy_expiry_tracker/domain/notifications/app_badge.dart';
 import 'package:pharmacy_expiry_tracker/domain/notifications/notification_plugin.dart';
 import 'package:pharmacy_expiry_tracker/domain/notifications/platform_alert_settings.dart';
@@ -309,3 +314,29 @@ final reorderSnoozeProvider = Provider<UpdateReorderSnooze>(
 
 /// The app-icon badge. Replaced in tests.
 final appBadgeProvider = Provider<AppBadge>((ref) => const PluginAppBadge());
+
+/// The version shown in diagnostics and written into backups. Set in `main`.
+final appVersionProvider = Provider<String>((ref) => '0.0.0');
+
+/// The on-device database file; backup and restore swap it. Set in `main`.
+final databaseFileProvider = Provider<File>(
+  (ref) => throw UnimplementedError('databaseFileProvider is set in main'),
+);
+
+/// The bounded local error log (S6-08). Set in `main`; tests get a throwaway.
+final errorLogProvider = Provider<ErrorLog>((ref) {
+  final dir = Directory.systemTemp.createTempSync('pharmacy_expiry_log');
+  ref.onDispose(() {
+    try {
+      dir.deleteSync(recursive: true);
+    } on FileSystemException {
+      // Best effort.
+    }
+  });
+  return ErrorLog(File(p.join(dir.path, 'errors.log')));
+});
+
+/// Share sheet and file picker. Replaced in tests.
+final fileExchangeProvider = Provider<FileExchange>(
+  (ref) => const ShareFileExchange(),
+);

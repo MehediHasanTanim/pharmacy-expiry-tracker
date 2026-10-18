@@ -164,7 +164,9 @@ void main() {
 
     setUp(() async {
       med = await env.medicine();
-      await env.settings.update((s) => s.copyWith(digestEnabled: false));
+      await env.settings.update(
+        (s) => s.copyWith(digestEnabled: false, backupReminderDays: 0),
+      );
       live =
           AlertCoordinator(
               env.alertEngine,

@@ -2452,6 +2452,30 @@ abstract class AppLocalizations {
   /// **'{name} ({left} left)'**
   String alertReorderItem(String name, int left);
 
+  /// No description provided for @alertHiddenBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the app to see details.'**
+  String get alertHiddenBody;
+
+  /// No description provided for @alertBackupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up your data'**
+  String get alertBackupTitle;
+
+  /// No description provided for @alertBackupBodyNever.
+  ///
+  /// In en, this message translates to:
+  /// **'You have not made a backup yet. Save a copy so a lost phone does not lose your records.'**
+  String get alertBackupBodyNever;
+
+  /// No description provided for @alertBackupBodyAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'Your last backup was {days, plural, =1{1 day} other{{days} days}} ago. Save a fresh copy.'**
+  String alertBackupBodyAgo(int days);
+
   /// No description provided for @homeExpired.
   ///
   /// In en, this message translates to:
@@ -2925,6 +2949,377 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'More actions'**
   String get rowActionsTooltip;
+
+  /// No description provided for @moreSectionData.
+  ///
+  /// In en, this message translates to:
+  /// **'Data'**
+  String get moreSectionData;
+
+  /// No description provided for @moreBackupTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup and restore'**
+  String get moreBackupTile;
+
+  /// No description provided for @backupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup and restore'**
+  String get backupTitle;
+
+  /// No description provided for @backupLastNever.
+  ///
+  /// In en, this message translates to:
+  /// **'No backup yet'**
+  String get backupLastNever;
+
+  /// No description provided for @backupLastAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =0{Last backup: today} =1{Last backup: yesterday} other{Last backup: {days} days ago}}'**
+  String backupLastAgo(int days);
+
+  /// No description provided for @backupExplain.
+  ///
+  /// In en, this message translates to:
+  /// **'Your records live only on this phone. A backup is one file you can keep in your email, a cloud drive or on another phone.'**
+  String get backupExplain;
+
+  /// No description provided for @backupNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up now'**
+  String get backupNow;
+
+  /// No description provided for @backupEncryptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Protect with a passphrase'**
+  String get backupEncryptTitle;
+
+  /// No description provided for @backupEncryptHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Encrypts the file. You need the passphrase to restore it, and it cannot be recovered if forgotten.'**
+  String get backupEncryptHint;
+
+  /// No description provided for @backupPassphrase.
+  ///
+  /// In en, this message translates to:
+  /// **'Passphrase'**
+  String get backupPassphrase;
+
+  /// No description provided for @backupPassphraseConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat passphrase'**
+  String get backupPassphraseConfirm;
+
+  /// No description provided for @backupPassphraseShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Use at least 8 characters'**
+  String get backupPassphraseShort;
+
+  /// No description provided for @backupPassphraseMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The passphrases do not match'**
+  String get backupPassphraseMismatch;
+
+  /// No description provided for @backupWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait…'**
+  String get backupWorking;
+
+  /// No description provided for @backupNotShared.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing was saved. Back up again and choose where to keep the file.'**
+  String get backupNotShared;
+
+  /// No description provided for @backupDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup saved'**
+  String get backupDone;
+
+  /// No description provided for @backupRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from a backup'**
+  String get backupRestore;
+
+  /// No description provided for @backupRestoreHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Replaces everything on this phone with the contents of a backup file.'**
+  String get backupRestoreHint;
+
+  /// No description provided for @backupAskPassphraseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This backup is protected'**
+  String get backupAskPassphraseTitle;
+
+  /// No description provided for @backupAskPassphraseBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the passphrase it was made with.'**
+  String get backupAskPassphraseBody;
+
+  /// No description provided for @backupWrongPassphrase.
+  ///
+  /// In en, this message translates to:
+  /// **'That passphrase did not work.'**
+  String get backupWrongPassphrase;
+
+  /// No description provided for @backupPreviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore this backup?'**
+  String get backupPreviewTitle;
+
+  /// No description provided for @backupPreviewMade.
+  ///
+  /// In en, this message translates to:
+  /// **'Made on {date}'**
+  String backupPreviewMade(String date);
+
+  /// No description provided for @backupPreviewCounts.
+  ///
+  /// In en, this message translates to:
+  /// **'{medicines} medicines, {batches} batches, {suppliers} suppliers, {invoices} invoices'**
+  String backupPreviewCounts(
+    int medicines,
+    int batches,
+    int suppliers,
+    int invoices,
+  );
+
+  /// No description provided for @backupPreviewReplace.
+  ///
+  /// In en, this message translates to:
+  /// **'This replaces all medicines, batches, suppliers and settings on this phone. A copy of the current data is kept for 24 hours.'**
+  String get backupPreviewReplace;
+
+  /// No description provided for @backupRestoreAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get backupRestoreAction;
+
+  /// No description provided for @backupRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup restored'**
+  String get backupRestored;
+
+  /// No description provided for @backupErrNotABackup.
+  ///
+  /// In en, this message translates to:
+  /// **'That file is not a backup from this app.'**
+  String get backupErrNotABackup;
+
+  /// No description provided for @backupErrCorrupt.
+  ///
+  /// In en, this message translates to:
+  /// **'That backup is damaged and cannot be restored. Nothing was changed.'**
+  String get backupErrCorrupt;
+
+  /// No description provided for @backupErrNewer.
+  ///
+  /// In en, this message translates to:
+  /// **'That backup was made by a newer version of the app. Update the app first.'**
+  String get backupErrNewer;
+
+  /// No description provided for @backupErrSwap.
+  ///
+  /// In en, this message translates to:
+  /// **'The restore could not finish. Your previous data is unchanged.'**
+  String get backupErrSwap;
+
+  /// No description provided for @backupErrGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Nothing was changed.'**
+  String get backupErrGeneric;
+
+  /// No description provided for @backupReminderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me to back up'**
+  String get backupReminderLabel;
+
+  /// No description provided for @backupReminderOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get backupReminderOff;
+
+  /// No description provided for @backupReminderEvery.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{Every day} other{Every {days} days}}'**
+  String backupReminderEvery(int days);
+
+  /// No description provided for @homeBackupNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data has never been backed up.'**
+  String get homeBackupNever;
+
+  /// No description provided for @homeBackupStale.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data has not been backed up for {days} days.'**
+  String homeBackupStale(int days);
+
+  /// No description provided for @homeBackupAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up'**
+  String get homeBackupAction;
+
+  /// No description provided for @onboardingBackupNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: make a backup now and then in More → Backup and restore, so a lost phone does not lose your records.'**
+  String get onboardingBackupNote;
+
+  /// No description provided for @settingsHideDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide details on the lock screen'**
+  String get settingsHideDetails;
+
+  /// No description provided for @settingsHideDetailsHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications say that something needs attention, but not which medicines or suppliers.'**
+  String get settingsHideDetailsHelp;
+
+  /// No description provided for @shareListAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Share this list'**
+  String get shareListAction;
+
+  /// No description provided for @shareListCsv.
+  ///
+  /// In en, this message translates to:
+  /// **'Spreadsheet (CSV)'**
+  String get shareListCsv;
+
+  /// No description provided for @shareListText.
+  ///
+  /// In en, this message translates to:
+  /// **'Plain text'**
+  String get shareListText;
+
+  /// No description provided for @shareListEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'There is nothing in this list to share.'**
+  String get shareListEmpty;
+
+  /// No description provided for @shareListSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry list {date}'**
+  String shareListSubject(String date);
+
+  /// No description provided for @diagnosticsExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export diagnostics'**
+  String get diagnosticsExport;
+
+  /// No description provided for @diagnosticsHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'A small text file for support. It lists app versions, settings and counts, and recent errors; it contains no medicine, supplier, or amount data.'**
+  String get diagnosticsHelp;
+
+  /// No description provided for @errorFriendlyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get errorFriendlyTitle;
+
+  /// No description provided for @errorFriendlyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data is safe. Go back and try again; if it keeps happening, export diagnostics from More.'**
+  String get errorFriendlyBody;
+
+  /// No description provided for @startupFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The update could not finish'**
+  String get startupFailedTitle;
+
+  /// No description provided for @startupFailedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data was put back exactly as it was. Please close the app and try again, or reinstall the previous version.'**
+  String get startupFailedBody;
+
+  /// No description provided for @exportColMedicine.
+  ///
+  /// In en, this message translates to:
+  /// **'Medicine'**
+  String get exportColMedicine;
+
+  /// No description provided for @exportColBatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch'**
+  String get exportColBatch;
+
+  /// No description provided for @exportColExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry date'**
+  String get exportColExpiry;
+
+  /// No description provided for @exportColDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Days left'**
+  String get exportColDaysLeft;
+
+  /// No description provided for @exportColStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get exportColStatus;
+
+  /// No description provided for @exportColQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get exportColQuantity;
+
+  /// No description provided for @exportColUnitCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit cost'**
+  String get exportColUnitCost;
+
+  /// No description provided for @exportColValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Value at risk'**
+  String get exportColValue;
+
+  /// No description provided for @exportTextTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry list, {date}'**
+  String exportTextTitle(String date);
 }
 
 class _AppLocalizationsDelegate

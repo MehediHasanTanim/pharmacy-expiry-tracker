@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
 import 'package:pharmacy_expiry_tracker/data/db/app_database.dart';
+import 'package:pharmacy_expiry_tracker/data/db/database_bootstrap.dart';
+import 'package:pharmacy_expiry_tracker/data/db/migration_guard.dart';
 import 'package:pharmacy_expiry_tracker/data/services/alert_engine_factory.dart';
 import 'package:pharmacy_expiry_tracker/data/services/local_notification_plugin.dart';
 import 'package:pharmacy_expiry_tracker/domain/notifications/notification_plugin.dart';
@@ -19,6 +21,14 @@ Future<bool> runBackgroundReplan({
   NotificationPlugin? plugin,
   Clock clock = const SystemClock(),
 }) async {
+  if (database == null) {
+    // An upgrade may be pending if the app was updated but not yet opened.
+    try {
+      await prepareDatabase();
+    } on MigrationFailedException {
+      return false;
+    }
+  }
   final db = database ?? AppDatabase.open();
   try {
     final scheduler = plugin ?? LocalNotificationPlugin();

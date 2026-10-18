@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +9,7 @@ import 'package:pharmacy_expiry_tracker/app/routes.dart';
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
 import 'package:pharmacy_expiry_tracker/data/dev/seed_data.dart';
 import 'package:pharmacy_expiry_tracker/features/home/home_providers.dart';
+import 'package:pharmacy_expiry_tracker/features/more/diagnostics_action.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 
 class MoreScreen extends ConsumerWidget {
@@ -53,6 +56,21 @@ class MoreScreen extends ConsumerWidget {
             title: Text(l10n.alertCenterTitle),
             trailing: const Icon(Icons.chevron_right),
             onTap: () => context.push(Routes.alertHistory),
+          ),
+          _Section(l10n.moreSectionData),
+          ListTile(
+            key: const Key('more-backup'),
+            leading: const Icon(Icons.backup_outlined),
+            title: Text(l10n.moreBackupTile),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push(Routes.backup),
+          ),
+          ListTile(
+            key: const Key('more-diagnostics'),
+            leading: const Icon(Icons.bug_report_outlined),
+            title: Text(l10n.diagnosticsExport),
+            subtitle: Text(l10n.diagnosticsHelp),
+            onTap: () => unawaited(exportDiagnostics(context, ref)),
           ),
           _Section(l10n.moreSectionApp),
           ListTile(

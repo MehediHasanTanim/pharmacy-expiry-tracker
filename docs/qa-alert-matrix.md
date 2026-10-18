@@ -212,3 +212,30 @@ Reminders arrive **15 minutes after the daily alert time** (default 09:15).
 | R5 | Snooze a medicine until tomorrow | No reminder today | ☐ | ☐ | ☐ | ☐ |
 | R6 | Airplane mode, app swiped away | Reminder still arrives | ☐ | ☐ | ☐ | ☐ |
 | R7 | Add an expired batch so the badge count should be 1; background the app | Launcher icon shows 1 where the launcher supports badges (iOS always) | ☐ | ☐ | ☐ | ☐ |
+
+---
+
+## Sprint 6 additions: backup, restore, privacy
+
+Run on every device in the matrix. "File" = the backup file the share sheet
+produced; keep it somewhere the phone can browse (Files, Drive, email).
+
+| # | Steps | Expect | P | S | X | I |
+|---|---|---|---|---|---|---|
+| B1 | More → Backup and restore → *Back up now* (no passphrase), save to Files/Drive | Share sheet opens; status becomes "Last backup: today"; Home banner (if shown) disappears | ☐ | ☐ | ☐ | ☐ |
+| B2 | Same with a passphrase | File ends `.pxenc`; opening it in a text viewer shows no readable names | ☐ | ☐ | ☐ | ☐ |
+| B3 | Dismiss the share sheet without saving | "Nothing was saved"; last-backup time unchanged | ☐ | ☐ | ☐ | ☐ |
+| B4 | On a **second phone** (or after *Clear data*), install, restore the file | Preview shows right counts; after confirming, all medicines, batches, suppliers, settings are back | ☐ | ☐ | ☐ | ☐ |
+| B5 | After B4: *Alert health* → *Check again*; wait for a test alert and the next real one | Scheduled count matches the restored data; no alerts from the previous data; notification permission prompt appears if missing | ☐ | ☐ | ☐ | ☐ |
+| B6 | Restore with the wrong passphrase, then the right one | "That passphrase did not work", then success | ☐ | ☐ | ☐ | ☐ |
+| B7 | Choose a non-backup file (photo, PDF) | "That file is not a backup from this app."; data unchanged | ☐ | ☐ | ☐ | ☐ |
+| B8 | Kill the app during *Restore* (just after confirming) | On reopen, either the old or the new data is fully there, never a mix; no crash | ☐ | ☐ | ☐ | ☐ |
+| B9 | Restore, then check for a safety copy and wait > 24 h, reopen | Old data is not accessible in the UI; the `.bak-…` file is removed at the next launch | ☐ | ☐ | ☐ | ☐ |
+| B10 | Large data (More → dev *Seed* 5 000 medicines / 10 000 batches), back up and restore | Completes without freezing the UI; note the time | ☐ | ☐ | ☐ | ☐ |
+| B11 | Last backup older than the reminder (or set reminder to 7 days and change the phone date) | Notification "Back up your data" arrives 20 min after the daily alert time; tap opens Backup and restore | ☐ | ☐ | ☐ | ☐ |
+| V1 | Alert settings → *Hide details on the lock screen* on, then trigger a test/real alert with the phone locked | Lock screen shows the title and "Open the app to see details." only | ☐ | ☐ | ☐ | ☐ |
+| V2 | Expiry tab → share icon → *Spreadsheet (CSV)* → open in Excel/Sheets; and *Plain text* → paste into a chat | Columns are correct, accents intact; text is readable | ☐ | ☐ | ☐ | ☐ |
+| V3 | More → *Export diagnostics* | A text file with versions, counts and errors; no names or amounts | ☐ | ☐ | ☐ | ☐ |
+
+Exit criteria (Sprint 6): B4/B5 pass on at least two devices; no data-loss or
+missed-alert defects open.

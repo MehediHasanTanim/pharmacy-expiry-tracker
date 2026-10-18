@@ -32,6 +32,10 @@ abstract interface class AlertStore {
 
   /// Records that a reorder reminder for each medicine was delivered on [day].
   Future<void> markReorderNotified(List<String> medicineIds, DateTime day);
+
+  /// Forgets every scheduled-alert record (not the history). Used after a
+  /// restore, when the records describe notifications of another database.
+  Future<void> clearSchedule();
 }
 
 /// Reads the batches alert planning needs.
@@ -50,4 +54,7 @@ abstract interface class AlertSource {
 
   /// Medicines below their reorder level as of [today].
   Future<List<PlanReorder>> loadPlanReorders({required DateTime today});
+
+  /// Whether there is anything worth backing up yet.
+  Future<bool> hasData();
 }

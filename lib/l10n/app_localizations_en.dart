@@ -1454,6 +1454,27 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get alertHiddenBody => 'Open the app to see details.';
+
+  @override
+  String get alertBackupTitle => 'Back up your data';
+
+  @override
+  String get alertBackupBodyNever =>
+      'You have not made a backup yet. Save a copy so a lost phone does not lose your records.';
+
+  @override
+  String alertBackupBodyAgo(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    return 'Your last backup was $_temp0 ago. Save a fresh copy.';
+  }
+
+  @override
   String get homeExpired => 'Expired on shelf';
 
   @override
@@ -1732,4 +1753,233 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rowActionsTooltip => 'More actions';
+
+  @override
+  String get moreSectionData => 'Data';
+
+  @override
+  String get moreBackupTile => 'Backup and restore';
+
+  @override
+  String get backupTitle => 'Backup and restore';
+
+  @override
+  String get backupLastNever => 'No backup yet';
+
+  @override
+  String backupLastAgo(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Last backup: $days days ago',
+      one: 'Last backup: yesterday',
+      zero: 'Last backup: today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get backupExplain =>
+      'Your records live only on this phone. A backup is one file you can keep in your email, a cloud drive or on another phone.';
+
+  @override
+  String get backupNow => 'Back up now';
+
+  @override
+  String get backupEncryptTitle => 'Protect with a passphrase';
+
+  @override
+  String get backupEncryptHint =>
+      'Encrypts the file. You need the passphrase to restore it, and it cannot be recovered if forgotten.';
+
+  @override
+  String get backupPassphrase => 'Passphrase';
+
+  @override
+  String get backupPassphraseConfirm => 'Repeat passphrase';
+
+  @override
+  String get backupPassphraseShort => 'Use at least 8 characters';
+
+  @override
+  String get backupPassphraseMismatch => 'The passphrases do not match';
+
+  @override
+  String get backupWorking => 'Please wait…';
+
+  @override
+  String get backupNotShared =>
+      'Nothing was saved. Back up again and choose where to keep the file.';
+
+  @override
+  String get backupDone => 'Backup saved';
+
+  @override
+  String get backupRestore => 'Restore from a backup';
+
+  @override
+  String get backupRestoreHint =>
+      'Replaces everything on this phone with the contents of a backup file.';
+
+  @override
+  String get backupAskPassphraseTitle => 'This backup is protected';
+
+  @override
+  String get backupAskPassphraseBody =>
+      'Enter the passphrase it was made with.';
+
+  @override
+  String get backupWrongPassphrase => 'That passphrase did not work.';
+
+  @override
+  String get backupPreviewTitle => 'Restore this backup?';
+
+  @override
+  String backupPreviewMade(String date) {
+    return 'Made on $date';
+  }
+
+  @override
+  String backupPreviewCounts(
+    int medicines,
+    int batches,
+    int suppliers,
+    int invoices,
+  ) {
+    return '$medicines medicines, $batches batches, $suppliers suppliers, $invoices invoices';
+  }
+
+  @override
+  String get backupPreviewReplace =>
+      'This replaces all medicines, batches, suppliers and settings on this phone. A copy of the current data is kept for 24 hours.';
+
+  @override
+  String get backupRestoreAction => 'Restore';
+
+  @override
+  String get backupRestored => 'Backup restored';
+
+  @override
+  String get backupErrNotABackup => 'That file is not a backup from this app.';
+
+  @override
+  String get backupErrCorrupt =>
+      'That backup is damaged and cannot be restored. Nothing was changed.';
+
+  @override
+  String get backupErrNewer =>
+      'That backup was made by a newer version of the app. Update the app first.';
+
+  @override
+  String get backupErrSwap =>
+      'The restore could not finish. Your previous data is unchanged.';
+
+  @override
+  String get backupErrGeneric => 'Something went wrong. Nothing was changed.';
+
+  @override
+  String get backupReminderLabel => 'Remind me to back up';
+
+  @override
+  String get backupReminderOff => 'Never';
+
+  @override
+  String backupReminderEvery(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Every $days days',
+      one: 'Every day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeBackupNever => 'Your data has never been backed up.';
+
+  @override
+  String homeBackupStale(int days) {
+    return 'Your data has not been backed up for $days days.';
+  }
+
+  @override
+  String get homeBackupAction => 'Back up';
+
+  @override
+  String get onboardingBackupNote =>
+      'Tip: make a backup now and then in More → Backup and restore, so a lost phone does not lose your records.';
+
+  @override
+  String get settingsHideDetails => 'Hide details on the lock screen';
+
+  @override
+  String get settingsHideDetailsHelp =>
+      'Notifications say that something needs attention, but not which medicines or suppliers.';
+
+  @override
+  String get shareListAction => 'Share this list';
+
+  @override
+  String get shareListCsv => 'Spreadsheet (CSV)';
+
+  @override
+  String get shareListText => 'Plain text';
+
+  @override
+  String get shareListEmpty => 'There is nothing in this list to share.';
+
+  @override
+  String shareListSubject(String date) {
+    return 'Expiry list $date';
+  }
+
+  @override
+  String get diagnosticsExport => 'Export diagnostics';
+
+  @override
+  String get diagnosticsHelp =>
+      'A small text file for support. It lists app versions, settings and counts, and recent errors; it contains no medicine, supplier, or amount data.';
+
+  @override
+  String get errorFriendlyTitle => 'Something went wrong';
+
+  @override
+  String get errorFriendlyBody =>
+      'Your data is safe. Go back and try again; if it keeps happening, export diagnostics from More.';
+
+  @override
+  String get startupFailedTitle => 'The update could not finish';
+
+  @override
+  String get startupFailedBody =>
+      'Your data was put back exactly as it was. Please close the app and try again, or reinstall the previous version.';
+
+  @override
+  String get exportColMedicine => 'Medicine';
+
+  @override
+  String get exportColBatch => 'Batch';
+
+  @override
+  String get exportColExpiry => 'Expiry date';
+
+  @override
+  String get exportColDaysLeft => 'Days left';
+
+  @override
+  String get exportColStatus => 'Status';
+
+  @override
+  String get exportColQuantity => 'Quantity';
+
+  @override
+  String get exportColUnitCost => 'Unit cost';
+
+  @override
+  String get exportColValue => 'Value at risk';
+
+  @override
+  String exportTextTitle(String date) {
+    return 'Expiry list, $date';
+  }
 }

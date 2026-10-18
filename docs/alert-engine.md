@@ -129,9 +129,8 @@ pass (database load + plan + diff) ≈ 300 ms.
   to build and verify.)
 * **Time-zone / clock changes** are noticed at the next launch, resume or
   12-hourly run, not the instant they happen (that needs a native receiver).
-* **Backup reminders** share the engine's structure (`AlertKind`) but are not
-  planned yet (Sprint 6). Payment reminders were added in Sprint 4 and reorder
-  reminders in Sprint 5 (below).
+* Payment reminders were added in Sprint 4, reorder reminders in Sprint 5 and
+  backup reminders in Sprint 6 (below).
 * The only native code added is a small Android method channel for the health
   screen (`MainActivity.kt`): battery-optimisation state, device maker, and
   opening system settings. Scheduling stays in the plugin.
@@ -154,3 +153,28 @@ pass (database load + plan + diff) ≈ 300 ms.
 * **Icon badge.** `AlertRuntime` sets the badge to expired + next-30-day
   batches (`needsActionCount`) on every summary change and on resume, through
   `app_badge_plus`. Launcher support varies on Android; failures are ignored.
+
+---
+
+## Sprint 6 additions: backup reminders, restore, privacy
+
+* **Backup reminders** (`backup:<date>`): once the last backup (or, if there
+  never was one, the first use, `first_run_on`, written by the first re-plan)
+  is `backupReminderDays` old (default 14; 0 = off), one reminder at the daily
+  alert time **+ 20 minutes**, then weekly while it stays undone, within the
+  14-day planning horizon. Nothing is planned for an empty database. A backup
+  moves the next reminder out; the time is recorded only when the share sheet
+  was not dismissed.
+* **After a restore** the old `scheduled_alerts` rows and the notifications
+  the OS holds belong to another database. `AlertEngine.resetAndReplan()`
+  clears the table and re-plans; the reconciler then cancels every OS
+  notification that is not in the new plan (the Alert lab's id range excepted)
+  and schedules the right ones. Covered by `test/data/restore_flow_test.dart`,
+  which restores a backup onto a "phone" that already had other alerts.
+* **Lock-screen privacy.** With `hideDetailsOnLockScreen`, every alert except
+  the backup reminder keeps its title but its body becomes "Open the app to
+  see details." Applied in `planAlerts`, so the plan hash changes and the
+  existing notifications are replaced at the next re-plan. Android's
+  per-notification `visibility` is not used; the text itself is generic.
+* Limits: nothing here has run on a device (see `qa-alert-matrix.md`, B1–B11,
+  V1–V3).

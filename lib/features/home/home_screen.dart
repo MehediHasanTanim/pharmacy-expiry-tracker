@@ -7,6 +7,7 @@ import 'package:pharmacy_expiry_tracker/app/theme.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/expiry.dart';
 import 'package:pharmacy_expiry_tracker/domain/rules/expiry_bucket.dart';
 import 'package:pharmacy_expiry_tracker/features/alerts/alert_status_banner.dart';
+import 'package:pharmacy_expiry_tracker/features/backup/backup_banner.dart';
 import 'package:pharmacy_expiry_tracker/features/common/expiry_chip.dart';
 import 'package:pharmacy_expiry_tracker/features/common/labels.dart';
 import 'package:pharmacy_expiry_tracker/features/home/home_providers.dart';
@@ -34,7 +35,12 @@ class HomeScreen extends ConsumerWidget {
           const AlertStatusBanner(),
           if (medicines.value?.isEmpty ?? false)
             const _FirstMedicineCard()
-          else ...const [_AttentionGrid(), _AtRiskLine(), _ThisWeek()],
+          else ...const [
+            BackupBanner(),
+            _AttentionGrid(),
+            _AtRiskLine(),
+            _ThisWeek(),
+          ],
         ],
       ),
     );

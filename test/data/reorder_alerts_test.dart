@@ -25,7 +25,11 @@ void main() {
       reorderLevel: 20,
     );
     await env.settings.update(
-      (s) => s.copyWith(digestEnabled: false, alertLeadDays: const []),
+      (s) => s.copyWith(
+        digestEnabled: false,
+        alertLeadDays: const [],
+        backupReminderDays: 0,
+      ),
     );
   });
   tearDown(() => env.dispose());

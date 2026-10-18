@@ -15,7 +15,9 @@ void main() {
     env = TestEnv();
     sup = await env.supplier(name: 'ABC Pharma');
     // Isolate payment reminders from the expiry digest.
-    await env.settings.update((s) => s.copyWith(digestEnabled: false));
+    await env.settings.update(
+      (s) => s.copyWith(digestEnabled: false, backupReminderDays: 0),
+    );
   });
   tearDown(() => env.dispose());
 

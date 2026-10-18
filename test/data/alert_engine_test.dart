@@ -39,7 +39,9 @@ void main() {
     env = TestEnv();
     med = await env.medicine();
     // Digest off keeps the expected numbers about expiry alerts only.
-    await env.settings.update((s) => s.copyWith(digestEnabled: false));
+    await env.settings.update(
+      (s) => s.copyWith(digestEnabled: false, backupReminderDays: 0),
+    );
   });
   tearDown(() => env.dispose());
 
@@ -349,7 +351,9 @@ void main() {
         final e = TestEnv(plugin: plugin);
         addTearDown(e.dispose);
         final m = await e.medicine();
-        await e.settings.update((s) => s.copyWith(digestEnabled: false));
+        await e.settings.update(
+          (s) => s.copyWith(digestEnabled: false, backupReminderDays: 0),
+        );
         await e.addBatch(e.batchInput(m, expiry: in_(40)));
 
         final r = await e.alertEngine.replan();
@@ -371,7 +375,9 @@ void main() {
       final e = TestEnv(plugin: plugin);
       addTearDown(e.dispose);
       final m = await e.medicine();
-      await e.settings.update((s) => s.copyWith(digestEnabled: false));
+      await e.settings.update(
+        (s) => s.copyWith(digestEnabled: false, backupReminderDays: 0),
+      );
       await e.addBatch(e.batchInput(m, expiry: in_(40)));
       await e.alertEngine.replan();
       expect(plugin.scheduled, hasLength(5));

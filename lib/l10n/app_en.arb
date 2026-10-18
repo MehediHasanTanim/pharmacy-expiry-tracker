@@ -787,6 +787,17 @@
       }
     }
   },
+  "alertHiddenBody": "Open the app to see details.",
+  "alertBackupTitle": "Back up your data",
+  "alertBackupBodyNever": "You have not made a backup yet. Save a copy so a lost phone does not lose your records.",
+  "alertBackupBodyAgo": "Your last backup was {days, plural, =1{1 day} other{{days} days}} ago. Save a fresh copy.",
+  "@alertBackupBodyAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "homeExpired": "Expired on shelf",
   "homeExpiring30": "Expiring soon",
   "homeReorder": "To reorder",
@@ -923,5 +934,124 @@
       }
     }
   },
-  "rowActionsTooltip": "More actions"
+  "rowActionsTooltip": "More actions",
+  "moreSectionData": "Data",
+  "moreBackupTile": "Backup and restore",
+  "backupTitle": "Backup and restore",
+  "backupLastNever": "No backup yet",
+  "backupLastAgo": "{days, plural, =0{Last backup: today} =1{Last backup: yesterday} other{Last backup: {days} days ago}}",
+  "@backupLastAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "backupExplain": "Your records live only on this phone. A backup is one file you can keep in your email, a cloud drive or on another phone.",
+  "backupNow": "Back up now",
+  "backupEncryptTitle": "Protect with a passphrase",
+  "backupEncryptHint": "Encrypts the file. You need the passphrase to restore it, and it cannot be recovered if forgotten.",
+  "backupPassphrase": "Passphrase",
+  "backupPassphraseConfirm": "Repeat passphrase",
+  "backupPassphraseShort": "Use at least 8 characters",
+  "backupPassphraseMismatch": "The passphrases do not match",
+  "backupWorking": "Please wait…",
+  "backupNotShared": "Nothing was saved. Back up again and choose where to keep the file.",
+  "backupDone": "Backup saved",
+  "backupRestore": "Restore from a backup",
+  "backupRestoreHint": "Replaces everything on this phone with the contents of a backup file.",
+  "backupAskPassphraseTitle": "This backup is protected",
+  "backupAskPassphraseBody": "Enter the passphrase it was made with.",
+  "backupWrongPassphrase": "That passphrase did not work.",
+  "backupPreviewTitle": "Restore this backup?",
+  "backupPreviewMade": "Made on {date}",
+  "@backupPreviewMade": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "backupPreviewCounts": "{medicines} medicines, {batches} batches, {suppliers} suppliers, {invoices} invoices",
+  "@backupPreviewCounts": {
+    "placeholders": {
+      "medicines": {
+        "type": "int"
+      },
+      "batches": {
+        "type": "int"
+      },
+      "suppliers": {
+        "type": "int"
+      },
+      "invoices": {
+        "type": "int"
+      }
+    }
+  },
+  "backupPreviewReplace": "This replaces all medicines, batches, suppliers and settings on this phone. A copy of the current data is kept for 24 hours.",
+  "backupRestoreAction": "Restore",
+  "backupRestored": "Backup restored",
+  "backupErrNotABackup": "That file is not a backup from this app.",
+  "backupErrCorrupt": "That backup is damaged and cannot be restored. Nothing was changed.",
+  "backupErrNewer": "That backup was made by a newer version of the app. Update the app first.",
+  "backupErrSwap": "The restore could not finish. Your previous data is unchanged.",
+  "backupErrGeneric": "Something went wrong. Nothing was changed.",
+  "backupReminderLabel": "Remind me to back up",
+  "backupReminderOff": "Never",
+  "backupReminderEvery": "{days, plural, =1{Every day} other{Every {days} days}}",
+  "@backupReminderEvery": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "homeBackupNever": "Your data has never been backed up.",
+  "homeBackupStale": "Your data has not been backed up for {days} days.",
+  "@homeBackupStale": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "homeBackupAction": "Back up",
+  "onboardingBackupNote": "Tip: make a backup now and then in More → Backup and restore, so a lost phone does not lose your records.",
+  "settingsHideDetails": "Hide details on the lock screen",
+  "settingsHideDetailsHelp": "Notifications say that something needs attention, but not which medicines or suppliers.",
+  "shareListAction": "Share this list",
+  "shareListCsv": "Spreadsheet (CSV)",
+  "shareListText": "Plain text",
+  "shareListEmpty": "There is nothing in this list to share.",
+  "shareListSubject": "Expiry list {date}",
+  "@shareListSubject": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "diagnosticsExport": "Export diagnostics",
+  "diagnosticsHelp": "A small text file for support. It lists app versions, settings and counts, and recent errors; it contains no medicine, supplier, or amount data.",
+  "errorFriendlyTitle": "Something went wrong",
+  "errorFriendlyBody": "Your data is safe. Go back and try again; if it keeps happening, export diagnostics from More.",
+  "startupFailedTitle": "The update could not finish",
+  "startupFailedBody": "Your data was put back exactly as it was. Please close the app and try again, or reinstall the previous version.",
+  "exportColMedicine": "Medicine",
+  "exportColBatch": "Batch",
+  "exportColExpiry": "Expiry date",
+  "exportColDaysLeft": "Days left",
+  "exportColStatus": "Status",
+  "exportColQuantity": "Quantity",
+  "exportColUnitCost": "Unit cost",
+  "exportColValue": "Value at risk",
+  "exportTextTitle": "Expiry list, {date}",
+  "@exportTextTitle": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

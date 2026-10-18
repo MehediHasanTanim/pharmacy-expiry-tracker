@@ -159,6 +159,15 @@ class AlertSettingsScreen extends ConsumerWidget {
           ),
           const Divider(height: 32),
           SwitchListTile(
+            key: const Key('hide-details-switch'),
+            title: Text(l10n.settingsHideDetails),
+            subtitle: Text(l10n.settingsHideDetailsHelp),
+            value: s.hideDetailsOnLockScreen,
+            onChanged: (v) =>
+                _update(ref, (s) => s.copyWith(hideDetailsOnLockScreen: v)),
+          ),
+          const Divider(height: 32),
+          SwitchListTile(
             key: const Key('quiet-switch'),
             title: Text(l10n.alertSettingsQuiet),
             value: s.quietHoursEnabled,

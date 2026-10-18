@@ -30,6 +30,8 @@ class AppSettings {
     this.expiryHideHandled = false,
     this.alertPermissionAsked = false,
     this.onboardingDone = false,
+    this.lastBackupAt = '',
+    this.firstRunOn = '',
   });
 
   /// Rebuilds settings from stored key/value rows; missing or malformed values
@@ -76,6 +78,8 @@ class AppSettings {
       alertPermissionAsked:
           _bool(m[SettingKey.alertPermissionAsked]) ?? d.alertPermissionAsked,
       onboardingDone: _bool(m[SettingKey.onboardingDone]) ?? d.onboardingDone,
+      lastBackupAt: m[SettingKey.lastBackupAt] ?? d.lastBackupAt,
+      firstRunOn: m[SettingKey.firstRunOn] ?? d.firstRunOn,
     );
   }
 
@@ -137,6 +141,13 @@ class AppSettings {
   /// The first-run introduction has been completed or skipped.
   final bool onboardingDone;
 
+  /// ISO date-time of the last backup that was exported; empty = never.
+  final String lastBackupAt;
+
+  /// ISO date the app was first used; the first backup reminder counts from
+  /// here when there never was a backup. Empty until recorded.
+  final String firstRunOn;
+
   Map<String, String> toMap() => {
     SettingKey.pharmacyName: pharmacyName,
     SettingKey.nearExpiryWindowDays: '$nearExpiryWindowDays',
@@ -164,6 +175,8 @@ class AppSettings {
     SettingKey.expiryHideHandled: '$expiryHideHandled',
     SettingKey.alertPermissionAsked: '$alertPermissionAsked',
     SettingKey.onboardingDone: '$onboardingDone',
+    SettingKey.lastBackupAt: lastBackupAt,
+    SettingKey.firstRunOn: firstRunOn,
   };
 
   AppSettings copyWith({
@@ -193,6 +206,8 @@ class AppSettings {
     bool? expiryHideHandled,
     bool? alertPermissionAsked,
     bool? onboardingDone,
+    String? lastBackupAt,
+    String? firstRunOn,
   }) {
     return AppSettings(
       pharmacyName: pharmacyName ?? this.pharmacyName,
@@ -222,6 +237,8 @@ class AppSettings {
       expiryHideHandled: expiryHideHandled ?? this.expiryHideHandled,
       alertPermissionAsked: alertPermissionAsked ?? this.alertPermissionAsked,
       onboardingDone: onboardingDone ?? this.onboardingDone,
+      lastBackupAt: lastBackupAt ?? this.lastBackupAt,
+      firstRunOn: firstRunOn ?? this.firstRunOn,
     );
   }
 
@@ -278,4 +295,6 @@ abstract final class SettingKey {
   static const expiryHideHandled = 'expiry_hide_handled';
   static const alertPermissionAsked = 'alert_permission_asked';
   static const onboardingDone = 'onboarding_done';
+  static const lastBackupAt = 'last_backup_at';
+  static const firstRunOn = 'first_run_on';
 }

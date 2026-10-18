@@ -24,6 +24,12 @@ const paymentAlertOffsetMinutes = 10;
 /// Reorder reminders come last.
 const reorderAlertOffsetMinutes = 15;
 
+/// Backup reminders come after the other kinds.
+const backupAlertOffsetMinutes = 20;
+
+/// A backup that stays overdue is reminded again this often.
+const backupRepeatDays = 7;
+
 /// Calendar day as a whole number (days since 1970-01-01), immune to
 /// daylight-saving shifts. Planning does its arithmetic on these so scanning
 /// tens of thousands of batches stays fast.
@@ -93,6 +99,8 @@ List<PlannedAlert> planAlerts({
   required AppLocalizations l10n,
   List<PlanInvoice> invoices = const [],
   List<PlanReorder> reorders = const [],
+  DateTime? backupAnchor,
+  bool hasData = false,
   int maxPending = maxPendingAlerts,
 }) {
   final today = dateOnly(now);
@@ -100,6 +108,7 @@ List<PlannedAlert> planAlerts({
     ..._leadAlerts(now, today, settings, batches, l10n),
     ..._paymentAlerts(now, today, settings, invoices, l10n),
     ..._reorderAlerts(now, today, settings, reorders, l10n),
+    if (hasData) ..._backupAlerts(now, today, settings, backupAnchor, l10n),
     if (settings.digestEnabled)
       ..._digests(now, today, settings, batches, l10n),
   ];
@@ -116,7 +125,64 @@ List<PlannedAlert> planAlerts({
         return byTime != 0 ? byTime : a.key.compareTo(b.key);
       });
 
-  return shifted.length > maxPending ? shifted.sublist(0, maxPending) : shifted;
+  final capped = shifted.length > maxPending
+      ? shifted.sublist(0, maxPending)
+      : shifted;
+  if (!settings.hideDetailsOnLockScreen) return capped;
+  // Lock-screen privacy: keep what happened (the title) but not which
+  // medicines or suppliers (the body).
+  return [
+    for (final a in capped)
+      if (a.kind == AlertKind.backup) a else _withBody(a, l10n.alertHiddenBody),
+  ];
+}
+
+PlannedAlert _withBody(PlannedAlert a, String body) => PlannedAlert(
+  key: a.key,
+  kind: a.kind,
+  fireAt: a.fireAt,
+  title: a.title,
+  body: body,
+  route: a.route,
+  refs: a.refs,
+);
+
+/// Backup reminders (SEC-4): once the last backup (or, if there never was
+/// one, the first use) is [AppSettings.backupReminderDays] old, remind, and
+/// then weekly while it stays undone.
+List<PlannedAlert> _backupAlerts(
+  DateTime now,
+  DateTime today,
+  AppSettings settings,
+  DateTime? anchor,
+  AppLocalizations l10n,
+) {
+  if (settings.backupReminderDays < 1 || anchor == null) return const [];
+  final alertMinutes = settings.digestMinutes + backupAlertOffsetMinutes;
+  final anchorDay = dayNumber(dateOnly(anchor));
+  final todayNumber = dayNumber(today);
+  var first = anchorDay + settings.backupReminderDays;
+  if (first < todayNumber) first = todayNumber;
+  if (first == todayNumber && !_at(today, alertMinutes).isAfter(now)) {
+    first = todayNumber + 1;
+  }
+  final lastDay = todayNumber + digestHorizonDays;
+  return [
+    for (var day = first; day <= lastDay; day += backupRepeatDays)
+      PlannedAlert(
+        key: 'backup:${_iso(_fromDayNumber(day))}',
+        kind: AlertKind.backup,
+        fireAt: _at(_fromDayNumber(day), alertMinutes),
+        title: l10n.alertBackupTitle,
+        body: settings.lastBackupAt.isEmpty
+            ? l10n.alertBackupBodyNever
+            : l10n.alertBackupBodyAgo(
+                day -
+                    dayNumber(dateOnly(DateTime.parse(settings.lastBackupAt))),
+              ),
+        route: Routes.backup,
+      ),
+  ];
 }
 
 PlannedAlert _withTime(PlannedAlert a, DateTime fireAt) {

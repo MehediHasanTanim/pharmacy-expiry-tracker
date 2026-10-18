@@ -11,6 +11,7 @@ import 'package:pharmacy_expiry_tracker/domain/entities/app_settings.dart';
 import 'package:pharmacy_expiry_tracker/domain/notifications/notification_plugin.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/alert_store.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/settings_repository.dart';
+import 'package:pharmacy_expiry_tracker/domain/usecases/first_run.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 
 /// Outcome of one planning pass.
@@ -91,6 +92,8 @@ class AlertEngine {
     final maxLead = settings.alertLeadDays.fold<int>(0, math.max);
     final invoices = await _source.loadPlanInvoices();
     final reorders = await _source.loadPlanReorders(today: today);
+    final hasData = await _source.hasData();
+    final backupAnchor = _backupAnchor(settings);
     for (final horizon in <int?>[maxLead + 120, maxLead + 600, null]) {
       final batches = await _source.loadPlanBatches(
         today: today,
@@ -103,6 +106,8 @@ class AlertEngine {
         batches: batches,
         invoices: invoices,
         reorders: reorders,
+        backupAnchor: backupAnchor,
+        hasData: hasData,
         l10n: l10n,
       );
       if (horizon == null) return planned;
@@ -119,6 +124,26 @@ class AlertEngine {
       if (complete) return planned;
     }
     return const [];
+  }
+
+  /// What the backup reminder counts from: the last backup, or the first use
+  /// (recorded by [ensureFirstRunDate] when the app starts).
+  DateTime? _backupAnchor(AppSettings s) {
+    final text = s.lastBackupAt.isNotEmpty ? s.lastBackupAt : s.firstRunOn;
+    return DateTime.tryParse(text);
+  }
+
+  /// Forgets what was scheduled and plans again from the data as it is now.
+  /// Used after a restore: the old records and the notifications the OS holds
+  /// belong to a different database, so every pending notification is
+  /// cancelled (the Alert lab's range excepted) and the right ones are set.
+  Future<ReplanSummary> resetAndReplan() async {
+    try {
+      await _store.clearSchedule();
+    } on Object catch (e, st) {
+      debugPrint('Could not clear the alert schedule: $e\n$st');
+    }
+    return replan();
   }
 
   Future<ReplanSummary> replan() async {
@@ -227,6 +252,17 @@ class AlertCoordinator {
     } finally {
       _inflight = null;
     }
+    return result;
+  }
+
+  /// Clears the schedule and plans afresh (after a restore).
+  Future<ReplanSummary?> resetAndReplan() async {
+    if (_disposed) return null;
+    _timer?.cancel();
+    await _inflight;
+    final result = await _engine.resetAndReplan();
+    _last = result;
+    if (!_results.isClosed) _results.add(result);
     return result;
   }
 

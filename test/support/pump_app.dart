@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pharmacy_expiry_tracker/app/app.dart';
 import 'package:pharmacy_expiry_tracker/app/onboarding_gate.dart';
@@ -10,13 +11,17 @@ import 'test_env.dart';
 
 /// Pumps the whole app on top of a [TestEnv]'s in-memory database, with the
 /// clock fixed at the env's date.
-Future<void> pumpApp(WidgetTester tester, TestEnv env) async {
-  await tester.pumpWidget(wrap(env));
+Future<void> pumpApp(
+  WidgetTester tester,
+  TestEnv env, {
+  List<Override> overrides = const [],
+}) async {
+  await tester.pumpWidget(wrap(env, overrides: overrides));
   await settle(tester);
 }
 
 /// The app wrapped with overrides for [env].
-Widget wrap(TestEnv env) {
+Widget wrap(TestEnv env, {List<Override> overrides = const []}) {
   return ProviderScope(
     overrides: [
       databaseProvider.overrideWithValue(env.db),
@@ -26,6 +31,7 @@ Widget wrap(TestEnv env) {
       // Screen tests do not need the alert engine running underneath them.
       alertEngineEnabledProvider.overrideWithValue(false),
       notificationPluginProvider.overrideWithValue(env.plugin),
+      ...overrides,
     ],
     child: const App(),
   );

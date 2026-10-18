@@ -253,6 +253,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             ),
             const SizedBox(height: 12),
             Text(l10n.onbDoneBody, textAlign: TextAlign.center),
+            const SizedBox(height: 12),
+            Text(
+              l10n.onboardingBackupNote,
+              key: const Key('onb-backup-note'),
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodySmall,
+            ),
             const SizedBox(height: 32),
             SizedBox(
               width: double.infinity,

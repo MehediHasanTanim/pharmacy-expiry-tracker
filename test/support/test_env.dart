@@ -33,7 +33,8 @@ class TestEnv {
     BatchRepository Function(BatchRepository real)? wrapBatches,
     FakeNotificationPlugin? plugin,
     LedgerRepositoryImpl Function(AppDatabase db)? ledgerFactory,
-  }) : db = AppDatabase.forTesting(),
+    AppDatabase? database,
+  }) : db = database ?? AppDatabase.forTesting(),
        clock = FakeClock(DateTime(2026, 10, 17, 9)),
        plugin = plugin ?? FakeNotificationPlugin(),
        bus = DataChangeBus() {

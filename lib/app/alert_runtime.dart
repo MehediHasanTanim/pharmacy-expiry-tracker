@@ -4,7 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharmacy_expiry_tracker/app/deep_links.dart';
 import 'package:pharmacy_expiry_tracker/app/providers.dart';
+import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/expiry.dart';
+import 'package:pharmacy_expiry_tracker/domain/usecases/first_run.dart';
 import 'package:pharmacy_expiry_tracker/features/home/home_providers.dart';
 
 /// Starts the alert engine with the app and keeps it fresh: initialises the
@@ -56,6 +58,11 @@ class _AlertRuntimeState extends ConsumerState<AlertRuntime>
     );
     if (!mounted) return;
     _started = true;
+    await ensureFirstRunDate(
+      ref.read(settingsRepositoryProvider),
+      ref.read(clockProvider),
+    );
+    if (!mounted) return;
     final launched = await plugin.launchPayload();
     if (!mounted) return;
     if (launched != null) ref.read(deepLinksProvider).handle(launched);

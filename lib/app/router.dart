@@ -8,6 +8,7 @@ import 'package:pharmacy_expiry_tracker/features/alerts/alert_health_screen.dart
 import 'package:pharmacy_expiry_tracker/features/alerts/alert_history_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/alerts/alert_permission.dart';
 import 'package:pharmacy_expiry_tracker/features/alerts/alert_settings_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/backup/backup_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/expiry/expiry_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/home/home_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/more/alert_lab_screen.dart';
@@ -216,6 +217,11 @@ GoRouter buildRouter({
                     path: 'reorder',
                     parentNavigatorKey: rootKey,
                     builder: (_, _) => const ReorderScreen(),
+                  ),
+                  GoRoute(
+                    path: 'backup',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const BackupScreen(),
                   ),
                   GoRoute(
                     path: 'settings',

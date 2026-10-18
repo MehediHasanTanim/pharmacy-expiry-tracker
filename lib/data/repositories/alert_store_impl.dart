@@ -186,6 +186,9 @@ class AlertStoreImpl implements AlertStore {
   }
 
   @override
+  Future<void> clearSchedule() => _db.delete(_db.scheduledAlerts).go();
+
+  @override
   Stream<int> watchPendingCount() {
     final count = _s.id.count();
     return (_db.selectOnly(_s)
@@ -259,6 +262,14 @@ class AlertSourceImpl implements AlertSource {
           snoozeDay: r.data['snooze_day'] as int?,
         ),
     ];
+  }
+
+  @override
+  Future<bool> hasData() async {
+    final row = await _db
+        .customSelect('SELECT EXISTS(SELECT 1 FROM medicines) AS e')
+        .getSingle();
+    return row.read<int>('e') == 1;
   }
 
   @override

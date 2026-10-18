@@ -8,7 +8,11 @@ import '../support/test_env.dart';
 
 void main() {
   late TestEnv env;
-  setUp(() => env = TestEnv());
+  setUp(() async {
+    env = TestEnv();
+    // These tests count expiry alerts; backup reminders have their own tests.
+    await env.settings.update((s) => s.copyWith(backupReminderDays: 0));
+  });
   tearDown(() => env.dispose());
 
   ExpiryDate in_(int days) {

@@ -7,6 +7,7 @@ abstract final class Routes {
   static const more = '/more';
   static const reorder = '/more/reorder';
   static const settings = '/more/settings';
+  static const backup = '/more/backup';
   static const onboarding = '/onboarding';
   static const alertLab = '/more/alert-lab';
   static const alertSettings = '/more/alerts';
