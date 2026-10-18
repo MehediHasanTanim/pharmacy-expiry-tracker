@@ -8,7 +8,11 @@ cd "$(dirname "$0")/.."
 
 fail=0
 main=android/app/src/main/AndroidManifest.xml
-if grep -q 'android.permission.INTERNET' "$main"; then
+# A <uses-permission> for INTERNET is only allowed with tools:node="remove",
+# which strips it from the merged manifest (a library may add it back).
+if perl -0ne 'while (/<uses-permission\b[^>]*android\.permission\.INTERNET[^>]*>/gs) { exit 1 unless $& =~ /tools:node="remove"/ }' "$main"; then
+  :
+else
   echo "FAIL: $main declares android.permission.INTERNET" >&2
   fail=1
 fi

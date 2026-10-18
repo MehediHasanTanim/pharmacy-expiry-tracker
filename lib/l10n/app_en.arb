@@ -1053,5 +1053,249 @@
         "type": "String"
       }
     }
+  },
+  "alertOrderLateTitle": "{count, plural, =1{1 order is late} other{{count} orders are late}}",
+  "@alertOrderLateTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "alertOrderLateItem": "{name} ({qty} ordered)",
+  "@alertOrderLateItem": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "int"
+      }
+    }
+  },
+  "fieldAlertWindow": "Alert window (days)",
+  "fieldAlertWindowHelp": "Leave blank to use the pharmacy-wide window. Set a longer window for slow movers, a shorter one for fast sellers.",
+  "scanTitle": "Scan barcode",
+  "scanTorch": "Torch",
+  "scanTypeInstead": "Type the number",
+  "scanTypeTitle": "Barcode number",
+  "scanPermissionDenied": "Camera access is off. Turn it on in the phone's settings, or type the number instead.",
+  "scanUnsupported": "This device cannot scan. Type the number instead.",
+  "scanHint": "Point the camera at the barcode on the pack.",
+  "scanButton": "Scan barcode",
+  "scanInvalid": "That barcode could not be read.",
+  "scanUnknownTitle": "New barcode",
+  "scanUnknownBody": "{code} is not linked to a medicine yet.",
+  "@scanUnknownBody": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "scanLinkExisting": "Link to an existing medicine",
+  "scanCreateNew": "Create a new medicine",
+  "scanLinked": "Barcode linked to {name}.",
+  "@scanLinked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "scanTakenBy": "That barcode already belongs to {name}.",
+  "@scanTakenBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "pickerChooseTitle": "Choose a medicine",
+  "barcodesTitle": "Barcodes",
+  "barcodesNone": "No barcodes linked. Scan a pack to link one.",
+  "barcodesAdd": "Scan to add",
+  "barcodeRemove": "Remove barcode",
+  "receiveDeliveryTitle": "Receive a delivery",
+  "receiveDeliveryAction": "Receive delivery",
+  "receiveSupplier": "Supplier",
+  "receiveNoSupplier": "No supplier",
+  "receiveInvoiceNumber": "Invoice number",
+  "receiveInvoiceTotal": "Invoice total",
+  "receiveInvoiceHelp": "Leave blank for no invoice. A total creates one invoice covering every batch.",
+  "receiveDate": "Received on",
+  "receiveAddLine": "Add a batch",
+  "receiveLineMedicine": "Medicine",
+  "receiveLineChoose": "Choose medicine",
+  "receiveLineBatch": "Batch number",
+  "receiveLineExpiry": "Expiry (MM/YYYY)",
+  "receiveLineQuantity": "Quantity",
+  "receiveLineCost": "Unit cost",
+  "receiveLineRemove": "Remove line",
+  "receiveLineNumber": "Batch {n}",
+  "@receiveLineNumber": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "receiveSave": "Save delivery",
+  "receiveSaved": "Delivery saved: {count} batches.",
+  "@receiveSaved": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "receiveDraftBanner": "Continuing an unfinished delivery.",
+  "receiveDiscardDraft": "Start over",
+  "receiveNeedMedicine": "Choose a medicine",
+  "receiveNeedExpiry": "Enter a valid expiry",
+  "receiveNeedLines": "Add at least one batch.",
+  "receiveNeedSupplier": "Choose a supplier to create the invoice.",
+  "receiveBadTotal": "Enter a valid invoice total.",
+  "returnTitle": "Return to supplier",
+  "returnAction": "Return stock",
+  "returnSupplier": "Return to",
+  "returnPickSupplier": "Choose the supplier",
+  "returnLinesTitle": "Batches to return",
+  "returnNoLines": "This supplier has no batches in stock to return.",
+  "returnQuantity": "Quantity",
+  "returnLineLeft": "{qty} in stock",
+  "@returnLineLeft": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      }
+    }
+  },
+  "returnCredit": "Credit from the supplier",
+  "returnCreditHelp": "Optional. Lowers what you owe this supplier.",
+  "returnCreditInvoice": "Apply to",
+  "returnCreditAccount": "Account in general",
+  "returnNote": "Note",
+  "returnSave": "Return",
+  "returnDone": "Return recorded.",
+  "returnShare": "Share return list",
+  "returnShareSubject": "Return to {supplier}",
+  "@returnShareSubject": {
+    "placeholders": {
+      "supplier": {
+        "type": "String"
+      }
+    }
+  },
+  "returnListTitle": "Returns",
+  "returnListEmpty": "No returns yet.",
+  "returnLineText": "{qty} × {name}, batch {batch}",
+  "@returnLineText": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      },
+      "batch": {
+        "type": "String"
+      }
+    }
+  },
+  "returnHeaderText": "Return to {supplier}, {date}",
+  "@returnHeaderText": {
+    "placeholders": {
+      "supplier": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "returnCreditText": "Credit expected: {amount}",
+  "@returnCreditText": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "returnNeedLines": "Choose at least one batch.",
+  "returnBadQuantity": "Check the quantities.",
+  "returnBadCredit": "Enter a valid credit amount.",
+  "returnSupplierMismatch": "Some of these batches came from different suppliers.",
+  "expiryReturnAction": "Return to supplier",
+  "orderMarkOrdered": "Mark as ordered",
+  "orderDialogTitle": "Mark as ordered",
+  "orderQuantity": "Quantity ordered",
+  "orderExpected": "Expected by",
+  "orderNoDate": "No date (assume a week)",
+  "orderChipOrdered": "Ordered {qty}",
+  "@orderChipOrdered": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      }
+    }
+  },
+  "orderChipDue": "due {date}",
+  "@orderChipDue": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "orderChipLate": "late since {date}",
+  "@orderChipLate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "orderReceived": "Received",
+  "orderCancel": "Cancel order",
+  "orderCancelled": "Order cancelled.",
+  "orderUndoNote": "Reminders resume.",
+  "orderShareSupplier": "Share order list",
+  "orderShareSubject": "Order for {supplier}",
+  "@orderShareSubject": {
+    "placeholders": {
+      "supplier": {
+        "type": "String"
+      }
+    }
+  },
+  "orderShareHeader": "*Order for {supplier}*",
+  "@orderShareHeader": {
+    "placeholders": {
+      "supplier": {
+        "type": "String"
+      }
+    }
+  },
+  "orderShareLine": "• {name} × {qty}",
+  "@orderShareLine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "qty": {
+        "type": "int"
+      }
+    }
+  },
+  "orderShareNoSupplier": "No supplier chosen",
+  "orderShareGreeting": "Please confirm availability and delivery date. Thank you.",
+  "returnTileQty": "{qty, plural, =1{1 item} other{{qty} items}}",
+  "@returnTileQty": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      }
+    }
   }
 }

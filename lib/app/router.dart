@@ -21,10 +21,12 @@ import 'package:pharmacy_expiry_tracker/features/stock/batch_form_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/medicine_detail_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/medicine_form_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/medicine_picker_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/stock/receive_delivery_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/stock_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/invoice_detail_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/invoice_form_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/payment_form_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/suppliers/return_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/supplier_detail_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/supplier_form_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/suppliers_screen.dart';
@@ -80,12 +82,21 @@ GoRouter buildRouter({
                   GoRoute(
                     path: 'pick',
                     parentNavigatorKey: rootKey,
-                    builder: (_, _) => const MedicinePickerScreen(),
+                    builder: (_, state) => MedicinePickerScreen(
+                      choose: state.uri.queryParameters['choose'] == '1',
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'receive',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const ReceiveDeliveryScreen(),
                   ),
                   GoRoute(
                     path: 'medicine/new',
                     parentNavigatorKey: rootKey,
-                    builder: (_, _) => const MedicineFormScreen(),
+                    builder: (_, state) => MedicineFormScreen(
+                      barcode: state.uri.queryParameters['barcode'],
+                    ),
                   ),
                   GoRoute(
                     path: 'medicine/:id',
@@ -106,6 +117,11 @@ GoRouter buildRouter({
                         parentNavigatorKey: rootKey,
                         builder: (_, state) => BatchFormScreen(
                           medicineId: state.pathParameters['id'],
+                          initialQuantity: int.tryParse(
+                            state.uri.queryParameters['qty'] ?? '',
+                          ),
+                          initialSupplierId:
+                              state.uri.queryParameters['supplier'],
                         ),
                       ),
                     ],
@@ -150,6 +166,17 @@ GoRouter buildRouter({
                     path: 'new',
                     parentNavigatorKey: rootKey,
                     builder: (_, _) => const SupplierFormScreen(),
+                  ),
+                  GoRoute(
+                    path: 'return',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, state) => ReturnScreen(
+                      args: state.extra is ReturnArgs
+                          ? state.extra! as ReturnArgs
+                          : ReturnArgs(
+                              supplierId: state.uri.queryParameters['supplier'],
+                            ),
+                    ),
                   ),
                   GoRoute(
                     path: ':id',

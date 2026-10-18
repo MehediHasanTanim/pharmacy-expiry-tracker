@@ -178,3 +178,22 @@ pass (database load + plan + diff) ≈ 300 ms.
   per-notification `visibility` is not used; the text itself is generic.
 * Limits: nothing here has run on a device (see `qa-alert-matrix.md`, B1–B11,
   V1–V3).
+
+---
+
+## Sprint 7 additions: orders on the way
+
+* **Reorder orders.** *Mark as ordered* (Reorder screen) stores a
+  `reorder_orders` row (one open order per medicine; a new one replaces the
+  old). An open order holds back the ordinary reorder reminder for that
+  medicine. The order is due on its expected date, or a week after it was
+  placed if none was given.
+* **Chasing.** From the day after the due date, a medicine whose order is still
+  open is reminded with *"N orders are late"* (key `ordered:<date>`, same time
+  as reorder reminders, same repeat interval, `AlertKind.reorder`). Delivered
+  chase reminders count as the last reminder, so they follow the
+  `reorderRefireDays` rhythm. *Received* or *Cancel order* closes the order and
+  ordinary reminders resume at the next re-plan.
+* **Per-medicine alert window** (S7-07): the planner already reads
+  `medicines.alert_window_days` (`coalesce(m.alert_window_days, global)` in
+  `AlertSourceImpl`); Sprint 7 added the field to the medicine form and tests.

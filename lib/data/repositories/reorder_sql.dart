@@ -12,7 +12,12 @@ const belowLevelSql = '''
          m.preferred_supplier_id AS supplier_id,
          COALESCE(u.usable, 0) AS usable,
          st.last_notified_on AS last_notified_on,
-         st.snoozed_until AS snoozed_until
+         st.snoozed_until AS snoozed_until,
+         o.id AS order_id,
+         o.quantity AS order_qty,
+         o.supplier_id AS order_supplier,
+         o.ordered_on AS ordered_on,
+         o.expected_on AS expected_on
   FROM medicines m
   LEFT JOIN (
     SELECT medicine_id, SUM(quantity_on_hand) AS usable
@@ -22,6 +27,11 @@ const belowLevelSql = '''
     GROUP BY medicine_id
   ) u ON u.medicine_id = m.id
   LEFT JOIN reorder_reminder_state st ON st.medicine_id = m.id
+  LEFT JOIN reorder_orders o ON o.id = (
+    SELECT id FROM reorder_orders
+    WHERE medicine_id = m.id AND status = 'ORDERED'
+    ORDER BY created_at DESC, id DESC LIMIT 1
+  )
   WHERE m.deleted_at IS NULL
     AND m.is_archived = 0
     AND m.reorder_level > 0

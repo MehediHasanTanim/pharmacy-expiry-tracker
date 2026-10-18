@@ -11,6 +11,7 @@ enum DataChangeKind {
   supplierChanged,
   ledgerChanged,
   reorderChanged,
+  barcodeChanged,
 }
 
 @immutable

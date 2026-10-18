@@ -18,6 +18,14 @@ class ShareFileExchange implements FileExchange {
   }
 
   @override
+  Future<bool> shareText(String text, {required String subject}) async {
+    final result = await SharePlus.instance.share(
+      ShareParams(text: text, subject: subject),
+    );
+    return result.status != ShareResultStatus.dismissed;
+  }
+
+  @override
   Future<File?> pick() async {
     final picked = await FilePicker.pickFiles();
     if (picked.isEmpty) return null;

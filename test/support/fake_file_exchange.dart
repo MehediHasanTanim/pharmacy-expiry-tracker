@@ -22,6 +22,14 @@ class FakeFileExchange implements FileExchange {
     return accepts;
   }
 
+  final texts = <String>[];
+
+  @override
+  Future<bool> shareText(String text, {required String subject}) async {
+    texts.add(text);
+    return accepts;
+  }
+
   @override
   Future<File?> pick() async => toPick;
 }

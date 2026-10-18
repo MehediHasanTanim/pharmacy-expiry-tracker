@@ -2,10 +2,14 @@ import 'package:pharmacy_expiry_tracker/core/date/expiry_date.dart';
 import 'package:pharmacy_expiry_tracker/core/money/money.dart';
 import 'package:pharmacy_expiry_tracker/data/db/app_database.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/alert_store_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/barcode_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/batch_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/draft_store_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/expiry_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/ledger_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/medicine_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/reorder_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/return_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/search_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/settings_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/supplier_repository_impl.dart';
@@ -17,10 +21,14 @@ import 'package:pharmacy_expiry_tracker/domain/entities/enums.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/medicine.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/supplier.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/batch_repository.dart';
+import 'package:pharmacy_expiry_tracker/domain/usecases/barcode_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/batch_usecases.dart';
+import 'package:pharmacy_expiry_tracker/domain/usecases/delivery_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/expiry_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/ledger_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/medicine_usecases.dart';
+import 'package:pharmacy_expiry_tracker/domain/usecases/reorder_usecases.dart';
+import 'package:pharmacy_expiry_tracker/domain/usecases/return_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/supplier_usecases.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations_en.dart';
 
@@ -109,6 +117,34 @@ class TestEnv {
       adjustStock: adjustStock,
       transaction: tx,
     );
+    returnsRepo = ReturnRepositoryImpl(db);
+    returnToSupplier = ReturnToSupplier(
+      deps: deps,
+      returns: returnsRepo,
+      adjustStock: adjustStock,
+      recordCredit: recordCredit,
+    );
+    barcodesRepo = BarcodeRepositoryImpl(db);
+    barcodes = BarcodeService(
+      barcodes: barcodesRepo,
+      medicines: medicines,
+      transaction: tx,
+      bus: bus,
+    );
+    reorderRepo = ReorderRepositoryImpl(db);
+    orders = OrderTracker(
+      reorder: reorderRepo,
+      medicines: medicines,
+      clock: clock,
+      bus: bus,
+    );
+    receiveDelivery = ReceiveDelivery(
+      addBatch: addBatch,
+      addInvoice: addInvoice,
+      transaction: tx,
+      bus: bus,
+    );
+    drafts = DraftStoreImpl(db);
   }
 
   final AppDatabase db;
@@ -139,6 +175,14 @@ class TestEnv {
   late final AlertEngine alertEngine;
   late final UpdateAlertState alertState;
   late final DiscardBatches discardBatches;
+  late final ReturnRepositoryImpl returnsRepo;
+  late final ReturnToSupplier returnToSupplier;
+  late final BarcodeRepositoryImpl barcodesRepo;
+  late final BarcodeService barcodes;
+  late final ReorderRepositoryImpl reorderRepo;
+  late final OrderTracker orders;
+  late final ReceiveDelivery receiveDelivery;
+  late final DraftStoreImpl drafts;
   late final RecentSearchesRepositoryImpl recent;
   late final SaveMedicine saveMedicine;
   late final SetMedicineArchived setArchived;
@@ -159,6 +203,7 @@ class TestEnv {
     int reorderLevel = 0,
     String? category,
     int? alertWindowDays,
+    String? preferredSupplierId,
   }) {
     return saveMedicine(
       MedicineInput(
@@ -169,6 +214,7 @@ class TestEnv {
         reorderLevel: reorderLevel,
         category: category,
         alertWindowDays: alertWindowDays,
+        preferredSupplierId: preferredSupplierId,
       ),
     );
   }
@@ -179,6 +225,7 @@ class TestEnv {
     ExpiryDate? expiry,
     int quantity = 10,
     int? costMinor,
+    String? supplierId,
   }) {
     return BatchInput(
       medicineId: medicineId,
@@ -187,6 +234,7 @@ class TestEnv {
       quantity: quantity,
       receivedDate: DateTime(2026, 10, 17),
       costPrice: costMinor == null ? null : Money(costMinor),
+      supplierId: supplierId,
     );
   }
 

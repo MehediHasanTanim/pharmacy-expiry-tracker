@@ -223,6 +223,8 @@ class PlanReorder {
     required this.usable,
     this.lastNotifiedDay,
     this.snoozeDay,
+    this.orderQuantity,
+    this.orderDueDay,
   });
 
   final String medicineId;
@@ -236,6 +238,15 @@ class PlanReorder {
 
   /// Reminders stay silent until this day number.
   final int? snoozeDay;
+
+  /// Quantity on the open order for it, if one was placed (ROR-5).
+  final int? orderQuantity;
+
+  /// Day number the open order is due; before then the reorder reminder is
+  /// held back, after it the order is chased instead.
+  final int? orderDueDay;
+
+  bool get hasOrder => orderDueDay != null;
 }
 
 /// An unpaid invoice with a due date, as payment reminders need it.
@@ -599,17 +610,23 @@ List<PlannedAlert> _reorderAlerts(
   final lastDay = todayNumber + digestHorizonDays;
 
   final groups = <int, _ReorderGroup>{};
+  final chase = <int, _ReorderGroup>{};
   for (final item in items) {
     // The first reminder is due `every` days after the last one delivered, or
     // right away if there never was one (or it was long ago).
     var first = item.lastNotifiedDay == null
         ? todayNumber
         : item.lastNotifiedDay! + every;
+    // An order that is on its way holds the reminder back; once it is late,
+    // the order is chased instead of reordering again (ROR-5).
+    final due = item.orderDueDay;
+    if (due != null && first <= due) first = due + 1;
     if (first < todayNumber) first = todayNumber;
     if (first == todayNumber && !todayStillAhead) first = todayNumber + 1;
     for (var day = first; day <= lastDay; day += every) {
       if (item.snoozeDay != null && day < item.snoozeDay!) continue;
-      (groups[day] ??= _ReorderGroup()).add(item);
+      final target = due == null ? groups : chase;
+      (target[day] ??= _ReorderGroup()).add(item);
     }
   }
 
@@ -623,6 +640,22 @@ List<PlannedAlert> _reorderAlerts(
         body: l10n.alertReorderBody(
           [for (final i in e.value.top) l10n.alertReorderItem(i.name, i.usable)]
               .join(', '),
+          e.value.count > 3 ? e.value.count - 3 : 0,
+        ),
+        route: Routes.reorder,
+        refs: e.value.ids..sort(),
+      ),
+    for (final e in chase.entries)
+      PlannedAlert(
+        key: 'ordered:${_iso(_fromDayNumber(e.key))}',
+        kind: AlertKind.reorder,
+        fireAt: _at(_fromDayNumber(e.key), alertMinutes),
+        title: l10n.alertOrderLateTitle(e.value.count),
+        body: l10n.alertReorderBody(
+          [
+            for (final i in e.value.top)
+              l10n.alertOrderLateItem(i.name, i.orderQuantity ?? 0),
+          ].join(', '),
           e.value.count > 3 ? e.value.count - 3 : 0,
         ),
         route: Routes.reorder,

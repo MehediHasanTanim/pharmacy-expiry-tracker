@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pharmacy_expiry_tracker/app/providers.dart';
 import 'package:pharmacy_expiry_tracker/app/routes.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/batch.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/enums.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/medicine.dart';
 import 'package:pharmacy_expiry_tracker/features/common/expiry_chip.dart';
 import 'package:pharmacy_expiry_tracker/features/common/labels.dart';
+import 'package:pharmacy_expiry_tracker/features/scan/barcode_scan_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/scan/scan_flow.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/stock_providers.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 
@@ -61,6 +64,7 @@ class MedicineDetailScreen extends ConsumerWidget {
             padding: const EdgeInsets.only(bottom: 96),
             children: [
               _Header(medicine: m, onHand: onHand),
+              _BarcodesSection(medicineId: m.id),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                 child: Text(
@@ -178,5 +182,65 @@ class _BatchTile extends StatelessWidget {
           : Chip(label: Text(batchStatusLabel(l10n, batch.status))),
       onTap: () => context.push('${Routes.stock}/batch/${batch.id}'),
     );
+  }
+}
+
+/// Barcodes linked to this medicine, with scan-to-add and remove (MED-3).
+class _BarcodesSection extends ConsumerWidget {
+  const _BarcodesSection({required this.medicineId});
+
+  final String medicineId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final codes =
+        ref.watch(medicineBarcodesProvider(medicineId)).value ?? const [];
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.barcodesTitle,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          if (codes.isEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Text(l10n.barcodesNone),
+            ),
+          for (final b in codes)
+            ListTile(
+              key: Key('barcode-${b.value}'),
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.qr_code_2),
+              title: Text(b.value),
+              trailing: IconButton(
+                key: Key('barcode-remove-${b.value}'),
+                tooltip: l10n.barcodeRemove,
+                icon: const Icon(Icons.close),
+                onPressed: () =>
+                    ref.read(barcodeServiceProvider).unlink(b).ignore(),
+              ),
+            ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(
+              key: const Key('barcode-add'),
+              icon: const Icon(Icons.qr_code_scanner),
+              label: Text(l10n.barcodesAdd),
+              onPressed: () => _add(context, ref),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _add(BuildContext context, WidgetRef ref) async {
+    final code = await ref.read(barcodeScanProvider)(context);
+    if (code == null || !context.mounted) return;
+    await linkBarcode(context, ref, medicineId, code);
   }
 }

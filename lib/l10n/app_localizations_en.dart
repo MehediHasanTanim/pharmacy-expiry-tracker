@@ -1982,4 +1982,349 @@ class AppLocalizationsEn extends AppLocalizations {
   String exportTextTitle(String date) {
     return 'Expiry list, $date';
   }
+
+  @override
+  String alertOrderLateTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count orders are late',
+      one: '1 order is late',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String alertOrderLateItem(String name, int qty) {
+    return '$name ($qty ordered)';
+  }
+
+  @override
+  String get fieldAlertWindow => 'Alert window (days)';
+
+  @override
+  String get fieldAlertWindowHelp =>
+      'Leave blank to use the pharmacy-wide window. Set a longer window for slow movers, a shorter one for fast sellers.';
+
+  @override
+  String get scanTitle => 'Scan barcode';
+
+  @override
+  String get scanTorch => 'Torch';
+
+  @override
+  String get scanTypeInstead => 'Type the number';
+
+  @override
+  String get scanTypeTitle => 'Barcode number';
+
+  @override
+  String get scanPermissionDenied =>
+      'Camera access is off. Turn it on in the phone\'s settings, or type the number instead.';
+
+  @override
+  String get scanUnsupported =>
+      'This device cannot scan. Type the number instead.';
+
+  @override
+  String get scanHint => 'Point the camera at the barcode on the pack.';
+
+  @override
+  String get scanButton => 'Scan barcode';
+
+  @override
+  String get scanInvalid => 'That barcode could not be read.';
+
+  @override
+  String get scanUnknownTitle => 'New barcode';
+
+  @override
+  String scanUnknownBody(String code) {
+    return '$code is not linked to a medicine yet.';
+  }
+
+  @override
+  String get scanLinkExisting => 'Link to an existing medicine';
+
+  @override
+  String get scanCreateNew => 'Create a new medicine';
+
+  @override
+  String scanLinked(String name) {
+    return 'Barcode linked to $name.';
+  }
+
+  @override
+  String scanTakenBy(String name) {
+    return 'That barcode already belongs to $name.';
+  }
+
+  @override
+  String get pickerChooseTitle => 'Choose a medicine';
+
+  @override
+  String get barcodesTitle => 'Barcodes';
+
+  @override
+  String get barcodesNone => 'No barcodes linked. Scan a pack to link one.';
+
+  @override
+  String get barcodesAdd => 'Scan to add';
+
+  @override
+  String get barcodeRemove => 'Remove barcode';
+
+  @override
+  String get receiveDeliveryTitle => 'Receive a delivery';
+
+  @override
+  String get receiveDeliveryAction => 'Receive delivery';
+
+  @override
+  String get receiveSupplier => 'Supplier';
+
+  @override
+  String get receiveNoSupplier => 'No supplier';
+
+  @override
+  String get receiveInvoiceNumber => 'Invoice number';
+
+  @override
+  String get receiveInvoiceTotal => 'Invoice total';
+
+  @override
+  String get receiveInvoiceHelp =>
+      'Leave blank for no invoice. A total creates one invoice covering every batch.';
+
+  @override
+  String get receiveDate => 'Received on';
+
+  @override
+  String get receiveAddLine => 'Add a batch';
+
+  @override
+  String get receiveLineMedicine => 'Medicine';
+
+  @override
+  String get receiveLineChoose => 'Choose medicine';
+
+  @override
+  String get receiveLineBatch => 'Batch number';
+
+  @override
+  String get receiveLineExpiry => 'Expiry (MM/YYYY)';
+
+  @override
+  String get receiveLineQuantity => 'Quantity';
+
+  @override
+  String get receiveLineCost => 'Unit cost';
+
+  @override
+  String get receiveLineRemove => 'Remove line';
+
+  @override
+  String receiveLineNumber(int n) {
+    return 'Batch $n';
+  }
+
+  @override
+  String get receiveSave => 'Save delivery';
+
+  @override
+  String receiveSaved(int count) {
+    return 'Delivery saved: $count batches.';
+  }
+
+  @override
+  String get receiveDraftBanner => 'Continuing an unfinished delivery.';
+
+  @override
+  String get receiveDiscardDraft => 'Start over';
+
+  @override
+  String get receiveNeedMedicine => 'Choose a medicine';
+
+  @override
+  String get receiveNeedExpiry => 'Enter a valid expiry';
+
+  @override
+  String get receiveNeedLines => 'Add at least one batch.';
+
+  @override
+  String get receiveNeedSupplier => 'Choose a supplier to create the invoice.';
+
+  @override
+  String get receiveBadTotal => 'Enter a valid invoice total.';
+
+  @override
+  String get returnTitle => 'Return to supplier';
+
+  @override
+  String get returnAction => 'Return stock';
+
+  @override
+  String get returnSupplier => 'Return to';
+
+  @override
+  String get returnPickSupplier => 'Choose the supplier';
+
+  @override
+  String get returnLinesTitle => 'Batches to return';
+
+  @override
+  String get returnNoLines =>
+      'This supplier has no batches in stock to return.';
+
+  @override
+  String get returnQuantity => 'Quantity';
+
+  @override
+  String returnLineLeft(int qty) {
+    return '$qty in stock';
+  }
+
+  @override
+  String get returnCredit => 'Credit from the supplier';
+
+  @override
+  String get returnCreditHelp => 'Optional. Lowers what you owe this supplier.';
+
+  @override
+  String get returnCreditInvoice => 'Apply to';
+
+  @override
+  String get returnCreditAccount => 'Account in general';
+
+  @override
+  String get returnNote => 'Note';
+
+  @override
+  String get returnSave => 'Return';
+
+  @override
+  String get returnDone => 'Return recorded.';
+
+  @override
+  String get returnShare => 'Share return list';
+
+  @override
+  String returnShareSubject(String supplier) {
+    return 'Return to $supplier';
+  }
+
+  @override
+  String get returnListTitle => 'Returns';
+
+  @override
+  String get returnListEmpty => 'No returns yet.';
+
+  @override
+  String returnLineText(int qty, String name, String batch) {
+    return '$qty × $name, batch $batch';
+  }
+
+  @override
+  String returnHeaderText(String supplier, String date) {
+    return 'Return to $supplier, $date';
+  }
+
+  @override
+  String returnCreditText(String amount) {
+    return 'Credit expected: $amount';
+  }
+
+  @override
+  String get returnNeedLines => 'Choose at least one batch.';
+
+  @override
+  String get returnBadQuantity => 'Check the quantities.';
+
+  @override
+  String get returnBadCredit => 'Enter a valid credit amount.';
+
+  @override
+  String get returnSupplierMismatch =>
+      'Some of these batches came from different suppliers.';
+
+  @override
+  String get expiryReturnAction => 'Return to supplier';
+
+  @override
+  String get orderMarkOrdered => 'Mark as ordered';
+
+  @override
+  String get orderDialogTitle => 'Mark as ordered';
+
+  @override
+  String get orderQuantity => 'Quantity ordered';
+
+  @override
+  String get orderExpected => 'Expected by';
+
+  @override
+  String get orderNoDate => 'No date (assume a week)';
+
+  @override
+  String orderChipOrdered(int qty) {
+    return 'Ordered $qty';
+  }
+
+  @override
+  String orderChipDue(String date) {
+    return 'due $date';
+  }
+
+  @override
+  String orderChipLate(String date) {
+    return 'late since $date';
+  }
+
+  @override
+  String get orderReceived => 'Received';
+
+  @override
+  String get orderCancel => 'Cancel order';
+
+  @override
+  String get orderCancelled => 'Order cancelled.';
+
+  @override
+  String get orderUndoNote => 'Reminders resume.';
+
+  @override
+  String get orderShareSupplier => 'Share order list';
+
+  @override
+  String orderShareSubject(String supplier) {
+    return 'Order for $supplier';
+  }
+
+  @override
+  String orderShareHeader(String supplier) {
+    return '*Order for $supplier*';
+  }
+
+  @override
+  String orderShareLine(String name, int qty) {
+    return '• $name × $qty';
+  }
+
+  @override
+  String get orderShareNoSupplier => 'No supplier chosen';
+
+  @override
+  String get orderShareGreeting =>
+      'Please confirm availability and delivery date. Thank you.';
+
+  @override
+  String returnTileQty(int qty) {
+    String _temp0 = intl.Intl.pluralLogic(
+      qty,
+      locale: localeName,
+      other: '$qty items',
+      one: '1 item',
+    );
+    return '$_temp0';
+  }
 }

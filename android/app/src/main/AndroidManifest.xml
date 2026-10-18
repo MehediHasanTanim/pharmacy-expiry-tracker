@@ -2,11 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools">
     <!-- Offline-first: INTERNET must never be declared here (debug/profile get it for tooling only).
          Enforced by tool/check_manifest.sh in CI. -->
+    <!-- Barcode scanning only; asked when the scanner first opens. Typing the
+         number works without it. -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <!-- Exact delivery of expiry alerts. The user can revoke it (Android 12+);
          alerts then fall back to inexact delivery. -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <!-- The barcode scanner library (ML Kit) declares INTERNET for optional
+         model downloads; the bundled model needs none, and this app must never
+         have network access. -->
+    <uses-permission android:name="android.permission.INTERNET"
+        tools:node="remove"/>
     <!-- Pulled in by the background-task library for network constraints,
          which the app never uses. -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"

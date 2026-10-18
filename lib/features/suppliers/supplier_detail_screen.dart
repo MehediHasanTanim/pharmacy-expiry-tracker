@@ -5,9 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pharmacy_expiry_tracker/app/providers.dart';
 import 'package:pharmacy_expiry_tracker/app/routes.dart';
+import 'package:pharmacy_expiry_tracker/domain/entities/supplier_return.dart';
 import 'package:pharmacy_expiry_tracker/features/common/labels.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/credit_dialog.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/ledger_widgets.dart';
+import 'package:pharmacy_expiry_tracker/features/suppliers/return_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/suppliers_providers.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 
@@ -30,6 +32,8 @@ class SupplierDetailScreen extends ConsumerWidget {
         ref.watch(supplierPaymentsProvider(supplierId)).value ?? const [];
     final credits =
         ref.watch(supplierCreditsProvider(supplierId)).value ?? const [];
+    final returns =
+        ref.watch(supplierReturnsProvider(supplierId)).value ?? const [];
     final s = summary?.supplier;
     final launcher = ref.watch(contactLauncherProvider);
 
@@ -187,6 +191,15 @@ class SupplierDetailScreen extends ConsumerWidget {
                         label: Text(l10n.actionRecordPayment),
                       ),
                       OutlinedButton.icon(
+                        key: const Key('return-stock'),
+                        onPressed: () => context.push(
+                          Routes.supplierReturn,
+                          extra: ReturnArgs(supplierId: supplierId),
+                        ),
+                        icon: const Icon(Icons.assignment_return_outlined),
+                        label: Text(l10n.returnAction),
+                      ),
+                      OutlinedButton.icon(
                         key: const Key('record-credit'),
                         onPressed: () =>
                             showCreditDialog(context, supplierId: supplierId),
@@ -220,6 +233,12 @@ class SupplierDetailScreen extends ConsumerWidget {
                         }
                       },
                     ),
+                _Header(l10n.returnListTitle),
+                if (returns.isEmpty)
+                  _Empty(l10n.returnListEmpty)
+                else
+                  for (final r in returns)
+                    _ReturnTile(view: r, currency: currency),
                 _Header(l10n.ledgerCredits),
                 if (credits.isEmpty)
                   _Empty(l10n.ledgerNoCredits)
@@ -299,4 +318,38 @@ class _Empty extends StatelessWidget {
     padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
     child: Text(text, style: Theme.of(context).textTheme.bodySmall),
   );
+}
+
+class _ReturnTile extends ConsumerWidget {
+  const _ReturnTile({required this.view, required this.currency});
+
+  final ReturnView view;
+  final String currency;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final qty = view.lines.fold<int>(0, (a, l) => a + l.quantity);
+    return ListTile(
+      key: Key('return-${view.id}'),
+      leading: const Icon(Icons.assignment_return_outlined),
+      title: Text(
+        '${formatDate(context, view.returnedOn)} · '
+        '${l10n.returnTileQty(qty)}',
+      ),
+      subtitle: Text(
+        [
+          view.lines.map((l) => l.medicineName).toSet().join(', '),
+          if (view.credit != null)
+            l10n.returnCreditText(view.credit!.format(symbol: currency)),
+        ].join(' · '),
+      ),
+      trailing: IconButton(
+        key: Key('return-share-${view.id}'),
+        tooltip: l10n.returnShare,
+        icon: const Icon(Icons.ios_share),
+        onPressed: () => unawaited(shareReturn(ref, l10n, view.id, context)),
+      ),
+    );
+  }
 }

@@ -23,14 +23,23 @@ import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 /// set). Built for speed: expiry as `MM / YYYY`, remembered received date,
 /// and "Save & add another".
 class BatchFormScreen extends ConsumerStatefulWidget {
-  const BatchFormScreen({this.medicineId, this.batchId, super.key})
-    : assert(
-        (medicineId == null) != (batchId == null),
-        'Pass exactly one of medicineId or batchId',
-      );
+  const BatchFormScreen({
+    this.medicineId,
+    this.batchId,
+    this.initialQuantity,
+    this.initialSupplierId,
+    super.key,
+  }) : assert(
+         (medicineId == null) != (batchId == null),
+         'Pass exactly one of medicineId or batchId',
+       );
 
   final String? medicineId;
   final String? batchId;
+
+  /// Pre-filled from a received order (ROR-7).
+  final int? initialQuantity;
+  final String? initialSupplierId;
 
   @override
   ConsumerState<BatchFormScreen> createState() => _BatchFormScreenState();
@@ -68,6 +77,13 @@ class _BatchFormScreenState extends ConsumerState<BatchFormScreen> {
     } else {
       _received = ref.read(lastReceivedDateProvider);
       _supplierId = ref.read(lastSupplierProvider);
+      if (widget.initialQuantity != null) {
+        _quantity.text = '${widget.initialQuantity}';
+      }
+      if (widget.initialSupplierId != null) {
+        _supplierId = widget.initialSupplierId;
+        _supplierTouched = true;
+      }
       unawaited(_preferredSupplier());
     }
   }

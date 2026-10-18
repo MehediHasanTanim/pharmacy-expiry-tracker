@@ -251,6 +251,7 @@ class Credit {
     required this.issuedOn,
     required this.createdAt,
     this.invoiceId,
+    this.returnId,
     this.note,
   });
 
@@ -259,6 +260,9 @@ class Credit {
 
   /// The invoice it reduces, or null for a general credit on the account.
   final String? invoiceId;
+
+  /// The return of goods this credit came from, if any.
+  final String? returnId;
   final Money amount;
   final DateTime issuedOn;
   final String? note;

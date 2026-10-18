@@ -239,3 +239,33 @@ produced; keep it somewhere the phone can browse (Files, Drive, email).
 
 Exit criteria (Sprint 6): B4/B5 pass on at least two devices; no data-loss or
 missed-alert defects open.
+
+---
+
+## Sprint 7 additions: scanner, returns, orders, bulk receive
+
+Run on the same devices. S1–S8 need a camera and a few real packs with barcodes
+(EAN-13 on most medicines; also try a DataMatrix/QR if you have one). Scanner
+checks must be on **at least three different devices**, one of them low-end.
+
+| # | Steps | Expect | P | S | X | I |
+|---|---|---|---|---|---|---|
+| S1 | Stock → scan icon in the search box; first time | Camera permission prompt, then the live view | ☐ | ☐ | ☐ | ☐ |
+| S2 | Deny the permission | Message about turning it on, and *Type the number* still works | ☐ | ☐ | ☐ | ☐ |
+| S3 | Scan a pack not yet linked | "New barcode" sheet; *Link to an existing medicine* → pick → snackbar "linked"; scan again → opens that medicine | ☐ | ☐ | ☐ | ☐ |
+| S4 | Same with *Create a new medicine* | Form opens; after saving the barcode is linked | ☐ | ☐ | ☐ | ☐ |
+| S5 | Scan in a dim room with the torch on; a curved blister strip; a crumpled label | Reads within ~2 s, or *Type the number* works; note which fail | ☐ | ☐ | ☐ | ☐ |
+| S6 | Hold the camera on the code for 5 s | One result only; no double screens | ☐ | ☐ | ☐ | ☐ |
+| S7 | Add stock → scan a known pack | Goes straight to the batch form for that medicine | ☐ | ☐ | ☐ | ☐ |
+| S8 | Two packs of the same medicine from different makers | Both link to it (medicine page shows both) | ☐ | ☐ | ☐ | ☐ |
+| R1 | Supplier page → *Return stock* → tick a batch, set quantity, keep the credit → Return → *Share return list* | Stock drops; credit appears on the supplier page; the share sheet shows a readable message (try WhatsApp) | ☐ | ☐ | ☐ | ☐ |
+| R2 | Expiry tab → select several expired batches → *Return to supplier* | One screen with all of them; supplier picked from the batches; selection mode ends afterwards | ☐ | ☐ | ☐ | ☐ |
+| R3 | Return more than is in stock | Refused; nothing changes | ☐ | ☐ | ☐ | ☐ |
+| O1 | More → Reorder → ⋮ → *Mark as ordered* (quantity, date) | "Ordered N, due …" under the medicine; no reorder reminder next morning | ☐ | ☐ | ☐ | ☐ |
+| O2 | Same with a date in the past by changing the phone date, or wait | "Order is late" notification at the daily time +15 min; tapping opens Reorder | ☐ | ☐ | ☐ | ☐ |
+| O3 | ⋮ → *Received* | Batch form opens with the ordered quantity and supplier filled in | ☐ | ☐ | ☐ | ☐ |
+| O4 | Share icon on a supplier group | A message with the list; opens in WhatsApp with bold heading | ☐ | ☐ | ☐ | ☐ |
+| D1 | Add stock → *Receive delivery* → 3 lines, supplier, invoice total → Save | 3 batches and one invoice; Home/Expiry/Suppliers show them | ☐ | ☐ | ☐ | ☐ |
+| D2 | Enter two lines, leave the app (swipe it away), reopen the same screen | "Continuing an unfinished delivery" with everything typed | ☐ | ☐ | ☐ | ☐ |
+| D3 | Make one line wrong (duplicate batch) and Save | Errors on the lines; nothing saved | ☐ | ☐ | ☐ | ☐ |
+| W1 | Edit a medicine, set *Alert window* to 15 days; add a batch expiring in 40 days | Lead-time alerts only at 14, 7 and 1 days and on the day itself (the 30/60/90-day ones are outside its window) | ☐ | ☐ | ☐ | ☐ |

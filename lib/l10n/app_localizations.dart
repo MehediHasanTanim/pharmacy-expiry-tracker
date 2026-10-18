@@ -3320,6 +3320,582 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Expiry list, {date}'**
   String exportTextTitle(String date);
+
+  /// No description provided for @alertOrderLateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 order is late} other{{count} orders are late}}'**
+  String alertOrderLateTitle(int count);
+
+  /// No description provided for @alertOrderLateItem.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} ({qty} ordered)'**
+  String alertOrderLateItem(String name, int qty);
+
+  /// No description provided for @fieldAlertWindow.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert window (days)'**
+  String get fieldAlertWindow;
+
+  /// No description provided for @fieldAlertWindowHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave blank to use the pharmacy-wide window. Set a longer window for slow movers, a shorter one for fast sellers.'**
+  String get fieldAlertWindowHelp;
+
+  /// No description provided for @scanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan barcode'**
+  String get scanTitle;
+
+  /// No description provided for @scanTorch.
+  ///
+  /// In en, this message translates to:
+  /// **'Torch'**
+  String get scanTorch;
+
+  /// No description provided for @scanTypeInstead.
+  ///
+  /// In en, this message translates to:
+  /// **'Type the number'**
+  String get scanTypeInstead;
+
+  /// No description provided for @scanTypeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Barcode number'**
+  String get scanTypeTitle;
+
+  /// No description provided for @scanPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera access is off. Turn it on in the phone\'s settings, or type the number instead.'**
+  String get scanPermissionDenied;
+
+  /// No description provided for @scanUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'This device cannot scan. Type the number instead.'**
+  String get scanUnsupported;
+
+  /// No description provided for @scanHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Point the camera at the barcode on the pack.'**
+  String get scanHint;
+
+  /// No description provided for @scanButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan barcode'**
+  String get scanButton;
+
+  /// No description provided for @scanInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'That barcode could not be read.'**
+  String get scanInvalid;
+
+  /// No description provided for @scanUnknownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New barcode'**
+  String get scanUnknownTitle;
+
+  /// No description provided for @scanUnknownBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{code} is not linked to a medicine yet.'**
+  String scanUnknownBody(String code);
+
+  /// No description provided for @scanLinkExisting.
+  ///
+  /// In en, this message translates to:
+  /// **'Link to an existing medicine'**
+  String get scanLinkExisting;
+
+  /// No description provided for @scanCreateNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new medicine'**
+  String get scanCreateNew;
+
+  /// No description provided for @scanLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Barcode linked to {name}.'**
+  String scanLinked(String name);
+
+  /// No description provided for @scanTakenBy.
+  ///
+  /// In en, this message translates to:
+  /// **'That barcode already belongs to {name}.'**
+  String scanTakenBy(String name);
+
+  /// No description provided for @pickerChooseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a medicine'**
+  String get pickerChooseTitle;
+
+  /// No description provided for @barcodesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Barcodes'**
+  String get barcodesTitle;
+
+  /// No description provided for @barcodesNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No barcodes linked. Scan a pack to link one.'**
+  String get barcodesNone;
+
+  /// No description provided for @barcodesAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan to add'**
+  String get barcodesAdd;
+
+  /// No description provided for @barcodeRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove barcode'**
+  String get barcodeRemove;
+
+  /// No description provided for @receiveDeliveryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive a delivery'**
+  String get receiveDeliveryTitle;
+
+  /// No description provided for @receiveDeliveryAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive delivery'**
+  String get receiveDeliveryAction;
+
+  /// No description provided for @receiveSupplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Supplier'**
+  String get receiveSupplier;
+
+  /// No description provided for @receiveNoSupplier.
+  ///
+  /// In en, this message translates to:
+  /// **'No supplier'**
+  String get receiveNoSupplier;
+
+  /// No description provided for @receiveInvoiceNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice number'**
+  String get receiveInvoiceNumber;
+
+  /// No description provided for @receiveInvoiceTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice total'**
+  String get receiveInvoiceTotal;
+
+  /// No description provided for @receiveInvoiceHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave blank for no invoice. A total creates one invoice covering every batch.'**
+  String get receiveInvoiceHelp;
+
+  /// No description provided for @receiveDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Received on'**
+  String get receiveDate;
+
+  /// No description provided for @receiveAddLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a batch'**
+  String get receiveAddLine;
+
+  /// No description provided for @receiveLineMedicine.
+  ///
+  /// In en, this message translates to:
+  /// **'Medicine'**
+  String get receiveLineMedicine;
+
+  /// No description provided for @receiveLineChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose medicine'**
+  String get receiveLineChoose;
+
+  /// No description provided for @receiveLineBatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch number'**
+  String get receiveLineBatch;
+
+  /// No description provided for @receiveLineExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry (MM/YYYY)'**
+  String get receiveLineExpiry;
+
+  /// No description provided for @receiveLineQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get receiveLineQuantity;
+
+  /// No description provided for @receiveLineCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit cost'**
+  String get receiveLineCost;
+
+  /// No description provided for @receiveLineRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove line'**
+  String get receiveLineRemove;
+
+  /// No description provided for @receiveLineNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch {n}'**
+  String receiveLineNumber(int n);
+
+  /// No description provided for @receiveSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save delivery'**
+  String get receiveSave;
+
+  /// No description provided for @receiveSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery saved: {count} batches.'**
+  String receiveSaved(int count);
+
+  /// No description provided for @receiveDraftBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Continuing an unfinished delivery.'**
+  String get receiveDraftBanner;
+
+  /// No description provided for @receiveDiscardDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Start over'**
+  String get receiveDiscardDraft;
+
+  /// No description provided for @receiveNeedMedicine.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a medicine'**
+  String get receiveNeedMedicine;
+
+  /// No description provided for @receiveNeedExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid expiry'**
+  String get receiveNeedExpiry;
+
+  /// No description provided for @receiveNeedLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one batch.'**
+  String get receiveNeedLines;
+
+  /// No description provided for @receiveNeedSupplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a supplier to create the invoice.'**
+  String get receiveNeedSupplier;
+
+  /// No description provided for @receiveBadTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid invoice total.'**
+  String get receiveBadTotal;
+
+  /// No description provided for @returnTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to supplier'**
+  String get returnTitle;
+
+  /// No description provided for @returnAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Return stock'**
+  String get returnAction;
+
+  /// No description provided for @returnSupplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to'**
+  String get returnSupplier;
+
+  /// No description provided for @returnPickSupplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the supplier'**
+  String get returnPickSupplier;
+
+  /// No description provided for @returnLinesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Batches to return'**
+  String get returnLinesTitle;
+
+  /// No description provided for @returnNoLines.
+  ///
+  /// In en, this message translates to:
+  /// **'This supplier has no batches in stock to return.'**
+  String get returnNoLines;
+
+  /// No description provided for @returnQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get returnQuantity;
+
+  /// No description provided for @returnLineLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{qty} in stock'**
+  String returnLineLeft(int qty);
+
+  /// No description provided for @returnCredit.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit from the supplier'**
+  String get returnCredit;
+
+  /// No description provided for @returnCreditHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. Lowers what you owe this supplier.'**
+  String get returnCreditHelp;
+
+  /// No description provided for @returnCreditInvoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply to'**
+  String get returnCreditInvoice;
+
+  /// No description provided for @returnCreditAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account in general'**
+  String get returnCreditAccount;
+
+  /// No description provided for @returnNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get returnNote;
+
+  /// No description provided for @returnSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Return'**
+  String get returnSave;
+
+  /// No description provided for @returnDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Return recorded.'**
+  String get returnDone;
+
+  /// No description provided for @returnShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share return list'**
+  String get returnShare;
+
+  /// No description provided for @returnShareSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to {supplier}'**
+  String returnShareSubject(String supplier);
+
+  /// No description provided for @returnListTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Returns'**
+  String get returnListTitle;
+
+  /// No description provided for @returnListEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No returns yet.'**
+  String get returnListEmpty;
+
+  /// No description provided for @returnLineText.
+  ///
+  /// In en, this message translates to:
+  /// **'{qty} × {name}, batch {batch}'**
+  String returnLineText(int qty, String name, String batch);
+
+  /// No description provided for @returnHeaderText.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to {supplier}, {date}'**
+  String returnHeaderText(String supplier, String date);
+
+  /// No description provided for @returnCreditText.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit expected: {amount}'**
+  String returnCreditText(String amount);
+
+  /// No description provided for @returnNeedLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose at least one batch.'**
+  String get returnNeedLines;
+
+  /// No description provided for @returnBadQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the quantities.'**
+  String get returnBadQuantity;
+
+  /// No description provided for @returnBadCredit.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid credit amount.'**
+  String get returnBadCredit;
+
+  /// No description provided for @returnSupplierMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Some of these batches came from different suppliers.'**
+  String get returnSupplierMismatch;
+
+  /// No description provided for @expiryReturnAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to supplier'**
+  String get expiryReturnAction;
+
+  /// No description provided for @orderMarkOrdered.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as ordered'**
+  String get orderMarkOrdered;
+
+  /// No description provided for @orderDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as ordered'**
+  String get orderDialogTitle;
+
+  /// No description provided for @orderQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity ordered'**
+  String get orderQuantity;
+
+  /// No description provided for @orderExpected.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected by'**
+  String get orderExpected;
+
+  /// No description provided for @orderNoDate.
+  ///
+  /// In en, this message translates to:
+  /// **'No date (assume a week)'**
+  String get orderNoDate;
+
+  /// No description provided for @orderChipOrdered.
+  ///
+  /// In en, this message translates to:
+  /// **'Ordered {qty}'**
+  String orderChipOrdered(int qty);
+
+  /// No description provided for @orderChipDue.
+  ///
+  /// In en, this message translates to:
+  /// **'due {date}'**
+  String orderChipDue(String date);
+
+  /// No description provided for @orderChipLate.
+  ///
+  /// In en, this message translates to:
+  /// **'late since {date}'**
+  String orderChipLate(String date);
+
+  /// No description provided for @orderReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get orderReceived;
+
+  /// No description provided for @orderCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel order'**
+  String get orderCancel;
+
+  /// No description provided for @orderCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Order cancelled.'**
+  String get orderCancelled;
+
+  /// No description provided for @orderUndoNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders resume.'**
+  String get orderUndoNote;
+
+  /// No description provided for @orderShareSupplier.
+  ///
+  /// In en, this message translates to:
+  /// **'Share order list'**
+  String get orderShareSupplier;
+
+  /// No description provided for @orderShareSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Order for {supplier}'**
+  String orderShareSubject(String supplier);
+
+  /// No description provided for @orderShareHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'*Order for {supplier}*'**
+  String orderShareHeader(String supplier);
+
+  /// No description provided for @orderShareLine.
+  ///
+  /// In en, this message translates to:
+  /// **'• {name} × {qty}'**
+  String orderShareLine(String name, int qty);
+
+  /// No description provided for @orderShareNoSupplier.
+  ///
+  /// In en, this message translates to:
+  /// **'No supplier chosen'**
+  String get orderShareNoSupplier;
+
+  /// No description provided for @orderShareGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm availability and delivery date. Thank you.'**
+  String get orderShareGreeting;
+
+  /// No description provided for @returnTileQty.
+  ///
+  /// In en, this message translates to:
+  /// **'{qty, plural, =1{1 item} other{{qty} items}}'**
+  String returnTileQty(int qty);
 }
 
 class _AppLocalizationsDelegate

@@ -11,15 +11,19 @@ import 'package:pharmacy_expiry_tracker/domain/entities/medicine.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/supplier.dart';
 import 'package:pharmacy_expiry_tracker/domain/errors.dart';
 import 'package:pharmacy_expiry_tracker/features/common/labels.dart';
+import 'package:pharmacy_expiry_tracker/features/scan/scan_flow.dart';
 import 'package:pharmacy_expiry_tracker/features/suppliers/suppliers_providers.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 
 /// Create ([medicineId] null) or edit a medicine (MED-1, MED-2, MED-5, MED-6).
 /// Pops with the saved medicine's id.
 class MedicineFormScreen extends ConsumerStatefulWidget {
-  const MedicineFormScreen({this.medicineId, super.key});
+  const MedicineFormScreen({this.medicineId, this.barcode, super.key});
 
   final String? medicineId;
+
+  /// A scanned barcode to link to the medicine once it is saved.
+  final String? barcode;
 
   @override
   ConsumerState<MedicineFormScreen> createState() => _MedicineFormScreenState();
@@ -34,6 +38,7 @@ class _MedicineFormScreenState extends ConsumerState<MedicineFormScreen> {
   final _manufacturer = TextEditingController();
   final _category = TextEditingController();
   final _reorder = TextEditingController(text: '0');
+  final _window = TextEditingController();
   final _notes = TextEditingController();
   DosageForm _form = DosageForm.tablet;
   StockUnit _unit = StockUnit.strip;
@@ -68,6 +73,7 @@ class _MedicineFormScreenState extends ConsumerState<MedicineFormScreen> {
       _manufacturer.text = m.manufacturer ?? '';
       _category.text = m.category ?? '';
       _reorder.text = m.reorderLevel.toString();
+      _window.text = m.alertWindowDays?.toString() ?? '';
       _notes.text = m.notes ?? '';
       _form = m.dosageForm;
       _unit = m.unit;
@@ -94,6 +100,7 @@ class _MedicineFormScreenState extends ConsumerState<MedicineFormScreen> {
       _manufacturer,
       _category,
       _reorder,
+      _window,
       _notes,
     ]) {
       c.dispose();
@@ -115,7 +122,7 @@ class _MedicineFormScreenState extends ConsumerState<MedicineFormScreen> {
       reorderLevel: int.tryParse(_reorder.text.trim()) ?? 0,
       // Fields without a form control yet are carried over unchanged.
       preferredSupplierId: _preferredSupplierId,
-      alertWindowDays: base?.alertWindowDays,
+      alertWindowDays: int.tryParse(_window.text.trim()),
       storageCondition: base?.storageCondition,
       notes: _notes.text,
     );
@@ -168,6 +175,10 @@ class _MedicineFormScreenState extends ConsumerState<MedicineFormScreen> {
       final id = await ref
           .read(saveMedicineProvider)
           .call(input, id: widget.medicineId);
+      if (widget.barcode != null && mounted) {
+        // Best effort: the medicine is saved even if the barcode is refused.
+        await linkBarcode(context, ref, id, widget.barcode!);
+      }
       if (mounted) context.pop(id);
     } on ValidationException catch (e) {
       if (mounted) _showError(e.message);
@@ -364,6 +375,20 @@ class _MedicineFormScreenState extends ConsumerState<MedicineFormScreen> {
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    key: const Key('field-alert-window'),
+                    controller: _window,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    decoration: InputDecoration(
+                      labelText: l10n.fieldAlertWindow,
+                      helperText: l10n.fieldAlertWindowHelp,
+                      helperMaxLines: 3,
+                      border: const OutlineInputBorder(),
+                    ),
+                    validator: (v) => _requiredInt(v, allowZero: false),
                   ),
                   const SizedBox(height: 12),
                   _PreferredSupplierField(

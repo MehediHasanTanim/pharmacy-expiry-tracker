@@ -8,6 +8,7 @@ import 'package:pharmacy_expiry_tracker/app/routes.dart';
 import 'package:pharmacy_expiry_tracker/features/common/expiry_chip.dart';
 import 'package:pharmacy_expiry_tracker/features/common/labels.dart';
 import 'package:pharmacy_expiry_tracker/features/common/search_field.dart';
+import 'package:pharmacy_expiry_tracker/features/scan/scan_flow.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/medicine_tile.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/stock_providers.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
@@ -63,6 +64,13 @@ class _StockScreenState extends ConsumerState<StockScreen> {
     setState(() => _query = term);
   }
 
+  Future<void> _scan() async {
+    final id = await scanToMedicineId(context, ref);
+    if (id != null && mounted) {
+      await context.push('${Routes.stock}/medicine/$id');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -87,6 +95,8 @@ class _StockScreenState extends ConsumerState<StockScreen> {
               controller: _controller,
               focusNode: _focus,
               hintText: l10n.stockSearchHint,
+              onScan: _scan,
+              scanTooltip: l10n.scanButton,
               onChanged: _onChanged,
               onSubmitted: (v) {
                 if (v.trim().isNotEmpty) unawaited(_remember(v));

@@ -7,6 +7,7 @@ import 'package:pharmacy_expiry_tracker/data/repositories/reorder_sql.dart';
 import 'package:pharmacy_expiry_tracker/domain/alerts/alert_planner.dart';
 import 'package:pharmacy_expiry_tracker/domain/alerts/alert_records.dart';
 import 'package:pharmacy_expiry_tracker/domain/alerts/planned_alert.dart';
+import 'package:pharmacy_expiry_tracker/domain/entities/reorder.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/alert_store.dart';
 
 DateTime _ms(int ms) => DateTime.fromMillisecondsSinceEpoch(ms);
@@ -278,7 +279,12 @@ class AlertSourceImpl implements AlertSource {
         .customSelect(
           belowLevelSql,
           variables: [Variable<String>(dateToIso(today))],
-          readsFrom: {_db.medicines, _db.batches, _db.reorderReminderState},
+          readsFrom: {
+            _db.medicines,
+            _db.batches,
+            _db.reorderReminderState,
+            _db.reorderOrders,
+          },
         )
         .get();
     int? day(Object? iso) =>
@@ -294,6 +300,12 @@ class AlertSourceImpl implements AlertSource {
           usable: r.data['usable']! as int,
           lastNotifiedDay: day(r.data['last_notified_on']),
           snoozeDay: day(r.data['snoozed_until']),
+          orderQuantity: r.data['order_qty'] as int?,
+          orderDueDay: r.data['ordered_on'] == null
+              ? null
+              : (day(r.data['expected_on']) ??
+                    dayNumber(dateFromIso(r.data['ordered_on']! as String)) +
+                        PlacedOrder.defaultLeadDays),
         ),
     ];
   }

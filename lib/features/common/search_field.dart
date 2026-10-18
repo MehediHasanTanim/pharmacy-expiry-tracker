@@ -11,6 +11,8 @@ class SearchField extends StatelessWidget {
     this.focusNode,
     this.autofocus = false,
     this.onSubmitted,
+    this.onScan,
+    this.scanTooltip,
     super.key,
   });
 
@@ -20,6 +22,10 @@ class SearchField extends StatelessWidget {
   final FocusNode? focusNode;
   final bool autofocus;
   final ValueChanged<String>? onSubmitted;
+
+  /// Shows a scan button at the end of the box (SCN-2).
+  final VoidCallback? onScan;
+  final String? scanTooltip;
 
   @override
   Widget build(BuildContext context) {
@@ -37,22 +43,7 @@ class SearchField extends StatelessWidget {
         filled: true,
         fillColor: scheme.surfaceContainerHighest,
         prefixIcon: const Icon(Icons.search),
-        suffixIcon: c == null
-            ? null
-            : ListenableBuilder(
-                listenable: c,
-                builder: (context, _) => c.text.isEmpty
-                    ? const SizedBox.shrink()
-                    : IconButton(
-                        tooltip: MaterialLocalizations.of(context)
-                            .deleteButtonTooltip,
-                        icon: const Icon(Icons.close),
-                        onPressed: () {
-                          c.clear();
-                          onChanged('');
-                        },
-                      ),
-              ),
+        suffixIcon: _suffix(context, c),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(28),
           borderSide: BorderSide.none,
@@ -63,5 +54,32 @@ class SearchField extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget? _suffix(BuildContext context, TextEditingController? c) {
+    final scan = onScan == null
+        ? null
+        : IconButton(
+            key: const Key('search-scan'),
+            tooltip: scanTooltip,
+            icon: const Icon(Icons.qr_code_scanner),
+            onPressed: onScan,
+          );
+    if (c == null) return scan;
+    final clear = ListenableBuilder(
+      listenable: c,
+      builder: (context, _) => c.text.isEmpty
+          ? const SizedBox.shrink()
+          : IconButton(
+              tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                c.clear();
+                onChanged('');
+              },
+            ),
+    );
+    if (scan == null) return clear;
+    return Row(mainAxisSize: MainAxisSize.min, children: [clear, scan]);
   }
 }

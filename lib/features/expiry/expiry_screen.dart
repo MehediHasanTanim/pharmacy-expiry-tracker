@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pharmacy_expiry_tracker/app/providers.dart';
+import 'package:pharmacy_expiry_tracker/app/routes.dart';
 import 'package:pharmacy_expiry_tracker/app/theme.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/app_settings.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/expiry.dart';
@@ -13,6 +15,7 @@ import 'package:pharmacy_expiry_tracker/features/expiry/expiry_filter_sheet.dart
 import 'package:pharmacy_expiry_tracker/features/expiry/expiry_providers.dart';
 import 'package:pharmacy_expiry_tracker/features/expiry/expiry_row.dart';
 import 'package:pharmacy_expiry_tracker/features/expiry/expiry_share.dart';
+import 'package:pharmacy_expiry_tracker/features/suppliers/return_screen.dart';
 import 'package:pharmacy_expiry_tracker/l10n/app_localizations.dart';
 
 /// The main workflow screen: batches that are near expiry or already expired,
@@ -490,17 +493,43 @@ class _SelectionBar extends ConsumerWidget {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(12),
-        child: FilledButton.icon(
-          key: const Key('discard-selected'),
-          onPressed: selection.isEmpty
-              ? null
-              : () async {
-                  final actions = ExpiryActions(context, ref);
-                  await actions.discardMany(selection.toList());
-                  ref.read(expirySelectionProvider.notifier).cancel();
-                },
-          icon: const Icon(Icons.delete_outline),
-          label: Text(l10n.discardSelected),
+        child: Row(
+          children: [
+            Expanded(
+              child: OutlinedButton.icon(
+                key: const Key('return-selected'),
+                onPressed: selection.isEmpty
+                    ? null
+                    : () async {
+                        final ids = selection.toList();
+                        final done = await context.push<bool>(
+                          Routes.supplierReturn,
+                          extra: ReturnArgs(batchIds: ids),
+                        );
+                        if (done ?? false) {
+                          ref.read(expirySelectionProvider.notifier).cancel();
+                        }
+                      },
+                icon: const Icon(Icons.assignment_return_outlined),
+                label: Text(l10n.expiryReturnAction),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: FilledButton.icon(
+                key: const Key('discard-selected'),
+                onPressed: selection.isEmpty
+                    ? null
+                    : () async {
+                        final actions = ExpiryActions(context, ref);
+                        await actions.discardMany(selection.toList());
+                        ref.read(expirySelectionProvider.notifier).cancel();
+                      },
+                icon: const Icon(Icons.delete_outline),
+                label: Text(l10n.discardSelected),
+              ),
+            ),
+          ],
         ),
       ),
     );

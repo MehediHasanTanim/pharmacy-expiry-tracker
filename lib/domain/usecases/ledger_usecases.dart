@@ -334,6 +334,7 @@ class RecordCredit {
     required Money amount,
     required DateTime issuedOn,
     String? invoiceId,
+    String? returnId,
     String? note,
   }) async {
     _requirePositive(amount, 'amount');
@@ -364,6 +365,7 @@ class RecordCredit {
         id: _d.newId(),
         supplierId: supplierId,
         invoiceId: invoiceId,
+        returnId: returnId,
         amount: amount,
         issuedOn: dateOnly(issuedOn),
         note: _blank(note),

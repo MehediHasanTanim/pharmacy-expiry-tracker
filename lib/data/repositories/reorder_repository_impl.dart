@@ -19,7 +19,12 @@ class ReorderRepositoryImpl implements ReorderRepository {
           '$belowLevelSql ORDER BY (m.reorder_level - COALESCE(u.usable, 0)) DESC, '
           'lower(m.brand_name)',
           variables: [Variable<String>(dateToIso(today))],
-          readsFrom: {_db.medicines, _db.batches, _db.reorderReminderState},
+          readsFrom: {
+            _db.medicines,
+            _db.batches,
+            _db.reorderReminderState,
+            _db.reorderOrders,
+          },
         )
         .watch()
         .map((rows) => [for (final r in rows) _item(r)]);
@@ -41,6 +46,80 @@ class ReorderRepositoryImpl implements ReorderRepository {
       suggested: suggestedOrderQty(usable, level),
       supplierId: d['supplier_id'] as String?,
       snoozedUntil: snooze == null ? null : dateFromIso(snooze),
+      order: d['order_id'] == null
+          ? null
+          : PlacedOrder(
+              id: d['order_id']! as String,
+              medicineId: d['id']! as String,
+              supplierId: d['order_supplier'] as String?,
+              quantity: d['order_qty']! as int,
+              orderedOn: dateFromIso(d['ordered_on']! as String),
+              expectedOn: d['expected_on'] == null
+                  ? null
+                  : dateFromIso(d['expected_on']! as String),
+            ),
+    );
+  }
+
+  @override
+  Future<void> insertOrder(PlacedOrder o, DateTime createdAt) async {
+    await _db.transaction(() async {
+      // One open order per medicine: a new one replaces the old.
+      await (_db.update(_db.reorderOrders)..where(
+            (t) =>
+                t.medicineId.equals(o.medicineId) & t.status.equals('ORDERED'),
+          ))
+          .write(const ReorderOrdersCompanion(status: Value('CANCELLED')));
+      await _db
+          .into(_db.reorderOrders)
+          .insert(
+            ReorderOrdersCompanion.insert(
+              id: o.id,
+              medicineId: o.medicineId,
+              supplierId: Value(o.supplierId),
+              quantity: o.quantity,
+              orderedOn: dateToIso(o.orderedOn),
+              expectedOn: Value(
+                o.expectedOn == null ? null : dateToIso(o.expectedOn!),
+              ),
+              status: 'ORDERED',
+              createdAt: createdAt.millisecondsSinceEpoch,
+            ),
+          );
+    });
+  }
+
+  @override
+  Future<PlacedOrder?> getOpenOrder(String medicineId) async {
+    final row =
+        await (_db.select(_db.reorderOrders)
+              ..where(
+                (t) =>
+                    t.medicineId.equals(medicineId) &
+                    t.status.equals('ORDERED'),
+              )
+              ..orderBy([(t) => OrderingTerm.desc(t.createdAt)])
+              ..limit(1))
+            .getSingleOrNull();
+    if (row == null) return null;
+    return PlacedOrder(
+      id: row.id,
+      medicineId: row.medicineId,
+      supplierId: row.supplierId,
+      quantity: row.quantity,
+      orderedOn: dateFromIso(row.orderedOn),
+      expectedOn: row.expectedOn == null ? null : dateFromIso(row.expectedOn!),
+    );
+  }
+
+  @override
+  Future<void> closeOrder(String orderId, {required bool received}) {
+    return (_db.update(
+      _db.reorderOrders,
+    )..where((t) => t.id.equals(orderId))).write(
+      ReorderOrdersCompanion(
+        status: Value(received ? 'RECEIVED' : 'CANCELLED'),
+      ),
     );
   }
 

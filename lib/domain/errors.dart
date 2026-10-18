@@ -52,6 +52,19 @@ class NotFoundException implements Exception {
   String toString() => 'NotFoundException($what $id)';
 }
 
+/// A barcode is already linked to a different medicine.
+class BarcodeTakenException implements Exception {
+  const BarcodeTakenException(this.value, this.medicineId);
+
+  final String value;
+
+  /// The medicine that already has it.
+  final String medicineId;
+
+  @override
+  String toString() => 'BarcodeTakenException($medicineId)';
+}
+
 /// A payment or credit is larger than what is owed.
 class OverpaymentException implements Exception {
   const OverpaymentException({required this.owed, required this.excess});

@@ -2,6 +2,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharmacy_expiry_tracker/app/providers.dart';
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/supplier.dart';
+import 'package:pharmacy_expiry_tracker/domain/entities/supplier_return.dart';
+
+final supplierReturnsProvider = StreamProvider.autoDispose
+    .family<List<ReturnView>, String>(
+      (ref, supplierId) =>
+          ref.watch(returnRepositoryProvider).watchBySupplier(supplierId),
+    );
 
 typedef SupplierListArgs = ({
   String query,

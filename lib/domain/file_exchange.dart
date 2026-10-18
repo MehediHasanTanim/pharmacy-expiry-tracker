@@ -7,6 +7,9 @@ abstract interface class FileExchange {
   /// dismissed the sheet without choosing anything.
   Future<bool> share(File file, {required String subject});
 
+  /// Offers plain text (a message to paste or send) through the share sheet.
+  Future<bool> shareText(String text, {required String subject});
+
   /// Lets the user choose a file. Null when they cancel.
   Future<File?> pick();
 }

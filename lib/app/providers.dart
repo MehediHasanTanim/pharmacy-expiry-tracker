@@ -8,11 +8,14 @@ import 'package:pharmacy_expiry_tracker/core/logging/error_log.dart';
 import 'package:pharmacy_expiry_tracker/data/background/alert_background.dart';
 import 'package:pharmacy_expiry_tracker/data/db/app_database.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/alert_store_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/barcode_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/batch_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/draft_store_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/expiry_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/ledger_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/medicine_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/reorder_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/return_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/search_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/settings_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/supplier_repository_impl.dart';
@@ -27,25 +30,32 @@ import 'package:pharmacy_expiry_tracker/domain/alerts/alert_records.dart';
 import 'package:pharmacy_expiry_tracker/domain/contact_launcher.dart';
 import 'package:pharmacy_expiry_tracker/domain/data_changes.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/app_settings.dart';
+import 'package:pharmacy_expiry_tracker/domain/entities/linked_barcode.dart';
 import 'package:pharmacy_expiry_tracker/domain/file_exchange.dart';
 import 'package:pharmacy_expiry_tracker/domain/notifications/app_badge.dart';
 import 'package:pharmacy_expiry_tracker/domain/notifications/notification_plugin.dart';
 import 'package:pharmacy_expiry_tracker/domain/notifications/platform_alert_settings.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/alert_store.dart';
+import 'package:pharmacy_expiry_tracker/domain/repositories/barcode_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/batch_repository.dart';
+import 'package:pharmacy_expiry_tracker/domain/repositories/draft_store.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/expiry_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/ledger_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/medicine_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/reorder_repository.dart';
+import 'package:pharmacy_expiry_tracker/domain/repositories/return_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/search_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/settings_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/supplier_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/transaction_runner.dart';
+import 'package:pharmacy_expiry_tracker/domain/usecases/barcode_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/batch_usecases.dart';
+import 'package:pharmacy_expiry_tracker/domain/usecases/delivery_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/expiry_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/ledger_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/medicine_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/reorder_usecases.dart';
+import 'package:pharmacy_expiry_tracker/domain/usecases/return_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/supplier_usecases.dart';
 
 final databaseProvider = Provider<AppDatabase>((ref) {
@@ -340,3 +350,57 @@ final errorLogProvider = Provider<ErrorLog>((ref) {
 final fileExchangeProvider = Provider<FileExchange>(
   (ref) => const ShareFileExchange(),
 );
+
+final returnRepositoryProvider = Provider<ReturnRepository>(
+  (ref) => ReturnRepositoryImpl(ref.watch(databaseProvider)),
+);
+
+final returnToSupplierProvider = Provider<ReturnToSupplier>(
+  (ref) => ReturnToSupplier(
+    deps: ref.watch(ledgerDepsProvider),
+    returns: ref.watch(returnRepositoryProvider),
+    adjustStock: ref.watch(adjustStockProvider),
+    recordCredit: ref.watch(recordCreditProvider),
+  ),
+);
+
+final barcodeServiceProvider = Provider<BarcodeService>(
+  (ref) => BarcodeService(
+    barcodes: BarcodeRepositoryImpl(ref.watch(databaseProvider)),
+    medicines: ref.watch(medicineRepositoryProvider),
+    transaction: ref.watch(transactionRunnerProvider),
+    bus: ref.watch(dataChangeBusProvider),
+  ),
+);
+
+final barcodeRepositoryProvider = Provider<BarcodeRepository>(
+  (ref) => BarcodeRepositoryImpl(ref.watch(databaseProvider)),
+);
+
+final orderTrackerProvider = Provider<OrderTracker>(
+  (ref) => OrderTracker(
+    reorder: ref.watch(reorderRepositoryProvider),
+    medicines: ref.watch(medicineRepositoryProvider),
+    clock: ref.watch(clockProvider),
+    bus: ref.watch(dataChangeBusProvider),
+  ),
+);
+
+final receiveDeliveryProvider = Provider<ReceiveDelivery>(
+  (ref) => ReceiveDelivery(
+    addBatch: ref.watch(addBatchProvider),
+    addInvoice: ref.watch(addInvoiceProvider),
+    transaction: ref.watch(transactionRunnerProvider),
+    bus: ref.watch(dataChangeBusProvider),
+  ),
+);
+
+final draftStoreProvider = Provider<DraftStore>(
+  (ref) => DraftStoreImpl(ref.watch(databaseProvider)),
+);
+
+final medicineBarcodesProvider = StreamProvider.autoDispose
+    .family<List<LinkedBarcode>, String>(
+      (ref, medicineId) =>
+          ref.watch(barcodeRepositoryProvider).watchForMedicine(medicineId),
+    );

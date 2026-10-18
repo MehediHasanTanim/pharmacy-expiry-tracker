@@ -21,6 +21,7 @@ what the code does today and how it was checked.
 
 | Permission | Why | Notes |
 |---|---|---|
+| `CAMERA` | Scan medicine barcodes (Sprint 7). | Asked the first time the scanner opens; typing the number works without it. Nothing is recorded or sent; frames are read on the phone and discarded. Declared with `required="false"` so the app installs on devices without a camera. |
 | `POST_NOTIFICATIONS` | Show expiry, payment, reorder and backup reminders. | Asked in context during onboarding or from the Alerts banner. |
 | `SCHEDULE_EXACT_ALARM` | Deliver alerts at the chosen time. | The user can revoke it; alerts then arrive inexactly. |
 | `RECEIVE_BOOT_COMPLETED` | Re-register scheduled alerts after a reboot or update. | Used by the notification plugin's receiver only. |
@@ -36,7 +37,7 @@ install):
 | Launcher badge permissions (`com.sec…`, `com.huawei…`, `com.htc…`, `com.sonymobile…`, `com.vivo…`, `com.hihonor…`, `com.anddoes…`, `com.majeur…`) | icon badge library | Showing the "needs action" count on those launchers' icons. They only talk to the launcher. If you would rather not carry them, drop `app_badge_plus` and the badge feature (S5-10). |
 | `ACCESS_NETWORK_STATE` | background tasks | **Removed** in our manifest (`tools:node="remove"`): the app sets no network constraints. |
 
-No location, contacts, camera, microphone, storage or phone-state permission is
+No location, contacts, microphone, storage or phone-state permission is
 requested. Choosing a file to restore and sharing a backup go through the
 system picker and share sheet, which need no permission.
 
@@ -69,7 +70,7 @@ system picker and share sheet, which need no permission.
   unless the privacy option is on.
 * **Device storage** is protected by the phone's own encryption and lock; the
   database file itself is not encrypted separately.
-* **iOS** has not been built or reviewed; its Info.plist, background modes and
+* **iOS** (which now also has an `NSCameraUsageDescription`) has not been built or reviewed; its Info.plist, background modes and
   sharing entitlements need the same review on a Mac with Xcode.
 
 ## Merged manifest check
