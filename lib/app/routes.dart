@@ -6,6 +6,10 @@ abstract final class Routes {
   static const suppliers = '/suppliers';
   static const more = '/more';
   static const alertLab = '/more/alert-lab';
+  static const alertSettings = '/more/alerts';
+  static const alertHealth = '/more/alerts/health';
+  static const alertHistory = '/more/alerts/history';
+  static const alertPermission = '/alerts/permission';
 
   /// e.g. `/expiry?bucket=d30&date=2026-11-17`.
   static String expiryFiltered({String? bucket, String? date}) {

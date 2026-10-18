@@ -694,4 +694,252 @@ class AppLocalizationsEn extends AppLocalizations {
   String rowSection(String label, int count) {
     return '$label, $count';
   }
+
+  @override
+  String alertLeadTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Expiry in $count days',
+      one: 'Expires tomorrow',
+      zero: 'Expires today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get alertMixedTitle => 'Batches nearing expiry';
+
+  @override
+  String alertBody(int count, String items, int more) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count batches',
+      one: '1 batch',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      more,
+      locale: localeName,
+      other: ' and $more more',
+      zero: '',
+    );
+    return '$_temp0: $items$_temp1';
+  }
+
+  @override
+  String alertItem(String name, String batch) {
+    return '$name ($batch)';
+  }
+
+  @override
+  String get alertDigestTitle => 'Expiry digest';
+
+  @override
+  String alertDigestBody(int near, int expired) {
+    String _temp0 = intl.Intl.pluralLogic(
+      near,
+      locale: localeName,
+      other: '$near batches expiring soon',
+      one: '1 batch expiring soon',
+      zero: 'Nothing expiring soon',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      expired,
+      locale: localeName,
+      other: '$expired expired on the shelf',
+      one: '1 expired on the shelf',
+      zero: 'none expired',
+    );
+    return '$_temp0 · $_temp1';
+  }
+
+  @override
+  String get alertDigestGeneric =>
+      'Open the app to review today\'s expiry actions.';
+
+  @override
+  String get alertTestTitle => 'Test alert';
+
+  @override
+  String get alertTestBody => 'Expiry alerts are working on this device.';
+
+  @override
+  String get alertCenterTitle => 'Alert history';
+
+  @override
+  String get alertCenterEmpty => 'No alerts yet';
+
+  @override
+  String get alertCenterMissed =>
+      'Delivered or missed while the app was closed';
+
+  @override
+  String get alertSettingsTitle => 'Alert settings';
+
+  @override
+  String get alertSettingsLeadTimes => 'Alert before expiry';
+
+  @override
+  String get alertSettingsLeadHelp =>
+      'Days before expiry to alert. 0 is the expiry day.';
+
+  @override
+  String get alertSettingsAddLead => 'Add days';
+
+  @override
+  String get alertSettingsLeadDialogTitle => 'Days before expiry';
+
+  @override
+  String get alertSettingsLeadInvalid => 'Enter a whole number from 0 to 365';
+
+  @override
+  String get alertSettingsDigest => 'Daily digest';
+
+  @override
+  String get alertSettingsDigestTime => 'Alert time';
+
+  @override
+  String get alertSettingsSkipEmpty => 'Skip the digest when nothing is due';
+
+  @override
+  String get alertSettingsQuiet => 'Quiet hours';
+
+  @override
+  String get alertSettingsQuietFrom => 'From';
+
+  @override
+  String get alertSettingsQuietTo => 'Until';
+
+  @override
+  String get alertSettingsHealth => 'Alert health';
+
+  @override
+  String get alertSettingsHealthSub => 'Check that alerts can reach you';
+
+  @override
+  String get healthTitle => 'Alert health';
+
+  @override
+  String get healthNotifications => 'Notifications';
+
+  @override
+  String get healthExactAlarms => 'Exact alarms';
+
+  @override
+  String get healthBattery => 'Battery optimisation';
+
+  @override
+  String get healthNextAlert => 'Next alert';
+
+  @override
+  String get healthPending => 'Scheduled alerts';
+
+  @override
+  String get healthLastPlanned => 'Last checked';
+
+  @override
+  String get healthAllowed => 'Allowed';
+
+  @override
+  String get healthBlocked => 'Blocked';
+
+  @override
+  String get healthNotApplicable => 'Not needed';
+
+  @override
+  String get healthUnrestricted => 'Unrestricted';
+
+  @override
+  String get healthRestricted => 'Restricted — alerts may be delayed';
+
+  @override
+  String get healthNone => 'None';
+
+  @override
+  String get healthNever => 'Never';
+
+  @override
+  String get healthSendTest => 'Send test alert';
+
+  @override
+  String get healthTestScheduled =>
+      'A test alert will arrive in a few seconds. Close the app to try it.';
+
+  @override
+  String get healthOpenSettings => 'Open settings';
+
+  @override
+  String get healthOpenBattery => 'Battery settings';
+
+  @override
+  String get healthRefresh => 'Check again';
+
+  @override
+  String healthOemTip(String brand) {
+    return 'On $brand phones, also allow the app to start automatically and exclude it from battery saving, otherwise the system may stop alerts.';
+  }
+
+  @override
+  String get permissionTitle => 'Get expiry alerts';
+
+  @override
+  String get permissionBody =>
+      'The app can warn you before medicines expire, even when it is closed and offline. To do that it needs permission to show notifications.';
+
+  @override
+  String get permissionAllow => 'Turn on alerts';
+
+  @override
+  String get permissionNotNow => 'Not now';
+
+  @override
+  String get permissionBannerAsk =>
+      'Turn on expiry alerts so nothing expires unnoticed.';
+
+  @override
+  String get permissionBannerDenied =>
+      'Alerts are off — expiry warnings will not reach you.';
+
+  @override
+  String get permissionBannerAction => 'Turn on';
+
+  @override
+  String get permissionBannerSettings => 'Open settings';
+
+  @override
+  String healthMinutes(int minutes) {
+    return '$minutes minutes';
+  }
+
+  @override
+  String leadChip(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days before',
+      one: '1 day before',
+      zero: 'On expiry day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get healthLastError => 'The last check failed. Tap \"Check again\".';
+
+  @override
+  String healthOsPending(int count) {
+    return '$count waiting in the system';
+  }
+
+  @override
+  String get alertSettingsNoLeads =>
+      'No lead-time alerts. Add at least one to be warned before expiry.';
+
+  @override
+  String get alertCenterOpenHint => 'Tap to review';
+
+  @override
+  String get alertTimeHelp =>
+      'Digest and lead-time alerts arrive around this time.';
 }

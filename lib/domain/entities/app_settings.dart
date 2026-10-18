@@ -28,6 +28,7 @@ class AppSettings {
     this.expiryCategory = '',
     this.expiryForm = '',
     this.expiryHideHandled = false,
+    this.alertPermissionAsked = false,
   });
 
   /// Rebuilds settings from stored key/value rows; missing or malformed values
@@ -71,6 +72,8 @@ class AppSettings {
       expiryForm: m[SettingKey.expiryForm] ?? d.expiryForm,
       expiryHideHandled:
           _bool(m[SettingKey.expiryHideHandled]) ?? d.expiryHideHandled,
+      alertPermissionAsked:
+          _bool(m[SettingKey.alertPermissionAsked]) ?? d.alertPermissionAsked,
     );
   }
 
@@ -125,6 +128,10 @@ class AppSettings {
   final String expiryForm;
   final bool expiryHideHandled;
 
+  /// The system notification prompt has been shown at least once, so a
+  /// refusal now needs the system settings rather than another prompt.
+  final bool alertPermissionAsked;
+
   Map<String, String> toMap() => {
     SettingKey.pharmacyName: pharmacyName,
     SettingKey.nearExpiryWindowDays: '$nearExpiryWindowDays',
@@ -150,6 +157,7 @@ class AppSettings {
     SettingKey.expiryCategory: expiryCategory,
     SettingKey.expiryForm: expiryForm,
     SettingKey.expiryHideHandled: '$expiryHideHandled',
+    SettingKey.alertPermissionAsked: '$alertPermissionAsked',
   };
 
   AppSettings copyWith({
@@ -177,6 +185,7 @@ class AppSettings {
     String? expiryCategory,
     String? expiryForm,
     bool? expiryHideHandled,
+    bool? alertPermissionAsked,
   }) {
     return AppSettings(
       pharmacyName: pharmacyName ?? this.pharmacyName,
@@ -204,6 +213,7 @@ class AppSettings {
       expiryCategory: expiryCategory ?? this.expiryCategory,
       expiryForm: expiryForm ?? this.expiryForm,
       expiryHideHandled: expiryHideHandled ?? this.expiryHideHandled,
+      alertPermissionAsked: alertPermissionAsked ?? this.alertPermissionAsked,
     );
   }
 
@@ -258,4 +268,5 @@ abstract final class SettingKey {
   static const expiryCategory = 'expiry_category';
   static const expiryForm = 'expiry_form';
   static const expiryHideHandled = 'expiry_hide_handled';
+  static const alertPermissionAsked = 'alert_permission_asked';
 }

@@ -141,3 +141,35 @@ it, because the in-app Alert health screen (Sprint 3) must tell users.
 * Anything ❌ that is not the documented Android force-stop behaviour gets a
   line in the spike report and a decision: accept, mitigate in-app, or add a
   native channel.
+
+---
+
+## Sprint 3 additions: engine and screens
+
+The scenarios above exercise the OS. These check the engine on top of it, in
+the **real app** (any flavor), using real data. Record results the same way.
+
+| # | Steps | Expect | P | S | X | I |
+|---|---|---|---|---|---|---|
+| K1 | Add a medicine and a batch expiring in ~40 days. More → *Alert health* | *Scheduled alerts* ≥ 5 and equals the system's count; *Next alert* is tomorrow-ish | ☐ | ☐ | ☐ | ☐ |
+| K2 | Discard that batch (Expiry tab → swipe → Discard) | Scheduled count drops; none for that batch remain | ☐ | ☐ | ☐ | ☐ |
+| K3 | Edit its expiry to a nearer date | Alerts move (check *Next alert*) | ☐ | ☐ | ☐ | ☐ |
+| K4 | Snooze it from the Expiry tab, then Undo | Alerts disappear then return | ☐ | ☐ | ☐ | ☐ |
+| K5 | *Alert health → Send test alert*, close the app, wait 10 s | Test notification arrives; tapping opens *Alert health* | ☐ | ☐ | ☐ | ☐ |
+| K6 | Set the alert time ~3 min ahead, with a batch whose alert falls today | Alert arrives within a few minutes of the new time; digest 5 min before it | ☐ | ☐ | ☐ | ☐ |
+| K7 | Same with **airplane mode** on and the app swiped away | Still arrives (ALR-15) | ☐ | ☐ | ☐ | ☐ |
+| K8 | Tap a delivered lead-time alert | Expiry tab opens with that urgency bucket selected | ☐ | ☐ | ☐ | ☐ |
+| K9 | Leave the app closed past a delivery time, then open it | *Alert history* lists the alert as delivered/missed | ☐ | ☐ | ☐ | ☐ |
+| K10 | Force-stop (Android), wait past a delivery time, reopen | Alerts re-planned on launch; *Check again* shows scheduled = system count | ☐ | ☐ | ☐ | – |
+| K11 | Turn notifications off in system settings, return | Home banner appears; *Alert health* shows *Blocked* with *Open settings* | ☐ | ☐ | ☐ | ☐ |
+| K12 | Turn them back on, return | Banner disappears; alerts rescheduled (count matches) | ☐ | ☐ | ☐ | ☐ |
+| K13 | Quiet hours on, window covering the alert time | Alert arrives at the end of the window | ☐ | ☐ | ☐ | ☐ |
+| K14 | Android: `adb shell cmd jobscheduler run -f <pkg> <job id>` (find id with `dumpsys jobscheduler`) for the WorkManager job | Log shows a background pass; no duplicates afterwards | ☐ | ☐ | ☐ | – |
+| K15 | Android: battery optimisation *Restricted* | *Alert health* says so, offers *Battery settings*; OEM tip on Xiaomi/Samsung/etc. | ☐ | ☐ | ☐ | – |
+
+### Exit criteria for Sprint 3 (from the plan)
+
+* ≥ 95% of test alerts delivered across the matrix.
+* No duplicate notifications after repeated re-plans (K1–K4 + `Check again`
+  several times: count stays equal to the system's).
+* ALR-15 verified in airplane mode (B1, B2, K7).

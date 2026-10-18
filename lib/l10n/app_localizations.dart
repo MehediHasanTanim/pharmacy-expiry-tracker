@@ -1293,6 +1293,372 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{label}, {count}'**
   String rowSection(String label, int count);
+
+  /// No description provided for @alertLeadTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Expires today} =1{Expires tomorrow} other{Expiry in {count} days}}'**
+  String alertLeadTitle(int count);
+
+  /// No description provided for @alertMixedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Batches nearing expiry'**
+  String get alertMixedTitle;
+
+  /// No description provided for @alertBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 batch} other{{count} batches}}: {items}{more, plural, =0{} other{ and {more} more}}'**
+  String alertBody(int count, String items, int more);
+
+  /// No description provided for @alertItem.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} ({batch})'**
+  String alertItem(String name, String batch);
+
+  /// No description provided for @alertDigestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry digest'**
+  String get alertDigestTitle;
+
+  /// No description provided for @alertDigestBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{near, plural, =0{Nothing expiring soon} =1{1 batch expiring soon} other{{near} batches expiring soon}} · {expired, plural, =0{none expired} =1{1 expired on the shelf} other{{expired} expired on the shelf}}'**
+  String alertDigestBody(int near, int expired);
+
+  /// No description provided for @alertDigestGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the app to review today\'s expiry actions.'**
+  String get alertDigestGeneric;
+
+  /// No description provided for @alertTestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Test alert'**
+  String get alertTestTitle;
+
+  /// No description provided for @alertTestBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry alerts are working on this device.'**
+  String get alertTestBody;
+
+  /// No description provided for @alertCenterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert history'**
+  String get alertCenterTitle;
+
+  /// No description provided for @alertCenterEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No alerts yet'**
+  String get alertCenterEmpty;
+
+  /// No description provided for @alertCenterMissed.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered or missed while the app was closed'**
+  String get alertCenterMissed;
+
+  /// No description provided for @alertSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert settings'**
+  String get alertSettingsTitle;
+
+  /// No description provided for @alertSettingsLeadTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert before expiry'**
+  String get alertSettingsLeadTimes;
+
+  /// No description provided for @alertSettingsLeadHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Days before expiry to alert. 0 is the expiry day.'**
+  String get alertSettingsLeadHelp;
+
+  /// No description provided for @alertSettingsAddLead.
+  ///
+  /// In en, this message translates to:
+  /// **'Add days'**
+  String get alertSettingsAddLead;
+
+  /// No description provided for @alertSettingsLeadDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Days before expiry'**
+  String get alertSettingsLeadDialogTitle;
+
+  /// No description provided for @alertSettingsLeadInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a whole number from 0 to 365'**
+  String get alertSettingsLeadInvalid;
+
+  /// No description provided for @alertSettingsDigest.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily digest'**
+  String get alertSettingsDigest;
+
+  /// No description provided for @alertSettingsDigestTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert time'**
+  String get alertSettingsDigestTime;
+
+  /// No description provided for @alertSettingsSkipEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip the digest when nothing is due'**
+  String get alertSettingsSkipEmpty;
+
+  /// No description provided for @alertSettingsQuiet.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet hours'**
+  String get alertSettingsQuiet;
+
+  /// No description provided for @alertSettingsQuietFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get alertSettingsQuietFrom;
+
+  /// No description provided for @alertSettingsQuietTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Until'**
+  String get alertSettingsQuietTo;
+
+  /// No description provided for @alertSettingsHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert health'**
+  String get alertSettingsHealth;
+
+  /// No description provided for @alertSettingsHealthSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Check that alerts can reach you'**
+  String get alertSettingsHealthSub;
+
+  /// No description provided for @healthTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert health'**
+  String get healthTitle;
+
+  /// No description provided for @healthNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get healthNotifications;
+
+  /// No description provided for @healthExactAlarms.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact alarms'**
+  String get healthExactAlarms;
+
+  /// No description provided for @healthBattery.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery optimisation'**
+  String get healthBattery;
+
+  /// No description provided for @healthNextAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'Next alert'**
+  String get healthNextAlert;
+
+  /// No description provided for @healthPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled alerts'**
+  String get healthPending;
+
+  /// No description provided for @healthLastPlanned.
+  ///
+  /// In en, this message translates to:
+  /// **'Last checked'**
+  String get healthLastPlanned;
+
+  /// No description provided for @healthAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed'**
+  String get healthAllowed;
+
+  /// No description provided for @healthBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked'**
+  String get healthBlocked;
+
+  /// No description provided for @healthNotApplicable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not needed'**
+  String get healthNotApplicable;
+
+  /// No description provided for @healthUnrestricted.
+  ///
+  /// In en, this message translates to:
+  /// **'Unrestricted'**
+  String get healthUnrestricted;
+
+  /// No description provided for @healthRestricted.
+  ///
+  /// In en, this message translates to:
+  /// **'Restricted — alerts may be delayed'**
+  String get healthRestricted;
+
+  /// No description provided for @healthNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get healthNone;
+
+  /// No description provided for @healthNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get healthNever;
+
+  /// No description provided for @healthSendTest.
+  ///
+  /// In en, this message translates to:
+  /// **'Send test alert'**
+  String get healthSendTest;
+
+  /// No description provided for @healthTestScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'A test alert will arrive in a few seconds. Close the app to try it.'**
+  String get healthTestScheduled;
+
+  /// No description provided for @healthOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get healthOpenSettings;
+
+  /// No description provided for @healthOpenBattery.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery settings'**
+  String get healthOpenBattery;
+
+  /// No description provided for @healthRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Check again'**
+  String get healthRefresh;
+
+  /// No description provided for @healthOemTip.
+  ///
+  /// In en, this message translates to:
+  /// **'On {brand} phones, also allow the app to start automatically and exclude it from battery saving, otherwise the system may stop alerts.'**
+  String healthOemTip(String brand);
+
+  /// No description provided for @permissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get expiry alerts'**
+  String get permissionTitle;
+
+  /// No description provided for @permissionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The app can warn you before medicines expire, even when it is closed and offline. To do that it needs permission to show notifications.'**
+  String get permissionBody;
+
+  /// No description provided for @permissionAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on alerts'**
+  String get permissionAllow;
+
+  /// No description provided for @permissionNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get permissionNotNow;
+
+  /// No description provided for @permissionBannerAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on expiry alerts so nothing expires unnoticed.'**
+  String get permissionBannerAsk;
+
+  /// No description provided for @permissionBannerDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts are off — expiry warnings will not reach you.'**
+  String get permissionBannerDenied;
+
+  /// No description provided for @permissionBannerAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on'**
+  String get permissionBannerAction;
+
+  /// No description provided for @permissionBannerSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get permissionBannerSettings;
+
+  /// No description provided for @healthMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} minutes'**
+  String healthMinutes(int minutes);
+
+  /// No description provided for @leadChip.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{On expiry day} =1{1 day before} other{{count} days before}}'**
+  String leadChip(int count);
+
+  /// No description provided for @healthLastError.
+  ///
+  /// In en, this message translates to:
+  /// **'The last check failed. Tap \"Check again\".'**
+  String get healthLastError;
+
+  /// No description provided for @healthOsPending.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} waiting in the system'**
+  String healthOsPending(int count);
+
+  /// No description provided for @alertSettingsNoLeads.
+  ///
+  /// In en, this message translates to:
+  /// **'No lead-time alerts. Add at least one to be warned before expiry.'**
+  String get alertSettingsNoLeads;
+
+  /// No description provided for @alertCenterOpenHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to review'**
+  String get alertCenterOpenHint;
+
+  /// No description provided for @alertTimeHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Digest and lead-time alerts arrive around this time.'**
+  String get alertTimeHelp;
 }
 
 class _AppLocalizationsDelegate

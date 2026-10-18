@@ -35,17 +35,26 @@ class _ExpiryScreenState extends ConsumerState<ExpiryScreen> {
   void initState() {
     super.initState();
     _scroll.addListener(_onScroll);
+    _applyDeepLink();
+  }
+
+  @override
+  void didUpdateWidget(ExpiryScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.bucket != widget.bucket) _applyDeepLink();
+  }
+
+  /// Preselects the bucket from a `?bucket=` link, e.g. a tapped alert.
+  void _applyDeepLink() {
     final wanted = ExpiryBucket.values
         .where((b) => b.name == widget.bucket)
         .firstOrNull;
-    if (wanted != null) {
-      // Providers may not be modified while the tree is building.
-      unawaited(
-        Future.microtask(
-          () => ref.read(expiryBucketProvider.notifier).select(wanted),
-        ),
-      );
-    }
+    // Providers may not be modified while the tree is building.
+    unawaited(
+      Future.microtask(
+        () => ref.read(expiryBucketProvider.notifier).select(wanted),
+      ),
+    );
   }
 
   @override

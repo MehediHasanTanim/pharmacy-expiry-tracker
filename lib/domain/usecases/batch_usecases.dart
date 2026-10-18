@@ -1,7 +1,3 @@
-// Named parameters cannot use private initialising formals, and the
-// transaction callbacks return futures from `async` closures on purpose.
-// ignore_for_file: prefer_initializing_formals, async_return_with_no_await
-
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
 import 'package:pharmacy_expiry_tracker/core/date/expiry_date.dart';
 import 'package:pharmacy_expiry_tracker/core/money/money.dart';

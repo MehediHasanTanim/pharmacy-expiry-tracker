@@ -341,5 +341,134 @@
         "type": "int"
       }
     }
-  }
+  },
+  "alertLeadTitle": "{count, plural, =0{Expires today} =1{Expires tomorrow} other{Expiry in {count} days}}",
+  "@alertLeadTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "alertMixedTitle": "Batches nearing expiry",
+  "alertBody": "{count, plural, =1{1 batch} other{{count} batches}}: {items}{more, plural, =0{} other{ and {more} more}}",
+  "@alertBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "items": {
+        "type": "String"
+      },
+      "more": {
+        "type": "int"
+      }
+    }
+  },
+  "alertItem": "{name} ({batch})",
+  "@alertItem": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "batch": {
+        "type": "String"
+      }
+    }
+  },
+  "alertDigestTitle": "Expiry digest",
+  "alertDigestBody": "{near, plural, =0{Nothing expiring soon} =1{1 batch expiring soon} other{{near} batches expiring soon}} · {expired, plural, =0{none expired} =1{1 expired on the shelf} other{{expired} expired on the shelf}}",
+  "@alertDigestBody": {
+    "placeholders": {
+      "near": {
+        "type": "int"
+      },
+      "expired": {
+        "type": "int"
+      }
+    }
+  },
+  "alertDigestGeneric": "Open the app to review today's expiry actions.",
+  "alertTestTitle": "Test alert",
+  "alertTestBody": "Expiry alerts are working on this device.",
+  "alertCenterTitle": "Alert history",
+  "alertCenterEmpty": "No alerts yet",
+  "alertCenterMissed": "Delivered or missed while the app was closed",
+  "alertSettingsTitle": "Alert settings",
+  "alertSettingsLeadTimes": "Alert before expiry",
+  "alertSettingsLeadHelp": "Days before expiry to alert. 0 is the expiry day.",
+  "alertSettingsAddLead": "Add days",
+  "alertSettingsLeadDialogTitle": "Days before expiry",
+  "alertSettingsLeadInvalid": "Enter a whole number from 0 to 365",
+  "alertSettingsDigest": "Daily digest",
+  "alertSettingsDigestTime": "Alert time",
+  "alertSettingsSkipEmpty": "Skip the digest when nothing is due",
+  "alertSettingsQuiet": "Quiet hours",
+  "alertSettingsQuietFrom": "From",
+  "alertSettingsQuietTo": "Until",
+  "alertSettingsHealth": "Alert health",
+  "alertSettingsHealthSub": "Check that alerts can reach you",
+  "healthTitle": "Alert health",
+  "healthNotifications": "Notifications",
+  "healthExactAlarms": "Exact alarms",
+  "healthBattery": "Battery optimisation",
+  "healthNextAlert": "Next alert",
+  "healthPending": "Scheduled alerts",
+  "healthLastPlanned": "Last checked",
+  "healthAllowed": "Allowed",
+  "healthBlocked": "Blocked",
+  "healthNotApplicable": "Not needed",
+  "healthUnrestricted": "Unrestricted",
+  "healthRestricted": "Restricted — alerts may be delayed",
+  "healthNone": "None",
+  "healthNever": "Never",
+  "healthSendTest": "Send test alert",
+  "healthTestScheduled": "A test alert will arrive in a few seconds. Close the app to try it.",
+  "healthOpenSettings": "Open settings",
+  "healthOpenBattery": "Battery settings",
+  "healthRefresh": "Check again",
+  "healthOemTip": "On {brand} phones, also allow the app to start automatically and exclude it from battery saving, otherwise the system may stop alerts.",
+  "@healthOemTip": {
+    "placeholders": {
+      "brand": {
+        "type": "String"
+      }
+    }
+  },
+  "permissionTitle": "Get expiry alerts",
+  "permissionBody": "The app can warn you before medicines expire, even when it is closed and offline. To do that it needs permission to show notifications.",
+  "permissionAllow": "Turn on alerts",
+  "permissionNotNow": "Not now",
+  "permissionBannerAsk": "Turn on expiry alerts so nothing expires unnoticed.",
+  "permissionBannerDenied": "Alerts are off — expiry warnings will not reach you.",
+  "permissionBannerAction": "Turn on",
+  "permissionBannerSettings": "Open settings",
+  "healthMinutes": "{minutes} minutes",
+  "@healthMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "leadChip": "{count, plural, =0{On expiry day} =1{1 day before} other{{count} days before}}",
+  "@leadChip": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "healthLastError": "The last check failed. Tap \"Check again\".",
+  "healthOsPending": "{count} waiting in the system",
+  "@healthOsPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "alertSettingsNoLeads": "No lead-time alerts. Add at least one to be warned before expiry.",
+  "alertCenterOpenHint": "Tap to review",
+  "alertTimeHelp": "Digest and lead-time alerts arrive around this time."
 }

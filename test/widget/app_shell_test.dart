@@ -13,7 +13,11 @@ void main() {
     addTearDown(db.close);
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [databaseProvider.overrideWithValue(db)],
+        overrides: [
+          databaseProvider.overrideWithValue(db),
+          // This test is about navigation, not the alert engine.
+          alertEngineEnabledProvider.overrideWithValue(false),
+        ],
         child: const App(),
       ),
     );

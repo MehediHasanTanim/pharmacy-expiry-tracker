@@ -21,6 +21,9 @@ Widget wrap(TestEnv env) {
       databaseProvider.overrideWithValue(env.db),
       clockProvider.overrideWithValue(env.clock),
       dataChangeBusProvider.overrideWithValue(env.bus),
+      // Screen tests do not need the alert engine running underneath them.
+      alertEngineEnabledProvider.overrideWithValue(false),
+      notificationPluginProvider.overrideWithValue(env.plugin),
     ],
     child: const App(),
   );

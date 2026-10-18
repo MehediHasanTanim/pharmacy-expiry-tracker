@@ -1,6 +1,3 @@
-// Named parameters cannot use private initialising formals.
-// ignore_for_file: prefer_initializing_formals, async_return_with_no_await
-
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
 import 'package:pharmacy_expiry_tracker/domain/data_changes.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/enums.dart';

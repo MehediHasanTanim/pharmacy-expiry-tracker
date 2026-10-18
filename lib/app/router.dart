@@ -3,8 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pharmacy_expiry_tracker/app/routes.dart';
 import 'package:pharmacy_expiry_tracker/app/shell_scaffold.dart';
+import 'package:pharmacy_expiry_tracker/features/alerts/alert_health_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/alerts/alert_history_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/alerts/alert_permission.dart';
+import 'package:pharmacy_expiry_tracker/features/alerts/alert_settings_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/expiry/expiry_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/home/home_screen.dart';
+import 'package:pharmacy_expiry_tracker/features/more/alert_lab_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/more/more_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/batch_detail_screen.dart';
 import 'package:pharmacy_expiry_tracker/features/stock/batch_form_screen.dart';
@@ -21,6 +26,11 @@ GoRouter buildRouter({String initialLocation = Routes.home}) {
     navigatorKey: rootKey,
     initialLocation: initialLocation,
     routes: [
+      GoRoute(
+        path: Routes.alertPermission,
+        parentNavigatorKey: rootKey,
+        builder: (_, _) => const AlertPermissionScreen(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => ShellScaffold(shell: shell),
         branches: [
@@ -110,7 +120,34 @@ GoRouter buildRouter({String initialLocation = Routes.home}) {
           ),
           StatefulShellBranch(
             routes: [
-              GoRoute(path: Routes.more, builder: (_, _) => const MoreScreen()),
+              GoRoute(
+                path: Routes.more,
+                builder: (_, _) => const MoreScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'alert-lab',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const AlertLabScreen(),
+                  ),
+                  GoRoute(
+                    path: 'alerts',
+                    parentNavigatorKey: rootKey,
+                    builder: (_, _) => const AlertSettingsScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'health',
+                        parentNavigatorKey: rootKey,
+                        builder: (_, _) => const AlertHealthScreen(),
+                      ),
+                      GoRoute(
+                        path: 'history',
+                        parentNavigatorKey: rootKey,
+                        builder: (_, _) => const AlertHistoryScreen(),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
         ],

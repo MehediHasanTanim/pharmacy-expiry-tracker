@@ -22,3 +22,7 @@ linter:
     specify_nonobvious_property_types: false
     # Notifier methods (state = x) read better than setters.
     use_setters_to_change_properties: false
+    # Named parameters cannot be private initialising formals.
+    prefer_initializing_formals: false
+    # Returning a future from an async closure is fine and often clearer.
+    async_return_with_no_await: false

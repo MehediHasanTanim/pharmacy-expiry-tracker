@@ -1,15 +1,25 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pharmacy_expiry_tracker/core/clock/clock.dart';
+import 'package:pharmacy_expiry_tracker/data/background/alert_background.dart';
 import 'package:pharmacy_expiry_tracker/data/db/app_database.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/alert_store_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/batch_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/expiry_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/medicine_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/search_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/settings_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/services/alert_engine_factory.dart';
 import 'package:pharmacy_expiry_tracker/data/services/local_notification_plugin.dart';
+import 'package:pharmacy_expiry_tracker/data/services/platform_alert_settings_impl.dart';
+import 'package:pharmacy_expiry_tracker/domain/alerts/alert_engine.dart';
+import 'package:pharmacy_expiry_tracker/domain/alerts/alert_records.dart';
 import 'package:pharmacy_expiry_tracker/domain/data_changes.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/app_settings.dart';
 import 'package:pharmacy_expiry_tracker/domain/notifications/notification_plugin.dart';
+import 'package:pharmacy_expiry_tracker/domain/notifications/platform_alert_settings.dart';
+import 'package:pharmacy_expiry_tracker/domain/repositories/alert_store.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/batch_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/expiry_repository.dart';
 import 'package:pharmacy_expiry_tracker/domain/repositories/medicine_repository.dart';
@@ -140,4 +150,68 @@ final discardBatchesProvider = Provider<DiscardBatches>(
 /// The OS notification scheduler. Overridden with a fake in tests.
 final notificationPluginProvider = Provider<NotificationPlugin>(
   (ref) => LocalNotificationPlugin(),
+);
+
+final platformAlertSettingsProvider = Provider<PlatformAlertSettings>(
+  (ref) => MethodChannelPlatformAlertSettings(),
+);
+
+final alertStoreProvider = Provider<AlertStore>(
+  (ref) => AlertStoreImpl(ref.watch(databaseProvider)),
+);
+
+final alertSourceProvider = Provider<AlertSource>(
+  (ref) => AlertSourceImpl(ref.watch(databaseProvider)),
+);
+
+/// Whether the alert engine runs at all. Tests that exercise screens, not
+/// alerts, switch it off.
+final alertEngineEnabledProvider = Provider<bool>((ref) => true);
+
+final alertEngineProvider = Provider<AlertEngine>(
+  (ref) => createAlertEngine(
+    db: ref.watch(databaseProvider),
+    plugin: ref.watch(notificationPluginProvider),
+    clock: ref.watch(clockProvider),
+  ),
+);
+
+/// Registers the periodic background re-plan. Replaced in tests.
+final backgroundReplanRegistrarProvider = Provider<Future<void> Function()>(
+  (ref) => AlertBackground.register,
+);
+
+/// Re-plans alerts when data or settings change. Reading this provider starts
+/// listening.
+final alertCoordinatorProvider = Provider<AlertCoordinator>((ref) {
+  final coordinator = AlertCoordinator(ref.watch(alertEngineProvider))
+    ..listenTo(ref.watch(dataChangeBusProvider).changes)
+    ..listenTo(ref.watch(settingsRepositoryProvider).watch());
+  ref.onDispose(() => unawaited(coordinator.dispose()));
+  return coordinator;
+});
+
+/// Result of each completed alert pass, newest last.
+final replanResultsProvider = StreamProvider<ReplanSummary>(
+  (ref) => ref.watch(alertCoordinatorProvider).results,
+);
+
+/// Current notification / exact-alarm permission. Invalidate to re-check
+/// (the app does when it returns to the foreground).
+final notificationPermissionsProvider =
+    FutureProvider.autoDispose<NotificationPermissions>(
+      (ref) => ref.watch(notificationPluginProvider).permissions(),
+    );
+
+final deviceAlertConditionsProvider =
+    FutureProvider.autoDispose<DeviceAlertConditions>(
+      (ref) => ref.watch(platformAlertSettingsProvider).conditions(),
+    );
+
+final alertLogProvider = StreamProvider.autoDispose<List<AlertLogEntry>>(
+  (ref) => ref.watch(alertStoreProvider).watchLog(),
+);
+
+final pendingAlertCountProvider = StreamProvider.autoDispose<int>(
+  (ref) => ref.watch(alertStoreProvider).watchPendingCount(),
 );

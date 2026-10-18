@@ -1,10 +1,14 @@
 import 'package:pharmacy_expiry_tracker/core/date/expiry_date.dart';
 import 'package:pharmacy_expiry_tracker/core/money/money.dart';
 import 'package:pharmacy_expiry_tracker/data/db/app_database.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/alert_store_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/batch_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/expiry_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/medicine_repository_impl.dart';
 import 'package:pharmacy_expiry_tracker/data/repositories/search_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/data/repositories/settings_repository_impl.dart';
+import 'package:pharmacy_expiry_tracker/domain/alerts/alert_engine.dart';
+import 'package:pharmacy_expiry_tracker/domain/alerts/alert_scheduler.dart';
 import 'package:pharmacy_expiry_tracker/domain/data_changes.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/batch.dart';
 import 'package:pharmacy_expiry_tracker/domain/entities/enums.dart';
@@ -13,15 +17,20 @@ import 'package:pharmacy_expiry_tracker/domain/repositories/batch_repository.dar
 import 'package:pharmacy_expiry_tracker/domain/usecases/batch_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/expiry_usecases.dart';
 import 'package:pharmacy_expiry_tracker/domain/usecases/medicine_usecases.dart';
+import 'package:pharmacy_expiry_tracker/l10n/app_localizations_en.dart';
 
 import 'fake_clock.dart';
+import 'fake_notification_plugin.dart';
 
 /// In-memory database wired with real repositories and use cases.
 class TestEnv {
-  TestEnv({BatchRepository Function(BatchRepository real)? wrapBatches})
-    : db = AppDatabase.forTesting(),
-      clock = FakeClock(DateTime(2026, 10, 17, 9)),
-      bus = DataChangeBus() {
+  TestEnv({
+    BatchRepository Function(BatchRepository real)? wrapBatches,
+    FakeNotificationPlugin? plugin,
+  }) : db = AppDatabase.forTesting(),
+       clock = FakeClock(DateTime(2026, 10, 17, 9)),
+       plugin = plugin ?? FakeNotificationPlugin(),
+       bus = DataChangeBus() {
     medicines = MedicineRepositoryImpl(db, clock);
     final realBatches = BatchRepositoryImpl(db);
     batches = wrapBatches?.call(realBatches) ?? realBatches;
@@ -50,6 +59,23 @@ class TestEnv {
       clock: clock,
       bus: bus,
     );
+    settings = SettingsRepositoryImpl(db);
+    alertStore = AlertStoreImpl(db);
+    alertSource = AlertSourceImpl(db);
+    alertScheduler = AlertScheduler(
+      plugin: this.plugin,
+      store: alertStore,
+      transaction: tx,
+    );
+    alertEngine = AlertEngine(
+      settings: settings,
+      source: alertSource,
+      store: alertStore,
+      scheduler: alertScheduler,
+      plugin: this.plugin,
+      clock: clock,
+      loadL10n: (_) async => AppLocalizationsEn(),
+    );
     alertState = UpdateAlertState(batches: batches, clock: clock, bus: bus);
     discardBatches = DiscardBatches(
       batches: batches,
@@ -59,6 +85,7 @@ class TestEnv {
   }
 
   final AppDatabase db;
+  final FakeNotificationPlugin plugin;
   final FakeClock clock;
   final DataChangeBus bus;
   late final MedicineRepositoryImpl medicines;
@@ -66,6 +93,11 @@ class TestEnv {
   late final DriftTransactionRunner tx;
   late final SearchRepositoryImpl search;
   late final ExpiryRepositoryImpl expiry;
+  late final SettingsRepositoryImpl settings;
+  late final AlertStoreImpl alertStore;
+  late final AlertSourceImpl alertSource;
+  late final AlertScheduler alertScheduler;
+  late final AlertEngine alertEngine;
   late final UpdateAlertState alertState;
   late final DiscardBatches discardBatches;
   late final RecentSearchesRepositoryImpl recent;

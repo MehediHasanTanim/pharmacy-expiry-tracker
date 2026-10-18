@@ -28,6 +28,14 @@ jobs:
       - run: dart format --output=none --set-exit-if-changed lib test
       - run: flutter analyze --fatal-infos
       - run: flutter test --coverage
+      # Alert times must not drift across daylight-saving changes, so run the
+      # planner under zones with different transitions.
+      - name: Alert planner in other time zones
+        run: |
+          for tz in America/New_York Europe/Berlin Pacific/Auckland Asia/Dhaka; do
+            echo "== $tz"
+            TZ=$tz flutter test test/unit/alerts
+          done
       - uses: actions/upload-artifact@v4
         with:
           name: coverage

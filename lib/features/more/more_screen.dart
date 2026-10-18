@@ -21,9 +21,26 @@ class MoreScreen extends ConsumerWidget {
       appBar: AppBar(title: Text(l10n.tabMore)),
       body: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(24),
-            child: Center(child: Text(l10n.emptyMore)),
+          ListTile(
+            key: const Key('more-alerts'),
+            leading: const Icon(Icons.notifications_outlined),
+            title: Text(l10n.alertSettingsTitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push(Routes.alertSettings),
+          ),
+          ListTile(
+            key: const Key('more-alert-health'),
+            leading: const Icon(Icons.health_and_safety_outlined),
+            title: Text(l10n.healthTitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push(Routes.alertHealth),
+          ),
+          ListTile(
+            key: const Key('more-alert-history'),
+            leading: const Icon(Icons.history),
+            title: Text(l10n.alertCenterTitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push(Routes.alertHistory),
           ),
           if (showDevTools) ...[
             const Divider(),
